@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "392699918608",
+    "firebase_url": "https://beekeeper-note.firebaseio.com",
+    "project_id": "beekeeper-note",
+    "storage_bucket": "beekeeper-note.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:392699918608:android:c83c9fab9f78ce17",
+        "android_client_info": {
+          "package_name": "com.example.key.beekeepernote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "392699918608-rgi3noa0kk2733rmf0ttl4m122t8gs1u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.key.beekeepernote",
+            "certificate_hash": "3fc332252a4863290e5acdce3ee81cac2c50d632"
+          }
+        },
+        {
+          "client_id": "392699918608-vnql6qlhibvgomnir9alked68h8ncrra.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzlF7hsCgxbrrZEv6orrr3OL2vcLoCLoQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "392699918608-vnql6qlhibvgomnir9alked68h8ncrra.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
