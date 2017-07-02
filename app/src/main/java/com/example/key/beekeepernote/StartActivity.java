@@ -1,27 +1,57 @@
 package com.example.key.beekeepernote;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-
-import com.example.key.beekeepernote.database.Apiary;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
+import android.support.v7.widget.Toolbar;
 
 public class StartActivity extends AppCompatActivity {
+    public ApiaryFragment apiaryFragment;
+    public  ViewPagerAdapter adapter;
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        setupViewPager(viewPager);
+
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+/**
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
+        final List<Apiary> apiaryList = new ArrayList<>();
+        Query myPlace = myRef.child("apiary").child("apiaryId");
+        myPlace.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Apiary apiary = new Apiary();
+                apiary = dataSnapshot.getValue(Apiary.class);
+                apiaryList.add(apiary);
+                if(apiaryList != null){
+                    Apiary apiary1 = apiaryList.get(0);
+                    apiaryFragment = new ApiaryFragment();
+                    adapter.addFragment(apiaryFragment, "RakivFarm");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+ /**
 /**
         BeeBox beeBox = new BeeBox();
         beeBox.setNoteFieldBox("skskjf");
@@ -113,24 +143,15 @@ public class StartActivity extends AppCompatActivity {
         myRef.child("apiary").child("apiaryId").setValue(apiary);
  **/
 
-        final List<Apiary> apiaryList = new ArrayList<>();
-        Query myPlace = myRef.child("apiary").child("apiaryId");
-        myPlace.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Apiary apiary = new Apiary();
-                apiary = dataSnapshot.getValue(Apiary.class);
-                apiaryList.add(apiary);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
+    }
 
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new ApiaryFragment(), "RakivFarm");
+        adapter.addFragment(new NewBlankFragment(), "ADD NEW");
 
+        viewPager.setAdapter(adapter);
     }
 }
