@@ -64,7 +64,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.firebaseui:firebase-ui-storage:0.6.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    //compile 'com.android.support.constraint:constraint-layout:1.0.2' <------ TODO: (for key) this line is not compile in my case don't know why (Niko)
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.android.gms:play-services-plus:11.0.1'
     testCompile 'junit:junit:4.12'

@@ -53,81 +53,81 @@ public class StartActivity extends AppCompatActivity {
         });
  /**
 /**
-        BeeBox beeBox = new BeeBox();
+        BeeFrame beeBox = new BeeFrame();
         beeBox.setNoteFieldBox("skskjf");
         beeBox.setShapeBox(3);
         beeBox.setTypeBox(1);
 
-        BeeBox beeBox1 = new BeeBox();
+        BeeFrame beeBox1 = new BeeFrame();
         beeBox1.setNoteFieldBox("skskjf");
         beeBox1.setShapeBox(3);
         beeBox1.setTypeBox(1);
 
-        BeeBox beeBox2 = new BeeBox();
+        BeeFrame beeBox2 = new BeeFrame();
         beeBox2.setNoteFieldBox("skskjf");
         beeBox2.setShapeBox(3);
         beeBox2.setTypeBox(1);
-        List<BeeBox> beeBoxes = new ArrayList<>();
-        beeBoxes.add(beeBox);
-        beeBoxes.add(beeBox1);
-        beeBoxes.add(beeBox2);
+        List<BeeFrame> beeFrames = new ArrayList<>();
+        beeFrames.add(beeBox);
+        beeFrames.add(beeBox1);
+        beeFrames.add(beeBox2);
 
 
-        Bike bike = new Bike();
-        bike.setHaveFood(true);
-        bike.setNoteBike("kdjfjsd");
-        bike.setOutput("lsfkdk");
-        bike.setQueen(true);
-        bike.setRiskOfSwaddling(true);
-        bike.setWorm(true);
-        bike.setBeeBoxes(beeBoxes);
+        BeeColony BeeColony = new BeeColony();
+        BeeColony.setHaveFood(true);
+        BeeColony.setNoteBeeColony("kdjfjsd");
+        BeeColony.setOutput("lsfkdk");
+        BeeColony.setQueen(true);
+        BeeColony.setRiskOfSwaddling(true);
+        BeeColony.setWorm(true);
+        BeeColony.setBeeFrames(beeFrames);
 
-        Bike bike1 = new Bike();
-        bike1.setHaveFood(true);
-        bike1.setNoteBike("kdjfjsd");
-        bike1.setOutput("lsfkdk");
-        bike1.setQueen(true);
-        bike1.setRiskOfSwaddling(true);
-        bike1.setWorm(true);
-        bike1.setBeeBoxes(beeBoxes);
+        BeeColony BeeColony1 = new BeeColony();
+        BeeColony1.setHaveFood(true);
+        BeeColony1.setNoteBeeColony("kdjfjsd");
+        BeeColony1.setOutput("lsfkdk");
+        BeeColony1.setQueen(true);
+        BeeColony1.setRiskOfSwaddling(true);
+        BeeColony1.setWorm(true);
+        BeeColony1.setBeeFrames(beeFrames);
 
-        Bike bike2 = new Bike();
-        bike2.setHaveFood(true);
-        bike2.setNoteBike("kdjfjsd");
-        bike2.setOutput("lsfkdk");
-        bike2.setQueen(true);
-        bike2.setRiskOfSwaddling(true);
-        bike2.setWorm(true);
-        bike2.setBeeBoxes(beeBoxes);
+        BeeColony BeeColony2 = new BeeColony();
+        BeeColony2.setHaveFood(true);
+        BeeColony2.setNoteBeeColony("kdjfjsd");
+        BeeColony2.setOutput("lsfkdk");
+        BeeColony2.setQueen(true);
+        BeeColony2.setRiskOfSwaddling(true);
+        BeeColony2.setWorm(true);
+        BeeColony2.setBeeFrames(beeFrames);
 
-        Bike bike3 = new Bike();
-        bike3.setHaveFood(true);
-        bike3.setNoteBike("kdjfjsd");
-        bike3.setOutput("lsfkdk");
-        bike3.setQueen(true);
-        bike3.setRiskOfSwaddling(true);
-        bike3.setWorm(true);
-        bike3.setBeeBoxes(beeBoxes);
+        BeeColony BeeColony3 = new BeeColony();
+        BeeColony3.setHaveFood(true);
+        BeeColony3.setNoteBeeColony("kdjfjsd");
+        BeeColony3.setOutput("lsfkdk");
+        BeeColony3.setQueen(true);
+        BeeColony3.setRiskOfSwaddling(true);
+        BeeColony3.setWorm(true);
+        BeeColony3.setBeeFrames(beeFrames);
 
-        List<Bike> bikeList = new ArrayList<>();
-        bikeList.add(bike);
-        bikeList.add(bike1);
-        bikeList.add(bike2);
-        bikeList.add(bike3);
+        List<BeeColony> BeeColonyList = new ArrayList<>();
+        BeeColonyList.add(BeeColony);
+        BeeColonyList.add(BeeColony1);
+        BeeColonyList.add(BeeColony2);
+        BeeColonyList.add(BeeColony3);
 
         Beehive beehive = new Beehive();
         beehive.setFounded(1209939);
         beehive.setNameBeehive("fkjdsfkdk");
         beehive.setNoteBeehive("dkfsdlkj;k");
         beehive.setTypeBeehive(1);
-        beehive.setBikes(bikeList);
+        beehive.setBeeColonys(BeeColonyList);
 
         Beehive beehive1 = new Beehive();
         beehive1.setFounded(1209934449);
         beehive1.setNameBeehive("fkjdsfkfdfdk");
         beehive1.setNoteBeehive("dkfsdlkfdsfj;k");
         beehive1.setTypeBeehive(2);
-        beehive1.setBikes(bikeList);
+        beehive1.setBeeColonys(BeeColonyList);
 
         List<Beehive> beehiveList = new ArrayList<>();
         beehiveList.add(beehive);
@@ -150,7 +150,7 @@ public class StartActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new ApiaryFragment(), "RakivFarm");
-        adapter.addFragment(new NewBlankFragment(), "ADD NEW");
+        //adapter.addFragment(new NewBlankFragment(), "ADD NEW"); //TODO: this like also is not compile after my changes, Key please look. Thanks.
 
         viewPager.setAdapter(adapter);
     }

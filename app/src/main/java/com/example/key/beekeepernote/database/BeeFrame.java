@@ -6,12 +6,12 @@ import com.google.firebase.database.IgnoreExtraProperties;
  * Created by Key on 28.06.2017.
  */
 @IgnoreExtraProperties
-public class BeeBox {
+public class BeeFrame {
     public int typeBox;
     public int shapeBox;
     public String noteFieldBox;
 
-    public BeeBox() {
+    public BeeFrame() {
     }
 
     public int getTypeBox() {
