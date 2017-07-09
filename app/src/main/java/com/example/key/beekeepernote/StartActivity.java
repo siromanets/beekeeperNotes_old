@@ -57,6 +57,7 @@ public class StartActivity extends AppCompatActivity {
                     apiaryFragment = new ApiaryFragment();
                     adapter.addFragment(apiaryFragment, "RakivFarm");
 
+
                     viewPager.setAdapter(adapter);
                     apiary1 = apiaryList.get(0);
                     if (apiaryFragment != null){
