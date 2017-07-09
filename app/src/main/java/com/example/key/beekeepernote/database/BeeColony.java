@@ -6,16 +6,16 @@ import java.util.List;
  * Created by Key on 28.06.2017.
  */
 
-public class Bike {
+public class BeeColony {
     public boolean queen;
     public boolean worm;
     public boolean riskOfSwaddling;
     public boolean haveFood;
-    public String noteBike;
+    public String noteBeeColony;
     public String output;
-    public List<BeeBox> beeBoxes;
+    public List<BeeFrame> beeFrames;
 
-    public Bike() {
+    public BeeColony() {
     }
 
     public boolean isQueen() {
@@ -50,12 +50,12 @@ public class Bike {
         this.haveFood = haveFood;
     }
 
-    public String getNoteBike() {
-        return noteBike;
+    public String getNoteBeeColony() {
+        return noteBeeColony;
     }
 
-    public void setNoteBike(String noteBike) {
-        this.noteBike = noteBike;
+    public void setNoteBeeColony(String noteBeeColony) {
+        this.noteBeeColony = noteBeeColony;
     }
 
     public String getOutput() {
@@ -66,11 +66,11 @@ public class Bike {
         this.output = output;
     }
 
-    public List<BeeBox> getBeeBoxes() {
-        return beeBoxes;
+    public List<BeeFrame> getBeeFrames() {
+        return beeFrames;
     }
 
-    public void setBeeBoxes(List<BeeBox> beeBoxes) {
-        this.beeBoxes = beeBoxes;
+    public void setBeeFrames(List<BeeFrame> beeFrames) {
+        this.beeFrames = beeFrames;
     }
 }

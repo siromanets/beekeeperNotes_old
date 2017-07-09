@@ -14,7 +14,7 @@ public class Beehive {
     public long founded;
     public String noteBeehive;
     public int typeBeehive;
-    public List<Bike>bikes;
+    public List<BeeColony>beeColonies;
 
     public Beehive() {
     }
@@ -51,11 +51,11 @@ public class Beehive {
         this.typeBeehive = typeBeehive;
     }
 
-    public List<Bike> getBikes() {
-        return bikes;
+    public List<BeeColony> getBeeColonies() {
+        return beeColonies;
     }
 
-    public void setBikes(List<Bike> bikes) {
-        this.bikes = bikes;
+    public void setBeeColonies(List<BeeColony> iBeeColonies) {
+        this.beeColonies = iBeeColonies;
     }
 }
