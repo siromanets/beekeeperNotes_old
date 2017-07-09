@@ -5,6 +5,12 @@
     android:orientation="vertical"
     android:background="#e5e5e5">
 
+    <GridView
+        android:id="@+id/galleryOfBeehive"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="2" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,11 +43,5 @@
             android:textSize="24sp" />
 
     </LinearLayout>
-
-    <GridView
-        android:id="@+id/galleryOfBeehive"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="2" />
 
 </LinearLayout>
