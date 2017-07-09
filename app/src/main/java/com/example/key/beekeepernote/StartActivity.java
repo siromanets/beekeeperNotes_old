@@ -31,17 +31,14 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new NewBlankFragment(), "ADD NEW");
-        viewPager.setAdapter(adapter);
+        setupViewPager(viewPager);
 
-
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -54,11 +51,6 @@ public class StartActivity extends AppCompatActivity {
                 apiary = dataSnapshot.getValue(Apiary.class);
                 apiaryList.add(apiary);
                 if(apiaryList != null){
-                    apiaryFragment = new ApiaryFragment();
-                    adapter.addFragment(apiaryFragment, "RakivFarm");
-
-
-                    viewPager.setAdapter(adapter);
                     apiary1 = apiaryList.get(0);
                     if (apiaryFragment != null){
                         apiaryFragment.setData(apiary1);
@@ -207,5 +199,13 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
+            apiaryFragment = new ApiaryFragment();
+            adapter.addFragment(apiaryFragment, "RakivFarm");
+            adapter.addFragment(new NewBlankFragment(), "ADD NEW");
+            viewPager.setAdapter(adapter);
+
+    }
 }
