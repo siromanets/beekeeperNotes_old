@@ -23,8 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="Enter name apiary"
-            android:inputType="text|textEmailAddress|textPersonName"
-            android:textColor="@android:color/white"
+            android:inputType="textPersonName"
+            android:textColor="@android:color/black"
             android:textColorHint="@android:color/white" />
     </android.support.design.widget.TextInputLayout>
 
@@ -38,8 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="Estimated number beehives"
-            android:inputType="textEmailAddress|number"
-            android:textColor="@android:color/white"
+            android:inputType="number"
+            android:textColor="@android:color/black"
             android:textColorHint="@android:color/white" />
     </android.support.design.widget.TextInputLayout>
 

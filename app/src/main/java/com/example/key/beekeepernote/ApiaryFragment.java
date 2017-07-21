@@ -1,10 +1,14 @@
 package com.example.key.beekeepernote;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 
 import com.example.key.beekeepernote.database.Apiary;
 
@@ -12,8 +16,9 @@ import com.example.key.beekeepernote.database.Apiary;
  *
  */
 public class ApiaryFragment extends android.support.v4.app.Fragment {
-    GridView galleryOfBeehive;
+    RecyclerView recyclerView;
     public Apiary apiary;
+    RecyclerView.LayoutManager mLayoutManager;
 
 
     public ApiaryFragment() {
@@ -25,21 +30,30 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_apiary, container, false);
-        galleryOfBeehive = (GridView) fragmentView.findViewById(R.id.galleryOfBeehive);
-
+        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.recyclerView);
+        mLayoutManager = new LinearLayoutManager(this.getActivity());
+        Log.d("debugMode", "The application stopped after this");
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
+        } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        }
+        RecyclerAdapter dataAdapter = new RecyclerAdapter(apiary.getBeehives());
+        recyclerView.setAdapter(dataAdapter);
         return fragmentView;
 
     }
 
+
     public void setData(Apiary apiary){
         this.apiary = apiary;
-        DataAdapter adapter = new DataAdapter(getContext(), apiary.getBeehives() );
-        galleryOfBeehive.setAdapter(adapter);
+
     }
 
 }
