@@ -18,12 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StartActivity extends AppCompatActivity {
-    public ApiaryFragment apiaryFragment;
-    public  ViewPagerAdapter adapter;
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private Apiary apiary1;
+    private ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +31,13 @@ public class StartActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new NewBlankFragment(), "ADD NEW");
+        viewPager.setAdapter(adapter);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference();
@@ -49,13 +48,10 @@ public class StartActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Apiary apiary = new Apiary();
                 apiary = dataSnapshot.getValue(Apiary.class);
-                apiaryList.add(apiary);
-                if(apiaryList != null){
-                    apiary1 = apiaryList.get(0);
-                    if (apiaryFragment != null){
-                        apiaryFragment.setData(apiary1);
-                    }
-                }
+                ApiaryFragment apiaryFragment = new ApiaryFragment();
+                apiaryFragment.setData(apiary);
+                adapter.addFragment(apiaryFragment, "RakivFarm");
+                viewPager.setAdapter(adapter);
             }
 
             @Override
@@ -199,13 +195,4 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-            apiaryFragment = new ApiaryFragment();
-            adapter.addFragment(apiaryFragment, "RakivFarm");
-            adapter.addFragment(new NewBlankFragment(), "ADD NEW");
-            viewPager.setAdapter(adapter);
-
-    }
 }
