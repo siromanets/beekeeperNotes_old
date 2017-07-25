@@ -47,7 +47,6 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
         RecyclerAdapter dataAdapter = new RecyclerAdapter(apiary.getBeehives());
         recyclerView.setAdapter(dataAdapter);
         return fragmentView;
-
     }
 
 

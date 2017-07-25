@@ -2,6 +2,7 @@ package com.example.key.beekeepernote;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.util.ArraySet;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,13 +17,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class StartActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
-
+    private Set<String> apiaries = new ArraySet<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +52,13 @@ public class StartActivity extends AppCompatActivity {
                 for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
                     Apiary apiary = new Apiary();
                     apiary = postSnapshot.getValue(Apiary.class);
-                    ApiaryFragment apiaryFragment = new ApiaryFragment();
-                    adapter.addFragment(apiaryFragment, apiary.getNameApiary());
-                    apiaryFragment.setData(apiary);
-                    viewPager.setAdapter(adapter);
-
-
+                    if (apiaries.add(apiary.getNameApiary())) {
+                        ApiaryFragment apiaryFragment = new ApiaryFragment();
+                        adapter.addFragment(apiaryFragment, apiary.getNameApiary());
+                        apiaryFragment.setData(apiary);
+                        viewPager.setAdapter(adapter);
+                    }
                 }
-
             }
 
             @Override

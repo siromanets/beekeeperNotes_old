@@ -7,46 +7,10 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_blank_fragment" />
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/nameApiary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Enter name apiary"
-            android:inputType="textPersonName"
-            android:textColor="@android:color/black"
-            android:textColorHint="@android:color/white" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/numberBeehive"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:hint="Estimated number beehives"
-            android:inputType="number"
-            android:textColor="@android:color/black"
-            android:textColorHint="@android:color/white" />
-    </android.support.design.widget.TextInputLayout>
-
     <Button
         android:id="@+id/buttonCreateNewApiary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Create" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="Button" />
 
 </LinearLayout>
