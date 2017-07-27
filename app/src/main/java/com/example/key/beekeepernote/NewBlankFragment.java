@@ -3,19 +3,15 @@ package com.example.key.beekeepernote;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.key.beekeepernote.database.Apiary;
 import com.example.key.beekeepernote.database.BeeColony;
@@ -24,11 +20,9 @@ import com.example.key.beekeepernote.database.Beehive;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 
@@ -41,6 +35,7 @@ public class NewBlankFragment extends Fragment {
     EditText nameApiary;
     EditText numberBeehive;
     String nameApiaryString;
+    AlertDialog alertDialog;
     int numberBeehiveInt = 0;
     public NewBlankFragment() {
         // Required empty public constructor
@@ -62,9 +57,9 @@ public class NewBlankFragment extends Fragment {
         buttonCreateNewApiary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getContext());
-                alertDialog.setTitle("NEW APIARY");
-                alertDialog.setMessage("Please, Enter name and count beehive Apiary");
+                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("NEW APIARY");
+                builder.setMessage("Please, Enter name and count beehive Apiary");
                 LinearLayout linearLayout = new LinearLayout(getContext());
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
                 final TextInputEditText inputName = new TextInputEditText(getContext());
@@ -74,7 +69,7 @@ public class NewBlankFragment extends Fragment {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.MATCH_PARENT);
                 inputName.setLayoutParams(lp1);
-                alertDialog.setView(inputName);
+                builder.setView(inputName);
                 final TextInputEditText inputCount = new TextInputEditText(getContext());
                 inputCount.setHint("Count of beehive");
                 inputCount.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -84,29 +79,37 @@ public class NewBlankFragment extends Fragment {
                 inputCount.setLayoutParams(lp2);
                 linearLayout.addView(inputName);
                 linearLayout.addView(inputCount);
-                alertDialog.setView(linearLayout);
+                builder.setView(linearLayout);
 
-                alertDialog.setPositiveButton("YES",
+                builder.setPositiveButton("YES",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                if (inputName.getText().toString().length() == 0) {
-                                    inputName.setError("Please enter Name");
 
-                                } else if (inputCount.getText().toString().equals("")) {
-                                    inputCount.setError("Please enter count");
-                                } else {
-                                 //   buttonCreateNewApiaryWasClicked(inputName.getText().toString(), Integer.parseInt(inputCount.getText().toString()));
-                                }
                             }
                         });
-                alertDialog.setNegativeButton("NO",
+                builder.setNegativeButton("NO",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
                         });
-
+                alertDialog = builder.create();
                 alertDialog.show();
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (inputName.getText().toString().length() == 0) {
+                            inputName.setError("Please enter Name");
+
+                        } else if (inputCount.getText().toString().equals("")) {
+                            inputCount.setError("Please enter count");
+                        } else {
+                            createNewApiary(inputName.getText().toString(), Integer.parseInt(inputCount.getText().toString()));
+                            alertDialog.dismiss();
+                        }
+                    }
+                });
                 }
             });
 
@@ -115,9 +118,9 @@ public class NewBlankFragment extends Fragment {
 
 
 
-    void buttonCreateNewApiaryWasClicked(String name,int number){ ;
+    void createNewApiary(String name, int number){
         if (!name.equals("")){
-            numberBeehiveInt = Integer.parseInt(numberBeehive.getText().toString());
+            numberBeehiveInt = Integer.parseInt(String.valueOf(number));
 
             BeeFrame beeBox = new BeeFrame();
             beeBox.setNoteFieldBox("skskjf");
