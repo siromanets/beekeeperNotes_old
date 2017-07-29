@@ -1,12 +1,13 @@
 package com.example.key.beekeepernote.database;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Key on 28.06.2017.
  */
 
-public class BeeColony {
+public class BeeColony implements Serializable {
     public boolean queen;
     public boolean worm;
     public boolean riskOfSwaddling;

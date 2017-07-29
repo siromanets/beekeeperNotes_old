@@ -11,6 +11,6 @@
         android:id="@+id/buttonCreateNewApiary"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:text="Button" />
+        android:text="New Apiary" />
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.key.beekeepernote;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +20,7 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
     RecyclerView recyclerView;
     public Apiary apiary;
     RecyclerView.LayoutManager mLayoutManager;
-
+    FloatingActionButton buttonAddNewBeehive;
 
     public ApiaryFragment() {
         // Required empty public constructor
@@ -44,8 +45,9 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
         } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         }
-        RecyclerAdapter dataAdapter = new RecyclerAdapter(apiary.getBeehives());
+        RecyclerAdapter dataAdapter = new RecyclerAdapter(apiary.getBeehives(), apiary.getNameApiary());
         recyclerView.setAdapter(dataAdapter);
+        buttonAddNewBeehive = (FloatingActionButton)fragmentView.findViewById(R.id.buttonAddNewBeehive);
         return fragmentView;
     }
 

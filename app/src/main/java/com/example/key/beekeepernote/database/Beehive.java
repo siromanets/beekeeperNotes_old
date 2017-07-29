@@ -2,6 +2,7 @@ package com.example.key.beekeepernote.database;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
  *
  */
 @IgnoreExtraProperties
-public class Beehive {
+public class Beehive implements Serializable {
     public String nameBeehive;
     public long founded;
     public String noteBeehive;

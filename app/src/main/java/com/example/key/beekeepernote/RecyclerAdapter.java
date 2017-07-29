@@ -1,6 +1,7 @@
 package com.example.key.beekeepernote;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,10 @@ import java.util.List;
  */
 public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
-        private List<Beehive> apiaries;
-
+    public static final String USER_SELECTED_BEEHIVE = "user_selected_beehive" ;
+    public static final String NAME_APIARY = "name_apiary" ;
+    public List<Beehive> apiaries;
+        public String nameApiary;
 
         /**
          * use context to intent Url
@@ -27,8 +30,9 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 
 
 
-        public RecyclerAdapter(List<Beehive> apiaries) {
-            this.apiaries = apiaries;
+        public RecyclerAdapter(List<Beehive> beehiveList, String nameApiary) {
+            this.apiaries = beehiveList;
+            this.nameApiary = nameApiary;
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -41,6 +45,7 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
                 mClickListener = listener;
                 imageBeehive = (ImageView)itemView.findViewById(R.id.imageBeeHive);
                 mApiary = null;
+
                 itemView.setOnClickListener(this);
             }
             @Override
@@ -48,7 +53,7 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
                 mClickListener.onPressed(mApiary);
             }
             public interface ClickListener {
-                void onPressed(Beehive namePlace);
+                void onPressed(Beehive beehive);
             }
         }
 
@@ -60,9 +65,12 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 
             ViewHolder mHolder = new ViewHolder(mView, new ViewHolder.ClickListener() {
                 @Override
-                public void onPressed(Beehive placeName) {
-                    if (placeName != null){
-
+                public void onPressed(Beehive beehive) {
+                    if (beehive != null){
+                        Intent actionActivityIntent = new Intent(context, ActionActivity_.class);
+                        actionActivityIntent.putExtra(USER_SELECTED_BEEHIVE, beehive);
+                        actionActivityIntent.putExtra(NAME_APIARY, nameApiary);
+                        context.startActivity(actionActivityIntent);
                     }
                 }
 

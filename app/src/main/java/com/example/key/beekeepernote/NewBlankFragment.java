@@ -142,38 +142,31 @@ public class NewBlankFragment extends Fragment {
             beeFrames.add(beeBox2);
 
 
-            BeeColony BeeColony = new BeeColony();
-            BeeColony.setHaveFood(true);
-            BeeColony.setNoteBeeColony("kdjfjsd");
-            BeeColony.setOutput("lsfkdk");
-            BeeColony.setQueen(true);
-            BeeColony.setRiskOfSwaddling(true);
-            BeeColony.setWorm(true);
-            BeeColony.setBeeFrames(beeFrames);
+            BeeColony beeColony = new BeeColony();
+            beeColony.setHaveFood(true);
+            beeColony.setNoteBeeColony("kdjfjsd");
+            beeColony.setOutput("lsfkdk");
+            beeColony.setQueen(true);
+            beeColony.setRiskOfSwaddling(true);
+            beeColony.setWorm(true);
+            beeColony.setBeeFrames(beeFrames);
 
             List<BeeColony> BeeColonyList = new ArrayList<>();
-            BeeColonyList.add(BeeColony);
+            BeeColonyList.add(beeColony);
+            BeeColonyList.add(beeColony);
 
 
-            Beehive beehive = new Beehive();
-            beehive.setFounded(1209939);
-            beehive.setNameBeehive("fkjdsfkdk");
-            beehive.setNoteBeehive("dkfsdlkj;k");
-            beehive.setTypeBeehive(1);
-            beehive.setBeeColonies(BeeColonyList);
 
-            Beehive beehive1 = new Beehive();
-            beehive1.setFounded(1209934449);
-            beehive1.setNameBeehive("fkjdsfkfdfdk");
-            beehive1.setNoteBeehive("dkfsdlkfdsfj;k");
-            beehive1.setTypeBeehive(2);
-            beehive1.setBeeColonies(BeeColonyList);
 
             List<Beehive> beehiveList = new ArrayList<>();
-            if (numberBeehiveInt == 0) {
-                beehiveList.add(beehive);
-            }else {
+            if (numberBeehiveInt > 0) {
                 for (int i = 0; i<= numberBeehiveInt;i++){
+                    Beehive beehive = new Beehive();
+                    beehive.setFounded(1209939);
+                    beehive.setNameBeehive(String.valueOf(i));
+                    beehive.setNoteBeehive("dkfsdlkj;k");
+                    beehive.setTypeBeehive(1);
+                    beehive.setBeeColonies(BeeColonyList);
                     beehiveList.add(beehive);
                 }
             }

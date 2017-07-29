@@ -2,11 +2,13 @@ package com.example.key.beekeepernote.database;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
+
 /**
  * Created by Key on 28.06.2017.
  */
 @IgnoreExtraProperties
-public class BeeFrame {
+public class BeeFrame implements Serializable {
     public int typeBox;
     public int shapeBox;
     public String noteFieldBox;

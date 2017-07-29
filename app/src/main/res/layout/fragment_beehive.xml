@@ -1,0 +1,148 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.key.beekeepernote.BeeColonyFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:id="@+id/imageWormsFrame"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="119dp"
+        android:layout_marginStart="119dp"
+        android:layout_marginTop="63dp"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/imageHoneysFrame"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignLeft="@+id/imageWormsFrame"
+        android:layout_alignStart="@+id/imageWormsFrame"
+        android:layout_below="@+id/imageWormsFrame"
+        android:layout_marginTop="46dp"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/imageEmptyFrame"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignLeft="@+id/imageHoneysFrame"
+        android:layout_alignStart="@+id/imageHoneysFrame"
+        android:layout_below="@+id/imageHoneysFrame"
+        android:layout_marginTop="64dp"
+        app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
+
+    <TextView
+        android:id="@+id/countFrameWithWorm"
+        android:layout_width="5dp"
+        android:layout_height="20dp"
+        android:layout_alignLeft="@+id/imageWormsFrame"
+        android:layout_alignStart="@+id/imageWormsFrame"
+        android:layout_alignTop="@+id/imageWormsFrame"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/countFrameWithHoney"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignLeft="@+id/imageHoneysFrame"
+        android:layout_alignStart="@+id/imageHoneysFrame"
+        android:layout_alignTop="@+id/imageHoneysFrame"
+        android:text="1" />
+
+    <TextView
+        android:id="@+id/countEmptyFrame"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignLeft="@+id/imageEmptyFrame"
+        android:layout_alignStart="@+id/imageEmptyFrame"
+        android:layout_alignTop="@+id/imageEmptyFrame"
+        android:text="1" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonPlasForWorms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageWormsFrame"
+        android:layout_marginLeft="27dp"
+        android:layout_marginStart="27dp"
+        android:layout_toEndOf="@+id/imageWormsFrame"
+        android:layout_toRightOf="@+id/imageWormsFrame"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonMinusForWorms"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageHoneysFrame"
+        android:layout_alignEnd="@+id/buttonPlasForWorms"
+        android:layout_alignRight="@+id/buttonPlasForWorms"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonPlasForHoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonMinusForWorms"
+        android:layout_alignStart="@+id/buttonMinusForWorms"
+        android:layout_alignTop="@+id/imageHoneysFrame"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonMinusForHoney"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imageEmptyFrame"
+        android:layout_alignLeft="@+id/buttonPlasForHoney"
+        android:layout_alignStart="@+id/buttonPlasForHoney"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonAddFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonMinusForWorms"
+        android:layout_alignStart="@+id/buttonMinusForWorms"
+        android:layout_alignTop="@+id/imageEmptyFrame"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/buttonDellFrame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageEmptyFrame"
+        android:layout_alignLeft="@+id/buttonAddFrame"
+        android:layout_alignStart="@+id/buttonAddFrame"
+        android:clickable="true"
+        app:fabSize="mini"
+        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+    <TextView
+        android:id="@+id/countOfFrames"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/buttonPlasForWorms"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginRight="44dp"
+        android:text="1" />
+</RelativeLayout>
