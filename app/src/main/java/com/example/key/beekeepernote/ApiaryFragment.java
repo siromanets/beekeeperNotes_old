@@ -58,6 +58,7 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
             public void onClick(View view) {
                 FragmentManager fm = getFragmentManager();
                 NewBeehiveFragment dialogFragment = new NewBeehiveFragment ();
+
                 dialogFragment.show(fm, "Sample Fragment");
                 /**
                 final String[] mChooseBeehivesType = { "DADAN", "UKRAINIAN"};
