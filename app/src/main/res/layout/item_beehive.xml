@@ -12,26 +12,29 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        app:srcCompat="@drawable/common_google_signin_btn_icon_dark_normal" />
-
-    <TextView
-        android:id="@+id/textNameBeehive"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="27dp"
-        android:layout_marginStart="27dp"
-        android:text="TextView" />
+        app:srcCompat="@drawable/ic_beehive_one"/>
 
     <TextView
         android:id="@+id/textNumberBeeColony"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textNameBeehive"
-        android:layout_alignStart="@+id/textNameBeehive"
-        android:layout_below="@+id/textNameBeehive"
-        android:layout_marginTop="28dp"
-        android:text="TextView" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/yellow_round_shape"
+        android:gravity="center"
+        android:text="12"/>
+
+    <TextView
+        android:id="@+id/textCountBeecolony"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/imageBeeHive"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/imageBeeHive"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/blue_rond_shape"
+        android:gravity="center"
+        android:text="1"/>
 </RelativeLayout>

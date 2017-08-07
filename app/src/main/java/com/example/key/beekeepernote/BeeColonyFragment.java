@@ -2,7 +2,6 @@ package com.example.key.beekeepernote;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import com.example.key.beekeepernote.database.BeeColony;
 import com.example.key.beekeepernote.database.BeeFrame;
-import com.example.key.beekeepernote.database.Beehive;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -60,11 +58,11 @@ public class BeeColonyFragment extends Fragment {
         ImageView imageWormsFrame = (ImageView)view.findViewById(R.id.imageWormsFrame);
         ImageView imageHoneysFrame = (ImageView)view.findViewById(R.id.imageHoneysFrame);
         ImageView imageEmptyFrame = (ImageView)view.findViewById(R.id.imageEmptyFrame);
-        FloatingActionButton buttonPlasForWorms = (FloatingActionButton)view
+        FloatingActionButton buttonPlusForWorms = (FloatingActionButton)view
                 .findViewById(R.id.buttonPlasForWorms);
         FloatingActionButton buttonMinusForWorms = (FloatingActionButton)view
                 .findViewById(R.id.buttonMinusForWorms);
-        FloatingActionButton buttonPlasForHoney = (FloatingActionButton)view
+        FloatingActionButton buttonPlusForHoney = (FloatingActionButton)view
                 .findViewById(R.id.buttonPlasForHoney);
         FloatingActionButton buttonMinusForHoney = (FloatingActionButton)view
                 .findViewById(R.id.buttonMinusForHoney);
@@ -89,7 +87,7 @@ public class BeeColonyFragment extends Fragment {
             }
         }
         refreshTextViews();
-        buttonPlasForWorms.setOnClickListener(new View.OnClickListener() {
+        buttonPlusForWorms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (countEmptyFrames != 0){
@@ -116,7 +114,7 @@ public class BeeColonyFragment extends Fragment {
             }
         });
 
-        buttonPlasForHoney.setOnClickListener(new View.OnClickListener() {
+        buttonPlusForHoney.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (countEmptyFrames != 0){

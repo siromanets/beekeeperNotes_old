@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.key.beekeepernote.database.Beehive;
 
@@ -19,7 +20,7 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 
     public static final String USER_SELECTED_BEEHIVE = "user_selected_beehive" ;
     public static final String NAME_APIARY = "name_apiary" ;
-    public List<Beehive> apiaries;
+    private List<Beehive> mBeehiveList;
         public String nameApiary;
 
         /**
@@ -31,26 +32,30 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 
 
         public RecyclerAdapter(List<Beehive> beehiveList, String nameApiary) {
-            this.apiaries = beehiveList;
+            this.mBeehiveList = beehiveList;
             this.nameApiary = nameApiary;
         }
 
         public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
             public ImageView imageBeehive;
-            private  ClickListener mClickListener;
-            public Beehive mApiary;
+            private ClickListener mClickListener;
+            private Beehive mBeehive;
+            private TextView mBeehiveNumber;
+            private TextView mCountBeecolony;
 
             public ViewHolder(View itemView, ClickListener listener) {
                 super(itemView);
                 mClickListener = listener;
                 imageBeehive = (ImageView)itemView.findViewById(R.id.imageBeeHive);
-                mApiary = null;
+                mBeehiveNumber = (TextView)itemView.findViewById(R.id.textNumberBeeColony);
+                mCountBeecolony = (TextView)itemView.findViewById(R.id.textCountBeecolony);
+                mBeehive = null;
 
                 itemView.setOnClickListener(this);
             }
             @Override
             public void onClick(View v) {
-                mClickListener.onPressed(mApiary);
+                mClickListener.onPressed(mBeehive);
             }
             public interface ClickListener {
                 void onPressed(Beehive beehive);
@@ -81,13 +86,22 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 
         @Override
         public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
+            holder.mBeehive = mBeehiveList.get(position);
+            holder.mBeehiveNumber.setText(String.valueOf(holder.mBeehive.getNameBeehive()));
+            holder.mCountBeecolony.setText(String.valueOf(holder.mBeehive.getBeeColonies().size()));
 
-            holder.mApiary = apiaries.get(position);
+            switch (holder.mBeehive.getTypeBeehive()){
+                case 1: holder.imageBeehive.setImageResource(R.drawable.ic_beehive_one);
+                    return;
+                case 2: holder.imageBeehive.setImageResource(R.drawable.ic_beehive_left);
+            }
+
+
         }
 
         @Override
         public int getItemCount() {
-            return apiaries.size();
+            return mBeehiveList.size();
         }
 
 
