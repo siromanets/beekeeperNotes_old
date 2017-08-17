@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.util.ArraySet;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import com.example.key.beekeepernote.database.Apiary;
 import com.example.key.beekeepernote.database.BeeColony;
-import com.example.key.beekeepernote.database.BeeFrame;
 import com.example.key.beekeepernote.database.Beehive;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,18 +30,20 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+import static com.example.key.beekeepernote.ApiaryFragment.DADAN;
 
 @EActivity
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends AppCompatActivity implements Communicator {
     public AlertDialog alertDialog;
     public  DatabaseReference myRef;
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
-    private Set<String> apiaries = new ArraySet<>();
     private int mNumberBeehiveInt = 0;
+    private int startPageNumber = 0;
+
     @ViewById (R.id.buttonAddApiary)
     Button buttonAddApiary;
 
@@ -60,28 +60,55 @@ public class StartActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+              if (tab.getPosition() > 0) {
+                  startPageNumber = tab.getPosition();
+              }
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+               int er = tab.getPosition();
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new NewBlankFragment(), "ADD NEW");
         viewPager.setAdapter(adapter);
 
+
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
-        Query myPlace = myRef.child("apiary");
-        myPlace.addValueEventListener(new ValueEventListener() {
+        Query myApiaries = myRef.child("apiary");
+        myApiaries.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                int d = tabLayout.getTabCount();
+                if (d >= 2 ) {
+                    for (int i = 1; i < d; i++) {
+                        tabLayout.removeTabAt(1);
+                        adapter.mFragmentList.remove(1);
+                        adapter.mFragmentTitleList.remove(1);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     Apiary apiary = new Apiary();
                     apiary = postSnapshot.getValue(Apiary.class);
-                    if (apiaries.add(apiary.getNameApiary())) {
                         ApiaryFragment apiaryFragment = new ApiaryFragment();
                         adapter.addFragment(apiaryFragment, apiary.getNameApiary());
                         apiaryFragment.setData(apiary);
                         viewPager.setAdapter(adapter);
                         addOnLongClickListener();
-                    }
                 }
+                viewPager.setCurrentItem(startPageNumber);
             }
 
             @Override
@@ -90,8 +117,9 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-
     }
+
+
 
     private void addOnLongClickListener() {
         LinearLayout tabStrip = (LinearLayout) tabLayout.getChildAt(0);
@@ -109,14 +137,14 @@ public class StartActivity extends AppCompatActivity {
 
     }
 
-    private void showDeleteDialog(String s, final View v) {
+    private void showDeleteDialog(final String s, final View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("WARNING");
         builder.setMessage("Do you want to delete " + s +" Apiary?" + "All data in this section will be lost forever" );
         builder.setPositiveButton("YES",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteApiary(String.valueOf(tabLayout.getTabAt(v.getId()).getText()), v.getId());
+                        deleteApiary(s, v.getId());
                         dialog.cancel();
                     }
                 });
@@ -130,14 +158,12 @@ public class StartActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void deleteApiary(String d, final int position) {
+    private void deleteApiary(String name, final int position) {
         if (tabLayout.getTabCount() >= 1 && position < tabLayout.getTabCount() && position != 0) {
-            myRef.child("apiary").child(d).removeValue(new DatabaseReference.CompletionListener() {
+            myRef.child("apiary").child(name).removeValue(new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
                     Toast.makeText(StartActivity.this, "Apiary was delete", Toast.LENGTH_SHORT).show();
-                    tabLayout.removeTabAt(position);
-
                 }
             });
         }
@@ -202,51 +228,29 @@ public class StartActivity extends AppCompatActivity {
     void createNewApiary(String name, int number){
         if (!name.equals("")){
             mNumberBeehiveInt = Integer.parseInt(String.valueOf(number));
-
-            BeeFrame beeBox = new BeeFrame();
-            beeBox.setNoteFieldBox("skskjf");
-            beeBox.setShapeBox(3);
-            beeBox.setTypeBox(1);
-
-            BeeFrame beeBox1 = new BeeFrame();
-            beeBox1.setNoteFieldBox("skskjf");
-            beeBox1.setShapeBox(3);
-            beeBox1.setTypeBox(1);
-
-            BeeFrame beeBox2 = new BeeFrame();
-            beeBox2.setNoteFieldBox("skskjf");
-            beeBox2.setShapeBox(3);
-            beeBox2.setTypeBox(1);
-            List<BeeFrame> beeFrames = new ArrayList<>();
-            beeFrames.add(beeBox);
-            beeFrames.add(beeBox1);
-            beeFrames.add(beeBox2);
-
-
             BeeColony beeColony = new BeeColony();
             beeColony.setHaveFood(true);
-            beeColony.setNoteBeeColony("kdjfjsd");
-            beeColony.setOutput("lsfkdk");
+            beeColony.setNoteBeeColony("ffd");
+            beeColony.setOutput("ff");
             beeColony.setQueen(true);
-            beeColony.setRiskOfSwaddling(true);
+            beeColony.setRiskOfSwaddling(false);
             beeColony.setWorm(true);
-            beeColony.setBeeFrames(beeFrames);
+            beeColony.setBeeEmptyFrame(5);
+            beeColony.setBeeHoneyFrame(0);
+            beeColony.setBeeWormsFrame(0);
+
 
             List<BeeColony> BeeColonyList = new ArrayList<>();
             BeeColonyList.add(beeColony);
             BeeColonyList.add(beeColony);
-
-
-
-
             List<Beehive> beehiveList = new ArrayList<>();
             if (mNumberBeehiveInt > 0) {
                 for (int i = 1; i<= mNumberBeehiveInt; i++){
                     Beehive beehive = new Beehive();
                     beehive.setFounded(1209939);
-                    beehive.setNameBeehive(String.valueOf(i));
+                    beehive.setNumberBeehive(i);
                     beehive.setNoteBeehive("dkfsdlkj;k");
-                    beehive.setTypeBeehive(1);
+                    beehive.setTypeBeehive(DADAN);
                     beehive.setBeeColonies(BeeColonyList);
                     beehiveList.add(beehive);
                 }
@@ -259,12 +263,35 @@ public class StartActivity extends AppCompatActivity {
             apiary.setNoteApiary("kdslfsdlk");
             apiary.setBeehives(beehiveList);
 
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference();
             myRef.child("apiary").child(name).setValue(apiary);
 
 
         }
     }
 
+
+    @Override
+    public void saveBeehive(Beehive beehive, String nameApiary) {
+        myRef.child("apiary").child(nameApiary).child("beehives").child(String.valueOf(beehive.getNumberBeehive() - 1)).setValue(beehive);
+
+    }
+
+    @Override
+    public void saveColony(BeeColony beeColony, String nameApiary, int nameBeehive) {
+        myRef.child("apiary").child(nameApiary).child("beehives").child(String.valueOf(nameBeehive))
+                .child("beeColonies").child(beeColony.getNoteBeeColony()).setValue(beeColony);
+
+    }
+
+    @Override
+    public void deleteBeehive(Beehive beehive, String nameApiary) {
+        myRef.child("apiary").child(nameApiary).child("beehives")
+                .child(String.valueOf(beehive.getNumberBeehive() - 1))
+                .removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                Toast.makeText(StartActivity.this, "Beehive was delete", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

@@ -11,7 +11,15 @@ import java.util.List;
  */
 @IgnoreExtraProperties
 public class Beehive implements Serializable {
-    public String nameBeehive;
+    public int getNumberBeehive() {
+        return numberBeehive;
+    }
+
+    public void setNumberBeehive(int numberBeehive) {
+        this.numberBeehive = numberBeehive;
+    }
+
+    public int numberBeehive;
     public long founded;
     public String noteBeehive;
     public int typeBeehive;
@@ -20,13 +28,6 @@ public class Beehive implements Serializable {
     public Beehive() {
     }
 
-    public String getNameBeehive() {
-        return nameBeehive;
-    }
-
-    public void setNameBeehive(String nameBeehive) {
-        this.nameBeehive = nameBeehive;
-    }
 
     public long getFounded() {
         return founded;

@@ -2,6 +2,8 @@ package com.example.key.beekeepernote;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
     public static final String USER_SELECTED_BEEHIVE = "user_selected_beehive" ;
     public static final String NAME_APIARY = "name_apiary" ;
     private List<Beehive> mBeehiveList;
+    private boolean mCheckMarkFew = false;
         public String nameApiary;
 
         /**
@@ -36,12 +39,13 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
             this.nameApiary = nameApiary;
         }
 
-        public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
             public ImageView imageBeehive;
             private ClickListener mClickListener;
             private Beehive mBeehive;
             private TextView mBeehiveNumber;
             private TextView mCountBeecolony;
+
 
             public ViewHolder(View itemView, ClickListener listener) {
                 super(itemView);
@@ -52,13 +56,26 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
                 mBeehive = null;
 
                 itemView.setOnClickListener(this);
+                itemView.setOnLongClickListener(this);
             }
             @Override
             public void onClick(View v) {
                 mClickListener.onPressed(mBeehive);
             }
+
+            @Override
+            public boolean onLongClick(View view) {
+                view.setAlpha((float) 0.5);
+                mClickListener.onLongPressed(mBeehive, view);
+                return true;
+            }
+
+
+
+
             public interface ClickListener {
                 void onPressed(Beehive beehive);
+                void onLongPressed(Beehive beehive, View view);
             }
         }
 
@@ -79,15 +96,27 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
                     }
                 }
 
+                @Override
+                public void onLongPressed(Beehive beehive, View view) {
+                    if (beehive != null && !mCheckMarkFew){
+                        FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
+                        ToolsListFragment dialogFragment = new ToolsListFragment_ ();
+                        dialogFragment.setData(beehive, view, nameApiary);
+                        dialogFragment.show(fm, "Tools Fragment");
+                    }
+                }
+
             });
 
             return mHolder;
         }
 
-        @Override
+
+
+    @Override
         public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
             holder.mBeehive = mBeehiveList.get(position);
-            holder.mBeehiveNumber.setText(String.valueOf(holder.mBeehive.getNameBeehive()));
+            holder.mBeehiveNumber.setText(String.valueOf(holder.mBeehive.getNumberBeehive()));
             holder.mCountBeecolony.setText(String.valueOf(holder.mBeehive.getBeeColonies().size()));
 
             switch (holder.mBeehive.getTypeBeehive()){
@@ -103,7 +132,5 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
         public int getItemCount() {
             return mBeehiveList.size();
         }
-
-
 
     }

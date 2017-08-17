@@ -55,7 +55,7 @@ public class ActionActivity extends AppCompatActivity {
             for (int i = 0; i < beeColonyList.size(); i++){
                 BeeColonyFragment colonyFragment = new BeeColonyFragment();
                 adapter.addFragment(colonyFragment, "colony " + (i + 1));
-                colonyFragment.setData(beeColonyList.get(i), mNameApiary, beehive.getNameBeehive(), String.valueOf(i));
+                colonyFragment.setData(beeColonyList.get(i), mNameApiary, beehive.getNumberBeehive(), String.valueOf(i));
                 viewPager.setAdapter(adapter);
             }
         }

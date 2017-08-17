@@ -1,7 +1,6 @@
 package com.example.key.beekeepernote.database;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by Key on 28.06.2017.
@@ -14,7 +13,10 @@ public class BeeColony implements Serializable {
     public boolean haveFood;
     public String noteBeeColony;
     public String output;
-    public List<BeeFrame> beeFrames;
+    public int beeHoneyFrame;
+    public int beeWormsFrame;
+    public int beeEmptyFrame;
+
 
     public BeeColony() {
     }
@@ -67,11 +69,27 @@ public class BeeColony implements Serializable {
         this.output = output;
     }
 
-    public List<BeeFrame> getBeeFrames() {
-        return beeFrames;
+    public int getBeeHoneyFrame() {
+        return beeHoneyFrame;
     }
 
-    public void setBeeFrames(List<BeeFrame> beeFrames) {
-        this.beeFrames = beeFrames;
+    public void setBeeHoneyFrame(int beeHoneyFrame) {
+        this.beeHoneyFrame = beeHoneyFrame;
+    }
+
+    public int getBeeWormsFrame() {
+        return beeWormsFrame;
+    }
+
+    public void setBeeWormsFrame(int beeWormsFrame) {
+        this.beeWormsFrame = beeWormsFrame;
+    }
+
+    public int getBeeEmptyFrame() {
+        return beeEmptyFrame;
+    }
+
+    public void setBeeEmptyFrame(int beeEmptyFrame) {
+        this.beeEmptyFrame = beeEmptyFrame;
     }
 }

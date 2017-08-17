@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              tools:context="com.example.key.beekeepernote.ToolsListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:id="@+id/buttonMark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mark a few"/>
+
+    <Button
+        android:id="@+id/buttonCopy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Copy"/>
+
+    <Button
+        android:id="@+id/buttonPaste"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Paste"/>
+
+    <Button
+        android:id="@+id/buttonCut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cut"/>
+
+    <Button
+        android:id="@+id/buttonDelete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete"/>
+</LinearLayout>
