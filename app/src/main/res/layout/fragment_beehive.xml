@@ -56,16 +56,18 @@
         android:background="@drawable/yellow_round_shape"
         android:orientation="horizontal"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:paddingRight="10dp"
+        android:id="@+id/linearLayout2">
 
         <TextView
+            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:paddingLeft="20dp"
-            android:text="Рамки на складіі"/>
+            android:text="Рамки на складіі" />
 
         <TextView
             android:layout_width="40dp"
@@ -82,35 +84,35 @@
 
     <ImageView
         android:id="@+id/imageWormsFrame"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignLeft="@+id/imageHoneysFrame"
         android:layout_alignStart="@+id/imageHoneysFrame"
         android:layout_below="@+id/linearLayout"
         android:layout_marginTop="21dp"
-        app:srcCompat="@drawable/ic_honeycomb"/>
+        app:srcCompat="@drawable/ic_honeycomb" />
 
     <ImageView
         android:id="@+id/imageHoneysFrame"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignLeft="@+id/imageEmptyFrame"
-        android:layout_alignStart="@+id/imageEmptyFrame"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="31dp"
+        app:srcCompat="@drawable/ic_honeycomb"
         android:layout_below="@+id/imageWormsFrame"
-        android:layout_marginTop="48dp"
-        app:srcCompat="@drawable/ic_honeycomb"/>
+        android:layout_alignLeft="@+id/imageEmptyFrame"
+        android:layout_alignStart="@+id/imageEmptyFrame" />
 
     <ImageView
         android:id="@+id/imageEmptyFrame"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="30dp"
+        app:srcCompat="@drawable/ic_honeycomb"
         android:layout_below="@+id/imageHoneysFrame"
-        android:layout_marginLeft="26dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="49dp"
-        app:srcCompat="@drawable/ic_honeycomb"/>
+        android:layout_alignLeft="@+id/linearLayout2"
+        android:layout_alignStart="@+id/linearLayout2" />
 
     <TextView
         android:id="@+id/countFrameWithWorm"
