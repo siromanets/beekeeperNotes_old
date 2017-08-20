@@ -11,4 +11,5 @@ public interface Communicator{
     void saveBeehive(Beehive beehive, String nameApiary);
     void saveColony(BeeColony beeColony, String nameApiary, int nameBeehive);
     void deleteBeehive(Beehive beehive, String nameApiary);
+    void pasteBeehive(Beehive pasteBeehive, Beehive positionBeehive, String nameApiary);
 }

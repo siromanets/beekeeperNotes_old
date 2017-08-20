@@ -43,6 +43,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     private ViewPagerAdapter adapter;
     private int mNumberBeehiveInt = 0;
     private int startPageNumber = 0;
+    private boolean pasteSetingsChecker;
 
     @ViewById (R.id.buttonAddApiary)
     Button buttonAddApiary;
@@ -100,8 +101,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                     }
                 }
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Apiary apiary = new Apiary();
-                    apiary = postSnapshot.getValue(Apiary.class);
+                    Apiary apiary = postSnapshot.getValue(Apiary.class);
                         ApiaryFragment apiaryFragment = new ApiaryFragment();
                         adapter.addFragment(apiaryFragment, apiary.getNameApiary());
                         apiaryFragment.setData(apiary);
@@ -284,14 +284,96 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     }
 
     @Override
-    public void deleteBeehive(Beehive beehive, String nameApiary) {
-        myRef.child("apiary").child(nameApiary).child("beehives")
-                .child(String.valueOf(beehive.getNumberBeehive() - 1))
-                .removeValue(new DatabaseReference.CompletionListener() {
+    public void deleteBeehive(final Beehive beehive, final String nameApiary) {
+        Query apiary = myRef.child("apiary").child(nameApiary);
+        apiary.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                Toast.makeText(StartActivity.this, "Beehive was delete", Toast.LENGTH_SHORT).show();
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Apiary apiary = new Apiary();
+                apiary = dataSnapshot.getValue(Apiary.class);
+                apiary.getBeehives().remove(beehive.getNumberBeehive()- 1);
+                for (int i = beehive.getNumberBeehive() - 1; i <  apiary.getBeehives().size(); i++ ){
+                    apiary.getBeehives().get(i).setNumberBeehive(i + 1);
+                }
+                myRef.child("apiary").child(nameApiary).setValue(apiary);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void pasteBeehive( final Beehive positionBeehive, final Beehive pasteBeehive, final String nameApiary) {
+
+        Query apiary = myRef.child("apiary").child(nameApiary);
+        apiary.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                inFrontOrBehind();
+
+                if (pasteSetingsChecker) {
+                    Apiary apiary = dataSnapshot.getValue(Apiary.class);
+                    List<Beehive> changedBeehives = new ArrayList<>();
+                    pasteBeehive.setNumberBeehive(positionBeehive.getNumberBeehive());
+                    changedBeehives.add(pasteBeehive);
+                    apiary.getBeehives().get(positionBeehive.getNumberBeehive() - 1);
+
+                    for (int i = positionBeehive.getNumberBeehive() - 1; i < apiary.getBeehives().size(); i++) {
+                        apiary.getBeehives().get(i).setNumberBeehive(i + 2);
+                        changedBeehives.add(apiary.getBeehives().get(i));
+                        apiary.getBeehives().remove(i);
+                    }
+                    apiary.getBeehives().addAll(changedBeehives);
+                    myRef.child("apiary").child(nameApiary).setValue(apiary);
+                }else{
+                    Apiary apiary = dataSnapshot.getValue(Apiary.class);
+                    List<Beehive> changedBeehives = new ArrayList<>();
+                    pasteBeehive.setNumberBeehive(positionBeehive.getNumberBeehive() + 1);
+                    changedBeehives.add(pasteBeehive);
+                    apiary.getBeehives().get(positionBeehive.getNumberBeehive() - 1);
+
+                    for (int i = positionBeehive.getNumberBeehive(); i < apiary.getBeehives().size(); i++) {
+                        apiary.getBeehives().get(i).setNumberBeehive(i + 2);
+                        changedBeehives.add(apiary.getBeehives().get(i));
+                        apiary.getBeehives().remove(i);
+                    }
+                    apiary.getBeehives().addAll(changedBeehives);
+                    myRef.child("apiary").child(nameApiary).setValue(apiary);
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
     }
+
+    private void inFrontOrBehind() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Paste");
+        builder.setMessage("Where to paste?");
+        builder.setPositiveButton("IN FRONT",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        pasteSetingsChecker = true;
+                        dialog.cancel();
+
+                    }
+                });
+        builder.setNegativeButton("BEHIND",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        pasteSetingsChecker = false;
+                        dialog.cancel();
+                    }
+                });
+        alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+
 }

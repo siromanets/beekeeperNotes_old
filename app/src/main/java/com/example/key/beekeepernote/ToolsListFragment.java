@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.util.ArraySet;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Button;
 
 import com.example.key.beekeepernote.database.Beehive;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -25,6 +27,7 @@ import java.util.Set;
 @EFragment
 public class ToolsListFragment extends DialogFragment {
     Beehive mBeehive;
+    Beehive cutedBeehive = null;
     View mView;
     String mNameApiary;
     Communicator mCommunicator;
@@ -68,6 +71,17 @@ public class ToolsListFragment extends DialogFragment {
         return view;
     }
 
+    @AfterViews
+    void afterViews(){
+        if (cutedBeehive == null){
+            buttonPaste.setClickable(false);
+            buttonPaste.setAlpha((float) 0.5);
+        }else{
+            buttonPaste.setClickable(true);
+            buttonPaste.setAlpha((float) 1);
+        }
+    }
+
     @Override
     public void onDismiss(DialogInterface dialog) {
         if (!cheсkMarkFew){
@@ -94,14 +108,19 @@ public class ToolsListFragment extends DialogFragment {
     @Click(R.id.buttonCut)
     void buttonCutWasClicked(){
         cheсkMarkFew = false;
+        cutedBeehive = mBeehive;
         this.dismiss();
     }
 
     @Click(R.id.buttonPaste)
     void buttonPasteWasClicked(){
         cheсkMarkFew = false;
+        mCommunicator = (Communicator)getActivity();
+        mCommunicator.pasteBeehive(cutedBeehive, mBeehive, mNameApiary);
         this.dismiss();
     }
+
+
 
     @Click(R.id.buttonDelete)
     void buttonDeleteWasClicked(){
