@@ -96,23 +96,23 @@
         android:id="@+id/imageHoneysFrame"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginTop="31dp"
-        app:srcCompat="@drawable/ic_honeycomb"
-        android:layout_below="@+id/imageWormsFrame"
         android:layout_alignLeft="@+id/imageEmptyFrame"
-        android:layout_alignStart="@+id/imageEmptyFrame" />
+        android:layout_alignStart="@+id/imageEmptyFrame"
+        android:layout_below="@+id/imageWormsFrame"
+        android:layout_marginTop="21dp"
+        app:srcCompat="@drawable/ic_honeycomb" />
 
     <ImageView
         android:id="@+id/imageEmptyFrame"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_alignLeft="@+id/linearLayout2"
+        android:layout_alignStart="@+id/linearLayout2"
+        android:layout_below="@+id/imageHoneysFrame"
         android:layout_marginLeft="14dp"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="30dp"
-        app:srcCompat="@drawable/ic_honeycomb"
-        android:layout_below="@+id/imageHoneysFrame"
-        android:layout_alignLeft="@+id/linearLayout2"
-        android:layout_alignStart="@+id/linearLayout2" />
+        android:layout_marginTop="21dp"
+        app:srcCompat="@drawable/ic_honeycomb" />
 
     <TextView
         android:id="@+id/countFrameWithWorm"
