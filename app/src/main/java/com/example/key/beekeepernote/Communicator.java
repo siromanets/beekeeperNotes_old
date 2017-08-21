@@ -3,6 +3,9 @@ package com.example.key.beekeepernote;
 import com.example.key.beekeepernote.database.BeeColony;
 import com.example.key.beekeepernote.database.Beehive;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * Created by Key on 09.07.2017.
  */
@@ -10,6 +13,6 @@ import com.example.key.beekeepernote.database.Beehive;
 public interface Communicator{
     void saveBeehive(Beehive beehive, String nameApiary);
     void saveColony(BeeColony beeColony, String nameApiary, int nameBeehive);
-    void deleteBeehive(Beehive beehive, String nameApiary);
-    void pasteBeehive(Beehive pasteBeehive, Beehive positionBeehive, String nameApiary);
+    void deleteBeehive(Set<Beehive> deletedBeehives, String nameApiary);
+    void moveBeehive(Set<Beehive> copiedBeehivesSet, Beehive itemBeehive, String fromWhichApiary, String inWhichApiary);
 }

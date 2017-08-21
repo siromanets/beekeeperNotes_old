@@ -226,12 +226,12 @@
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/linearLayout"
-        android:layout_alignRight="@+id/linearLayout"
-        android:layout_alignTop="@+id/buttonPlasForWorms"
-        android:layout_marginEnd="75dp"
-        android:layout_marginRight="75dp"
         android:background="@drawable/blue_rond_shape"
-        app:srcCompat="@mipmap/ic_launcher"/>
+        app:srcCompat="@mipmap/ic_launcher"
+        android:layout_alignTop="@+id/buttonPlasForWorms"
+        android:layout_toRightOf="@+id/buttonPlasForWorms"
+        android:layout_toEndOf="@+id/buttonPlasForWorms"
+        android:layout_marginLeft="33dp"
+        android:layout_marginStart="33dp" />
 
 </RelativeLayout>

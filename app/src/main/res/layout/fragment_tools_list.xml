@@ -1,39 +1,91 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              tools:context="com.example.key.beekeepernote.ToolsListFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayoutForTools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    tools:context="com.example.key.beekeepernote.ToolsListFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:id="@+id/buttonMark"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Mark a few"/>
-
-    <Button
-        android:id="@+id/buttonCopy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Copy"/>
-
-    <Button
-        android:id="@+id/buttonPaste"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Paste"/>
-
-    <Button
-        android:id="@+id/buttonCut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cut"/>
-
-    <Button
+    <LinearLayout
         android:id="@+id/buttonDelete"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Delete"/>
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:animateLayoutChanges="true"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <ImageView
+            android:id="@+id/imageButton3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@android:color/darker_gray"
+            app:srcCompat="@android:drawable/ic_delete" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:gravity="left|center_vertical"
+            android:text="Delete" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonMove"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:animateLayoutChanges="true"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@android:color/darker_gray"
+            app:srcCompat="@android:drawable/ic_menu_set_as" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:gravity="left|center_vertical"
+            android:text="Move" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonMark"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:animateLayoutChanges="true"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@android:color/darker_gray"
+            app:srcCompat="?android:attr/actionModeSelectAllDrawable" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:gravity="left|center_vertical"
+            android:text="select all" />
+    </LinearLayout>
+
 </LinearLayout>

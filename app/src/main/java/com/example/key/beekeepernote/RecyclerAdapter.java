@@ -30,11 +30,10 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
          * use context to intent Url
          */
         public Context context;
+    private ToolsListFragment mDialogFragment = null;
 
 
-
-
-        public RecyclerAdapter(List<Beehive> beehiveList, String nameApiary) {
+    public RecyclerAdapter(List<Beehive> beehiveList, String nameApiary) {
             this.mBeehiveList = beehiveList;
             this.nameApiary = nameApiary;
         }
@@ -60,12 +59,11 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
             }
             @Override
             public void onClick(View v) {
-                mClickListener.onPressed(mBeehive);
+                mClickListener.onPressed(mBeehive, v);
             }
 
             @Override
             public boolean onLongClick(View view) {
-                view.setAlpha((float) 0.5);
                 mClickListener.onLongPressed(mBeehive, view);
                 return true;
             }
@@ -74,7 +72,7 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 
 
             public interface ClickListener {
-                void onPressed(Beehive beehive);
+                void onPressed(Beehive beehive, View view);
                 void onLongPressed(Beehive beehive, View view);
             }
         }
@@ -87,22 +85,35 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 
             ViewHolder mHolder = new ViewHolder(mView, new ViewHolder.ClickListener() {
                 @Override
-                public void onPressed(Beehive beehive) {
-                    if (beehive != null){
-                        Intent actionActivityIntent = new Intent(context, ActionActivity_.class);
-                        actionActivityIntent.putExtra(USER_SELECTED_BEEHIVE, beehive);
-                        actionActivityIntent.putExtra(NAME_APIARY, nameApiary);
-                        context.startActivity(actionActivityIntent);
+                public void onPressed(Beehive beehive, View view) {
+                    if (mDialogFragment == null) {
+                        if (beehive != null) {
+                            Intent actionActivityIntent = new Intent(context, ActionActivity_.class);
+                            actionActivityIntent.putExtra(USER_SELECTED_BEEHIVE, beehive);
+                            actionActivityIntent.putExtra(NAME_APIARY, nameApiary);
+                            context.startActivity(actionActivityIntent);
+                        }
+                    }else {
+                        view.setAlpha((float) 0.5);
+                        mDialogFragment.setData(beehive, view, nameApiary);
                     }
                 }
 
                 @Override
                 public void onLongPressed(Beehive beehive, View view) {
-                    if (beehive != null && !mCheckMarkFew){
-                        FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
-                        ToolsListFragment dialogFragment = new ToolsListFragment_ ();
-                        dialogFragment.setData(beehive, view, nameApiary);
-                        dialogFragment.show(fm, "Tools Fragment");
+                    if (mDialogFragment == null) {
+                        if (beehive != null && !mCheckMarkFew) {
+                            view.setAlpha((float) 0.5);
+                            FragmentManager fm = ((AppCompatActivity) context).getSupportFragmentManager();
+                            mDialogFragment = new ToolsListFragment_();
+                            android.support.v4.app.FragmentTransaction fragmentTransaction = fm
+
+                                    .beginTransaction();
+                            fragmentTransaction.add(R.id.containerForToolsGroup, mDialogFragment);
+                            fragmentTransaction.commit();
+                            mDialogFragment.setData(beehive, view, nameApiary);
+
+                        }
                     }
                 }
 
