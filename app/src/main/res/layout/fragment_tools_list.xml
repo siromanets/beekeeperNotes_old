@@ -9,6 +9,33 @@
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
+        android:id="@+id/questionGroup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/buttonYes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:text="Yes"/>
+
+        <Button
+            android:id="@+id/buttonNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:text="No"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/buttonDelete"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,7 +43,8 @@
         android:animateLayoutChanges="true"
         android:clickable="true"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/imageButton3"
@@ -24,7 +52,7 @@
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:background="@android:color/darker_gray"
-            app:srcCompat="@android:drawable/ic_delete" />
+            app:srcCompat="@android:drawable/ic_delete"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -32,7 +60,36 @@
             android:layout_weight="1"
             android:background="@android:color/darker_gray"
             android:gravity="left|center_vertical"
-            android:text="Delete" />
+            android:text="Delete"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/buttonReplace"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:animateLayoutChanges="true"
+        android:clickable="true"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/imageButton3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@android:color/darker_gray"
+            app:srcCompat="@android:drawable/stat_notify_sync_noanim"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:gravity="left|center_vertical"
+            android:text="Replace"/>
 
     </LinearLayout>
 
@@ -44,14 +101,15 @@
         android:animateLayoutChanges="true"
         android:clickable="true"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:background="@android:color/darker_gray"
-            app:srcCompat="@android:drawable/ic_menu_set_as" />
+            app:srcCompat="@android:drawable/ic_menu_set_as"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -59,7 +117,7 @@
             android:layout_weight="1"
             android:background="@android:color/darker_gray"
             android:gravity="left|center_vertical"
-            android:text="Move" />
+            android:text="Move"/>
     </LinearLayout>
 
     <LinearLayout
@@ -70,14 +128,15 @@
         android:animateLayoutChanges="true"
         android:clickable="true"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:background="@android:color/darker_gray"
-            app:srcCompat="?android:attr/actionModeSelectAllDrawable" />
+            app:srcCompat="?android:attr/actionModeSelectAllDrawable"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -85,7 +144,7 @@
             android:layout_weight="1"
             android:background="@android:color/darker_gray"
             android:gravity="left|center_vertical"
-            android:text="select all" />
+            android:text="select all"/>
     </LinearLayout>
 
 </LinearLayout>

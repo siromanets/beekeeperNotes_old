@@ -1,27 +1,23 @@
 package com.example.key.beekeepernote;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.util.ArraySet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.key.beekeepernote.database.Beehive;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -33,26 +29,38 @@ import java.util.Set;
 public class ToolsListFragment extends DialogFragment {
 
     View mView;
-    String mNameApiary;
+    String mFromApiary;
+    String mInApiary;
     Communicator mCommunicator;
-    boolean cheсkMarkFew = false;
+    boolean noMoreFlag = false;
     Set<Beehive> mBeehiveSet = new ArraySet<>();
+    Beehive mBeehive;
     Set<View> mViewSet = new ArraySet<>();
     boolean moveChecker = false;
-
 
     @ViewById(R.id.buttonMark)
     LinearLayout buttonMark;
 
     @ViewById(R.id.buttonMove)
-    LinearLayout buttonCopy;
+    LinearLayout buttonMove;
 
     @ViewById(R.id.buttonDelete)
     LinearLayout buttonDelete;
 
+    @ViewById(R.id.buttonReplace)
+    LinearLayout buttonReplace;
+
     @ViewById(R.id.linearLayoutForTools)
     LinearLayout linearLayoutForTools;
 
+    @ViewById(R.id.questionGroup)
+    LinearLayout questionGroup;
+
+    @ViewById(R.id.buttonYes)
+    Button buttonYes;
+
+    @ViewById(R.id.buttonNo)
+    Button buttonNo;
 
     public ToolsListFragment() {
         // Required empty public constructor
@@ -77,8 +85,11 @@ public class ToolsListFragment extends DialogFragment {
 
     @Override
     public void onDismiss(DialogInterface dialog) {
-        if (!cheсkMarkFew){
-            mView.setAlpha((float) 1);
+        if (!mViewSet.isEmpty()){
+            List<View> views = (List<View>) mViewSet;
+            for (int i = 0; i < mViewSet.size(); i++){
+                views.get(i).setBackgroundResource(0);
+            }
         }
         super.onDismiss(dialog);
 
@@ -86,10 +97,26 @@ public class ToolsListFragment extends DialogFragment {
 
     @Click(R.id.buttonMark)
     void buttonMarkWasClicked(){
-        cheсkMarkFew = true;
-        mViewSet.add(mView);
+        mCommunicator = (Communicator)getActivity();
+        mCommunicator.selectAll();
     }
 
+    @Click(R.id.buttonReplace)
+    void buttonReplaceWasClicked(){
+        buttonDelete.setAlpha((float) 0.5);
+        buttonDelete.setClickable(false);
+        buttonMark.setAlpha((float) 0.5);
+        buttonMark.setClickable(false);
+        buttonMove.setAlpha((float) 0.5);
+        buttonMove.setClickable(false);
+        moveChecker = true;
+        Toast.makeText(getContext(),
+                "Будь ласка виберіть вулик для заміни "
+                ,Toast.LENGTH_SHORT).show();
+        mCommunicator = (Communicator)getActivity();
+        mCommunicator.multiSelectMod();
+
+    }
 
     @Click(R.id.buttonMove)
     void buttonMoveWasClicked(){
@@ -101,31 +128,78 @@ public class ToolsListFragment extends DialogFragment {
         Toast.makeText(getContext(),
                 "Будь ласка виберіть вулик біля якого ви хочете розмістити ці вулики "
                 ,Toast.LENGTH_SHORT).show();
-        cheсkMarkFew = false;
+        mCommunicator = (Communicator)getActivity();
+        mCommunicator.multiSelectMod();
     }
 
     @Click(R.id.buttonDelete)
     void buttonDeleteWasClicked(View view){
         mCommunicator = (Communicator)getActivity();
-        mCommunicator.deleteBeehive(mBeehiveSet, mNameApiary);
+        mCommunicator.deleteBeehive(mBeehiveSet, mFromApiary, true);
         this.dismiss();
     }
 
+    @Click(R.id.buttonNo)
+    void buttonNoWasClicked(){
+        this.dismiss();
+    }
 
-    void setData(Beehive beehive,View view, String nameApiary) {
-        if (moveChecker) {
-            mCommunicator = (Communicator) getActivity();
-            mCommunicator.deleteBeehive(mBeehiveSet, mNameApiary);
-            mCommunicator.moveBeehive(mBeehiveSet, beehive, mNameApiary, nameApiary);
-            this.dismiss();
-        } else {
-            mBeehiveSet.add(beehive);
-            this.mNameApiary = nameApiary;
-            this.mView = view;
-            if (!mViewSet.add(view)) {
-                mViewSet.remove(view);
-                mView.setAlpha((float) 1);
+    @Click(R.id.buttonYes)
+    void buttonYesWasClicked(){
+        mCommunicator = (Communicator) getActivity();
+        mCommunicator.moveBeehive(mBeehiveSet, mBeehive, mFromApiary, mInApiary);
+        this.dismiss();
+    }
+
+    void setData(Beehive beehive, View view, String nameApiary) {
+        if (!noMoreFlag) {
+            if (moveChecker) {
+                questionGroup.setVisibility(View.VISIBLE);
+                buttonToolsGroup(false);
+                mBeehive = beehive;
+                mInApiary = nameApiary;
+                view.setBackgroundResource(R.drawable.yellow_frame);
+                noMoreFlag = true;
+            } else {
+                mBeehiveSet.add(beehive);
+                view.setBackgroundResource(R.drawable.green_frame);
+                this.mFromApiary = nameApiary;
+                this.mView = view;
+                if (!mViewSet.add(view)) {
+                    mViewSet.remove(view);
+                    mView.setBackgroundResource(0);
+                    mBeehiveSet.remove(beehive);
+                }
+                if (mBeehiveSet.size() > 1) {
+                    buttonReplace.setAlpha((float) 0.5);
+                    buttonReplace.setClickable(false);
+                } else {
+                    if (buttonReplace != null) {
+                        buttonReplace.setAlpha((float) 1);
+                        buttonReplace.setClickable(true);
+                    }
+                }
             }
+        }else if (beehive == mBeehive){
+            view.setBackgroundResource(0);
+            noMoreFlag = false;
+        }
+        else{
+            Toast.makeText(getContext(),"Ви не можете вибрати два вулика",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void buttonToolsGroup(boolean b) {
+        if (b){
+            buttonReplace.setVisibility(View.VISIBLE);
+            buttonDelete.setVisibility(View.VISIBLE);
+            buttonMark.setVisibility(View.VISIBLE);
+            buttonMove.setVisibility(View.VISIBLE);
+        }else {
+            buttonReplace.setVisibility(View.GONE);
+            buttonDelete.setVisibility(View.GONE);
+            buttonMark.setVisibility(View.GONE);
+            buttonMove.setVisibility(View.GONE);
         }
     }
 }

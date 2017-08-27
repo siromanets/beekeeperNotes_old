@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,9 @@ import static com.example.key.beekeepernote.ApiaryFragment.DADAN;
 
 @EActivity
 public class StartActivity extends AppCompatActivity implements Communicator {
+    public static final int MODE_CLEAN_ITEM = 0;
+    public static final int MODE_SELECT_ALL = 3;
+    public static final int MODE_MULTI_SELECT = 2;
     public AlertDialog alertDialog;
     public  DatabaseReference myRef;
     private Toolbar toolbar;
@@ -45,13 +49,13 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     private int mNumberBeehiveInt = 0;
     private int startPageNumber = 0;
     private int pasteSettingsChecker;
-    private Beehive mCopyBeehive = null;
-    private Beehive mCutBeehive = null;
+    private boolean multiSelectMode = false;
 
 
 
     @ViewById (R.id.buttonAddApiary)
     Button buttonAddApiary;
+    private ToolsListFragment mDialogFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +76,21 @@ public class StartActivity extends AppCompatActivity implements Communicator {
               if (tab.getPosition() > 0) {
                   startPageNumber = tab.getPosition();
               }
+              if (mDialogFragment != null && multiSelectMode){
+                  ApiaryFragment fr = (ApiaryFragment) adapter.getItem(tab.getPosition());
+                  fr.selectMode(MODE_MULTI_SELECT);
+              }
+
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-               int er = tab.getPosition();
+                if (mDialogFragment != null && !multiSelectMode){
+                    mDialogFragment.dismiss();
+                    ApiaryFragment fr = (ApiaryFragment) adapter.getItem(tab.getPosition());
+                    fr.selectMode(MODE_CLEAN_ITEM);
+                    mDialogFragment = null;
+                }
             }
 
             @Override
@@ -109,7 +123,8 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                     Apiary apiary = postSnapshot.getValue(Apiary.class);
                         ApiaryFragment apiaryFragment = new ApiaryFragment();
                         adapter.addFragment(apiaryFragment, apiary.getNameApiary());
-                        apiaryFragment.setData(apiary);
+                        int id = adapter.getItemPosition(apiaryFragment);
+                        apiaryFragment.setData(apiary, id);
                         viewPager.setAdapter(adapter);
                         addOnLongClickListener();
                 }
@@ -123,7 +138,6 @@ public class StartActivity extends AppCompatActivity implements Communicator {
         });
 
     }
-
 
 
     private void addOnLongClickListener() {
@@ -164,6 +178,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     }
 
     private void deleteApiary(String name, final int position) {
+        mDialogFragment = null;
         if (tabLayout.getTabCount() >= 1 && position < tabLayout.getTabCount() && position != 0) {
             myRef.child("apiary").child(name).removeValue(new DatabaseReference.CompletionListener() {
                 @Override
@@ -289,7 +304,37 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     }
 
     @Override
-    public void deleteBeehive( Set<Beehive> beehives, final String nameApiary) {
+    public void setDataForTools(Beehive beehive, View view, String nameApiary) {
+        if (mDialogFragment == null) {
+            FragmentManager fm = getSupportFragmentManager();
+            mDialogFragment = new ToolsListFragment_();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = fm
+
+                    .beginTransaction();
+            fragmentTransaction.add(R.id.containerForToolsGroup, mDialogFragment);
+            fragmentTransaction.commit();
+            mDialogFragment.setData(beehive, view, nameApiary);
+        }else {
+            mDialogFragment.setData(beehive, view, nameApiary);
+        }
+
+    }
+
+    @Override
+    public void selectAll() {
+        ApiaryFragment fr = (ApiaryFragment) adapter.getItem(tabLayout.getSelectedTabPosition());
+        fr.selectMode(MODE_SELECT_ALL);
+
+    }
+
+    @Override
+    public void multiSelectMod() {
+        multiSelectMode = true;
+    }
+
+    @Override
+    public void deleteBeehive( Set<Beehive> beehives, final String nameApiary, final boolean refreshBeehivesListItem) {
+        mDialogFragment = null;
        final List<Beehive> deletedBeehives = new ArrayList<Beehive>() {};
         deletedBeehives.addAll(beehives);
         Query apiary = myRef.child("apiary").child(nameApiary);
@@ -298,26 +343,22 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Apiary apiary = dataSnapshot.getValue(Apiary.class);
                 if (deletedBeehives.size() != 0){
-                    int k = 0;
-                    for (int i = 0; k < apiary.getBeehives().size();i++){
-                        if (deletedBeehives.get(k).getNumberBeehive() == apiary.getBeehives().get(i).getNumberBeehive()){
-                            apiary.getBeehives().remove(i);
-                            k++;
-                            i = 0;
+                    int numberDeletedBeehives = 0;
+                    for (int numberBeehivesInDatabase = 0; numberDeletedBeehives < deletedBeehives.size();numberBeehivesInDatabase++){
+                        if (deletedBeehives.get(numberDeletedBeehives).getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()){
+                            apiary.getBeehives().remove(numberBeehivesInDatabase);
+                            numberDeletedBeehives++;
+                            numberBeehivesInDatabase = 0;
                         }
-
-                        if (i == apiary.getBeehives().size()){
-
-                        }
-                    }
-                    int count = apiary.getBeehives().size();
-                    for (int a = 0; a < count; a++ ){
-                        apiary.getBeehives().get(a).setNumberBeehive(a + 1);
                     }
 
                 }
-
-
+                if (refreshBeehivesListItem){
+                    int finalNumberBeehives = apiary.getBeehives().size();
+                    for (int a = 0; a < finalNumberBeehives; a++ ) {
+                        apiary.getBeehives().get(a).setNumberBeehive(a + 1);
+                    }
+                }
                 myRef.child("apiary").child(nameApiary).setValue(apiary);
 
             }
@@ -334,6 +375,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     @Override
     public void moveBeehive( final Set<Beehive> copiedBeehivesSet, final Beehive itemBeehive, final String fromWhichApiary,
                             final String inWhichApiary) {
+        mDialogFragment = null;
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Paste");
         builder.setMessage("Where to paste?");
@@ -349,8 +391,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
         builder.setNegativeButton("BEHIND",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
-                        pasteSettingsChecker = 2;
+                        pasteSettingsChecker = 0;
                         dialog.cancel();
                         changeData(copiedBeehivesSet, itemBeehive, fromWhichApiary, inWhichApiary);
                     }
@@ -359,7 +400,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        pasteSettingsChecker = 0;
+                        pasteSettingsChecker = 2;
                         dialog.cancel();
                         changeData(copiedBeehivesSet, itemBeehive, fromWhichApiary, inWhichApiary);
                     }
@@ -388,18 +429,17 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                     List<Beehive> changedBeehives = new ArrayList<Beehive>();
                     pastedBeehives.addAll(copiedBeehivesSet);
                     for (int x = 0; x < pastedBeehives.size(); x++){
-                        pastedBeehives.get(x).setNumberBeehive(itemBeehive.getNumberBeehive()  + x);
+                        pastedBeehives.get(x).setNumberBeehive(itemBeehive.getNumberBeehive() + 1 + x);
                     }
-                    apiary.getBeehives().remove(itemBeehive.getNumberBeehive() - 1);
-                    for (int i = itemBeehive.getNumberBeehive(); i < apiary.getBeehives().size(); i++) {
-                        apiary.getBeehives().get(i).setNumberBeehive(i + pastedBeehives.size() + 1);
-                        changedBeehives.add(apiary.getBeehives().get(i));
-                        apiary.getBeehives().remove(i);
+                    int count = apiary.getBeehives().size();
+                    for (int i = itemBeehive.getNumberBeehive(); i < count; i++) {
+                        apiary.getBeehives().get(itemBeehive.getNumberBeehive()).setNumberBeehive(i + 1 + pastedBeehives.size());
+                        changedBeehives.add(apiary.getBeehives().get(itemBeehive.getNumberBeehive()));
+                        apiary.getBeehives().remove(itemBeehive.getNumberBeehive());
                     }
                     apiary.getBeehives().addAll(pastedBeehives);
                     apiary.getBeehives().addAll(changedBeehives);
-                    myRef.child("apiary").child(inWhichApiary).setValue(apiary);
-
+                    myRef.child("apiary").child(fromWhichApiary).setValue(apiary);
                 }else if (pasteSettingsChecker == 1) {
                     Apiary apiary = dataSnapshot.getValue(Apiary.class);
                     List<Beehive> pastedBeehives = new ArrayList<Beehive>();
@@ -417,24 +457,33 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                     apiary.getBeehives().addAll(pastedBeehives);
                     apiary.getBeehives().addAll(changedBeehives);
                     myRef.child("apiary").child(fromWhichApiary).setValue(apiary);
-                }else if (pasteSettingsChecker == 2){
+                }else if (pasteSettingsChecker == 2) {
                     Apiary apiary = dataSnapshot.getValue(Apiary.class);
                     List<Beehive> pastedBeehives = new ArrayList<Beehive>();
-                    List<Beehive> changedBeehives = new ArrayList<Beehive>();
+
                     pastedBeehives.addAll(copiedBeehivesSet);
-                    for (int x = 0; x < pastedBeehives.size(); x++){
-                        pastedBeehives.get(x).setNumberBeehive(itemBeehive.getNumberBeehive() + 1 + x);
+                    if (pastedBeehives.size() != 0) {
+                        int eqwalsBeehivesApiary = apiary.getBeehives().size();
+                        for (int numberBeehivesInDatabase = 0; numberBeehivesInDatabase < eqwalsBeehivesApiary; numberBeehivesInDatabase++) {
+                            if (itemBeehive.getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()) {
+                                apiary.getBeehives().remove(numberBeehivesInDatabase);
+                                for (int x = 0; x < pastedBeehives.size(); x++) {
+                                    apiary.getBeehives().add(itemBeehive.getNumberBeehive() - 1 + x, pastedBeehives.get(x));
+                                }
+                            }
+                            if (pastedBeehives.get(0).getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()) {
+                                apiary.getBeehives().remove(numberBeehivesInDatabase);
+                                apiary.getBeehives().add(pastedBeehives.get(0).getNumberBeehive() -1, itemBeehive);
+                            }
+                        }
                     }
-                    apiary.getBeehives().addAll(pastedBeehives);
-                    for (int i = itemBeehive.getNumberBeehive(); i < apiary.getBeehives().size(); i++) {
-                        apiary.getBeehives().get(i).setNumberBeehive(i + pastedBeehives.size() + 1);
-                        changedBeehives.add(apiary.getBeehives().get(i));
-                        apiary.getBeehives().remove(i);
+                    int finalNumberBeehives = apiary.getBeehives().size();
+                    for (int a = 0; a < finalNumberBeehives; a++ ) {
+                        apiary.getBeehives().get(a).setNumberBeehive(a + 1);
                     }
-                    apiary.getBeehives().addAll(pastedBeehives);
-                    apiary.getBeehives().addAll(changedBeehives);
-                    myRef.child("apiary").child(fromWhichApiary).setValue(apiary);
+                   myRef.child("apiary").child(fromWhichApiary).setValue(apiary);
                 }
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

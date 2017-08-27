@@ -1,9 +1,10 @@
 package com.example.key.beekeepernote;
 
+import android.view.View;
+
 import com.example.key.beekeepernote.database.BeeColony;
 import com.example.key.beekeepernote.database.Beehive;
 
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,6 +14,9 @@ import java.util.Set;
 public interface Communicator{
     void saveBeehive(Beehive beehive, String nameApiary);
     void saveColony(BeeColony beeColony, String nameApiary, int nameBeehive);
-    void deleteBeehive(Set<Beehive> deletedBeehives, String nameApiary);
+	void setDataForTools(Beehive beehive, View view, String nameApiary);
+    void selectAll();
+    void multiSelectMod();
+    void deleteBeehive(Set<Beehive> deletedBeehives, String nameApiary, boolean refreshBeehivesListItem);
     void moveBeehive(Set<Beehive> copiedBeehivesSet, Beehive itemBeehive, String fromWhichApiary, String inWhichApiary);
 }
