@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote;
+package com.example.key.beekeepernote.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.key.beekeepernote.database.BeeColony;
+import com.example.key.beekeepernote.interfaces.Communicator;
+import com.example.key.beekeepernote.R;
+import com.example.key.beekeepernote.models.BeeColony;
 
 
 /**
@@ -161,7 +163,8 @@ public class BeeColonyFragment extends Fragment{
 
     @Override
     public void onPause() {
-        saveData();
+        // Todo need change
+      //  saveData();
         super.onPause();
     }
 

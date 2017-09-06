@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote.database;
+package com.example.key.beekeepernote.models;
 
 import java.io.Serializable;
 

@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote.database;
+package com.example.key.beekeepernote.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 

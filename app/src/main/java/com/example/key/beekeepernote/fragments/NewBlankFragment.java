@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote;
+package com.example.key.beekeepernote.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import com.example.key.beekeepernote.R;
 
 import org.androidannotations.annotations.EFragment;
 

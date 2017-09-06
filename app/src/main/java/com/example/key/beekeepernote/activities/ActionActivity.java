@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote;
+package com.example.key.beekeepernote.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -6,15 +6,18 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.example.key.beekeepernote.database.BeeColony;
-import com.example.key.beekeepernote.database.Beehive;
+import com.example.key.beekeepernote.fragments.BeeColonyFragment;
+import com.example.key.beekeepernote.R;
+import com.example.key.beekeepernote.adapters.ViewPagerAdapter;
+import com.example.key.beekeepernote.models.BeeColony;
+import com.example.key.beekeepernote.models.Beehive;
 
 import org.androidannotations.annotations.EActivity;
 
 import java.util.List;
 
-import static com.example.key.beekeepernote.RecyclerAdapter.NAME_APIARY;
-import static com.example.key.beekeepernote.RecyclerAdapter.USER_SELECTED_BEEHIVE;
+import static com.example.key.beekeepernote.adapters.RecyclerAdapter.NAME_APIARY;
+import static com.example.key.beekeepernote.adapters.RecyclerAdapter.USER_SELECTED_BEEHIVE;
 
 
 @EActivity
@@ -70,5 +73,10 @@ public class ActionActivity extends AppCompatActivity {
         }else {
             tabLayout.getTabAt(0).setIcon(tabIcons[2]);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

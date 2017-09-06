@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote.database;
+package com.example.key.beekeepernote.models;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
@@ -27,7 +27,13 @@ public class Beehive implements Serializable {
 
     public Beehive() {
     }
-
+    public Beehive(Beehive beehive){
+        numberBeehive = beehive.getNumberBeehive();
+        founded = beehive.getFounded();
+        noteBeehive = beehive.getNoteBeehive();
+        typeBeehive = beehive.getTypeBeehive();
+        beeColonies = beehive.getBeeColonies();
+    }
 
     public long getFounded() {
         return founded;

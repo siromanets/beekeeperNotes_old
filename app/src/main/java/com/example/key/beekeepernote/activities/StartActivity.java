@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote;
+package com.example.key.beekeepernote.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -15,9 +15,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.key.beekeepernote.database.Apiary;
-import com.example.key.beekeepernote.database.BeeColony;
-import com.example.key.beekeepernote.database.Beehive;
+import com.example.key.beekeepernote.R;
+import com.example.key.beekeepernote.adapters.ViewPagerAdapter;
+import com.example.key.beekeepernote.fragments.ApiaryFragment;
+import com.example.key.beekeepernote.fragments.NewBlankFragment;
+import com.example.key.beekeepernote.fragments.ToolsListFragment;
+import com.example.key.beekeepernote.fragments.ToolsListFragment_;
+import com.example.key.beekeepernote.interfaces.Communicator;
+import com.example.key.beekeepernote.models.Apiary;
+import com.example.key.beekeepernote.models.BeeColony;
+import com.example.key.beekeepernote.models.Beehive;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import static com.example.key.beekeepernote.ApiaryFragment.DADAN;
+import static com.example.key.beekeepernote.fragments.ApiaryFragment.DADAN;
 
 @EActivity
 public class StartActivity extends AppCompatActivity implements Communicator {
@@ -50,7 +57,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     private int startPageNumber = 0;
     private int pasteSettingsChecker;
     private boolean multiSelectMode = false;
-
+    private DataSnapshot mDataSnapshot;
 
 
     @ViewById (R.id.buttonAddApiary)
@@ -76,21 +83,20 @@ public class StartActivity extends AppCompatActivity implements Communicator {
               if (tab.getPosition() > 0) {
                   startPageNumber = tab.getPosition();
               }
-              if (mDialogFragment != null && multiSelectMode){
-                  ApiaryFragment fr = (ApiaryFragment) adapter.getItem(tab.getPosition());
-                  fr.selectMode(MODE_MULTI_SELECT);
-              }
-
             }
+
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
                 if (mDialogFragment != null && !multiSelectMode){
                     mDialogFragment.dismiss();
-                    ApiaryFragment fr = (ApiaryFragment) adapter.getItem(tab.getPosition());
-                    fr.selectMode(MODE_CLEAN_ITEM);
                     mDialogFragment = null;
+                    multiSelectMode = false;
+                    loadDataSnapshot(mDataSnapshot);
+                    Toast.makeText(StartActivity.this, "Ви не можете вибирати одразу в обох вкладках", Toast.LENGTH_SHORT).show();
+
                 }
+
             }
 
             @Override
@@ -102,33 +108,17 @@ public class StartActivity extends AppCompatActivity implements Communicator {
         adapter.addFragment(new NewBlankFragment(), "ADD NEW");
         viewPager.setAdapter(adapter);
 
-
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         Query myApiaries = myRef.child("apiary");
         myApiaries.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int d = tabLayout.getTabCount();
-                if (d >= 2 ) {
-                    for (int i = 1; i < d; i++) {
-                        tabLayout.removeTabAt(1);
-                        adapter.mFragmentList.remove(1);
-                        adapter.mFragmentTitleList.remove(1);
-                        adapter.notifyDataSetChanged();
-                    }
+                if(dataSnapshot != null) {
+                    mDataSnapshot = dataSnapshot;
+                    loadDataSnapshot(mDataSnapshot);
                 }
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    Apiary apiary = postSnapshot.getValue(Apiary.class);
-                        ApiaryFragment apiaryFragment = new ApiaryFragment();
-                        adapter.addFragment(apiaryFragment, apiary.getNameApiary());
-                        int id = adapter.getItemPosition(apiaryFragment);
-                        apiaryFragment.setData(apiary, id);
-                        viewPager.setAdapter(adapter);
-                        addOnLongClickListener();
-                }
-                viewPager.setCurrentItem(startPageNumber);
+
             }
 
             @Override
@@ -137,6 +127,33 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             }
         });
 
+    }
+
+    private void loadDataSnapshot(DataSnapshot dataSnapshot) {
+        int d = tabLayout.getTabCount();
+        if (d >= 2 ) {
+            for (int i = 1; i < d; i++) {
+                tabLayout.removeTabAt(1);
+                adapter.mFragmentList.remove(1);
+                adapter.mFragmentTitleList.remove(1);
+                adapter.notifyDataSetChanged();
+            }
+        }
+        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+            Apiary apiary = postSnapshot.getValue(Apiary.class);
+            ApiaryFragment apiaryFragment = new ApiaryFragment();
+            adapter.addFragment(apiaryFragment, apiary.getNameApiary());
+            int id = adapter.getItemPosition(apiaryFragment);
+            apiaryFragment.setData(apiary, id);
+            viewPager.setAdapter(adapter);
+            addOnLongClickListener();
+            if (mDialogFragment != null && multiSelectMode) {
+                apiaryFragment.selectMode(MODE_MULTI_SELECT);
+            }
+
+        }
+        viewPager.setCurrentItem(startPageNumber);
+        viewPager.setOffscreenPageLimit(tabLayout.getTabCount() -1);
     }
 
 
@@ -322,6 +339,8 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
     @Override
     public void selectAll() {
+        multiSelectMode = true;
+        loadDataSnapshot(mDataSnapshot);
         ApiaryFragment fr = (ApiaryFragment) adapter.getItem(tabLayout.getSelectedTabPosition());
         fr.selectMode(MODE_SELECT_ALL);
 
@@ -334,7 +353,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
     @Override
     public void deleteBeehive( Set<Beehive> beehives, final String nameApiary, final boolean refreshBeehivesListItem) {
-        mDialogFragment = null;
+
        final List<Beehive> deletedBeehives = new ArrayList<Beehive>() {};
         deletedBeehives.addAll(beehives);
         Query apiary = myRef.child("apiary").child(nameApiary);
@@ -353,14 +372,17 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                     }
 
                 }
-                if (refreshBeehivesListItem){
                     int finalNumberBeehives = apiary.getBeehives().size();
                     for (int a = 0; a < finalNumberBeehives; a++ ) {
                         apiary.getBeehives().get(a).setNumberBeehive(a + 1);
-                    }
+
                 }
                 myRef.child("apiary").child(nameApiary).setValue(apiary);
-
+                if (refreshBeehivesListItem){
+                    multiSelectMode = true;
+                }else{
+                    mDialogFragment = null;
+                }
             }
 
             @Override
@@ -371,126 +393,147 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
     }
 
-
     @Override
-    public void moveBeehive( final Set<Beehive> copiedBeehivesSet, final Beehive itemBeehive, final String fromWhichApiary,
-                            final String inWhichApiary) {
+    public void moveBeehive(final Set<Beehive> moveBeehives, final Beehive itemBeehive,
+                            final String fromWhichApiary, final String inWhichApiary, final boolean inFront) {
+
+            Query apiary = myRef.child("apiary").child(inWhichApiary);
+            apiary.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    Apiary apiaryInWhich = dataSnapshot.getValue(Apiary.class);
+                    List<Beehive> beehives = apiaryInWhich.getBeehives();
+                    List<Beehive> pastedBeehives = new ArrayList<Beehive>();
+                    pastedBeehives.addAll(moveBeehives);
+
+                    if (inFront){
+                        for (int i = 0; i < pastedBeehives.size(); i++) {
+                            beehives.add(itemBeehive.getNumberBeehive() - 1 + i, new Beehive(pastedBeehives.get(i)));
+                        }
+                    }else {
+                        for (int i = 0; i < pastedBeehives.size(); i++) {
+                            beehives.add(itemBeehive.getNumberBeehive() + i, new Beehive(pastedBeehives.get(i)));
+                        }
+                    }
+                    for (int a = 0; a < beehives.size(); a++) {
+                        beehives.get(a).setNumberBeehive(a + 1);
+                    }
+                    apiaryInWhich.setBeehives(beehives);
+                    myRef.child("apiary").child(inWhichApiary).setValue(apiaryInWhich);
+                }
+
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        multiSelectMode = false;
         mDialogFragment = null;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Paste");
-        builder.setMessage("Where to paste?");
-        builder.setPositiveButton("IN FRONT",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        pasteSettingsChecker = 1;
-                        changeData(copiedBeehivesSet, itemBeehive, fromWhichApiary, inWhichApiary);
-                        dialog.cancel();
-
-                    }
-                });
-        builder.setNegativeButton("BEHIND",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        pasteSettingsChecker = 0;
-                        dialog.cancel();
-                        changeData(copiedBeehivesSet, itemBeehive, fromWhichApiary, inWhichApiary);
-                    }
-                });
-        builder.setNeutralButton("Swap places",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        pasteSettingsChecker = 2;
-                        dialog.cancel();
-                        changeData(copiedBeehivesSet, itemBeehive, fromWhichApiary, inWhichApiary);
-                    }
-                });
-        alertDialog = builder.create();
-        alertDialog.show();
-
-
-
     }
 
 
+    @Override
+    public void replaceBeehive(final Set<Beehive> replaceBeehives, final Beehive itemBeehive, final String fromWhichApiary,
+                               final String inWhichApiary) {
+        multiSelectMode = false;
+        if (fromWhichApiary.equals(inWhichApiary)) {
+            Query apiary = myRef.child("apiary").child(inWhichApiary);
+            apiary.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
-    private void changeData(final Set<Beehive> copiedBeehivesSet, final Beehive itemBeehive, final String fromWhichApiary,
-                            final String inWhichApiary) {
-
-
-        Query apiary = myRef.child("apiary").child(inWhichApiary);
-        apiary.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if (pasteSettingsChecker == 0 ){
-                    Apiary apiary = dataSnapshot.getValue(Apiary.class);
-                    List<Beehive> pastedBeehives = new ArrayList<Beehive>();
-                    List<Beehive> changedBeehives = new ArrayList<Beehive>();
-                    pastedBeehives.addAll(copiedBeehivesSet);
-                    for (int x = 0; x < pastedBeehives.size(); x++){
-                        pastedBeehives.get(x).setNumberBeehive(itemBeehive.getNumberBeehive() + 1 + x);
-                    }
-                    int count = apiary.getBeehives().size();
-                    for (int i = itemBeehive.getNumberBeehive(); i < count; i++) {
-                        apiary.getBeehives().get(itemBeehive.getNumberBeehive()).setNumberBeehive(i + 1 + pastedBeehives.size());
-                        changedBeehives.add(apiary.getBeehives().get(itemBeehive.getNumberBeehive()));
-                        apiary.getBeehives().remove(itemBeehive.getNumberBeehive());
-                    }
-                    apiary.getBeehives().addAll(pastedBeehives);
-                    apiary.getBeehives().addAll(changedBeehives);
-                    myRef.child("apiary").child(fromWhichApiary).setValue(apiary);
-                }else if (pasteSettingsChecker == 1) {
-                    Apiary apiary = dataSnapshot.getValue(Apiary.class);
-                    List<Beehive> pastedBeehives = new ArrayList<Beehive>();
-                    List<Beehive> changedBeehives = new ArrayList<Beehive>();
-                    pastedBeehives.addAll(copiedBeehivesSet);
-                    for (int x = 0; x < pastedBeehives.size(); x++){
-                        pastedBeehives.get(x).setNumberBeehive(itemBeehive.getNumberBeehive() + x);
-                    }
-                    int count = apiary.getBeehives().size();
-                    for (int i = itemBeehive.getNumberBeehive() - 1; i < count; i++) {
-                        apiary.getBeehives().get(itemBeehive.getNumberBeehive()-1).setNumberBeehive(i + 1 + pastedBeehives.size());
-                        changedBeehives.add(apiary.getBeehives().get(itemBeehive.getNumberBeehive()-1));
-                        apiary.getBeehives().remove(itemBeehive.getNumberBeehive()-1);
-                    }
-                    apiary.getBeehives().addAll(pastedBeehives);
-                    apiary.getBeehives().addAll(changedBeehives);
-                    myRef.child("apiary").child(fromWhichApiary).setValue(apiary);
-                }else if (pasteSettingsChecker == 2) {
                     Apiary apiary = dataSnapshot.getValue(Apiary.class);
                     List<Beehive> pastedBeehives = new ArrayList<Beehive>();
 
-                    pastedBeehives.addAll(copiedBeehivesSet);
+                    pastedBeehives.addAll(replaceBeehives);
                     if (pastedBeehives.size() != 0) {
                         int eqwalsBeehivesApiary = apiary.getBeehives().size();
                         for (int numberBeehivesInDatabase = 0; numberBeehivesInDatabase < eqwalsBeehivesApiary; numberBeehivesInDatabase++) {
                             if (itemBeehive.getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()) {
                                 apiary.getBeehives().remove(numberBeehivesInDatabase);
                                 for (int x = 0; x < pastedBeehives.size(); x++) {
-                                    apiary.getBeehives().add(itemBeehive.getNumberBeehive() - 1 + x, pastedBeehives.get(x));
+                                    apiary.getBeehives().add(itemBeehive.getNumberBeehive() - 1 + x, new Beehive(pastedBeehives.get(x)));
                                 }
                             }
                             if (pastedBeehives.get(0).getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()) {
                                 apiary.getBeehives().remove(numberBeehivesInDatabase);
-                                apiary.getBeehives().add(pastedBeehives.get(0).getNumberBeehive() -1, itemBeehive);
+                                apiary.getBeehives().add(pastedBeehives.get(0).getNumberBeehive() - 1, new Beehive(itemBeehive));
                             }
                         }
                     }
                     int finalNumberBeehives = apiary.getBeehives().size();
-                    for (int a = 0; a < finalNumberBeehives; a++ ) {
+                    for (int a = 0; a < finalNumberBeehives; a++) {
                         apiary.getBeehives().get(a).setNumberBeehive(a + 1);
                     }
-                   myRef.child("apiary").child(fromWhichApiary).setValue(apiary);
+                    myRef.child("apiary").child(fromWhichApiary).setValue(apiary);
                 }
 
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
 
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        }else{
+            Query apiary = myRef.child("apiary").child(inWhichApiary);
+            apiary.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    Apiary apiaryInWhich = dataSnapshot.getValue(Apiary.class);
+                    List<Beehive> beehives = apiaryInWhich.getBeehives();
+                    List<Beehive> pastedBeehives = new ArrayList<Beehive>();
+                    pastedBeehives.addAll(replaceBeehives);
+
+                    beehives.remove(itemBeehive.getNumberBeehive() - 1);
+                    beehives.add(itemBeehive.getNumberBeehive() -1, new Beehive(pastedBeehives.get(0)));
+                    for (int a = 0; a < beehives.size(); a++) {
+                        beehives.get(a).setNumberBeehive(a + 1);
+                    }
+                    apiaryInWhich.setBeehives(beehives);
+                    myRef.child("apiary").child(inWhichApiary).setValue(apiaryInWhich);
+                }
+
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+            Query apiary1 = myRef.child("apiary").child(fromWhichApiary);
+            apiary1.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    Apiary apiaryFromWhich = dataSnapshot.getValue(Apiary.class);
+                    List<Beehive> beehives = apiaryFromWhich.getBeehives();
+                    List<Beehive> pastedBeehives = new ArrayList<Beehive>();
+                    pastedBeehives.addAll(replaceBeehives);
+                    beehives.remove(pastedBeehives.get(0).getNumberBeehive() - 1);
+                    beehives.add(pastedBeehives.get(0).getNumberBeehive() -1, new Beehive(itemBeehive));
+                    for (int a = 0; a < beehives.size(); a++) {
+                        beehives.get(a).setNumberBeehive(a + 1);
+                    }
+                    apiaryFromWhich.setBeehives(beehives);
+                    myRef.child("apiary").child(fromWhichApiary).setValue(apiaryFromWhich);
+                }
+
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                }
+            });
+        }
+
+        mDialogFragment = null;
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if (mDialogFragment != null){
+            mDialogFragment.dismiss();
+	        mDialogFragment = null;
+            multiSelectMode = false;
+            loadDataSnapshot(mDataSnapshot);
+        }
+    }
 }

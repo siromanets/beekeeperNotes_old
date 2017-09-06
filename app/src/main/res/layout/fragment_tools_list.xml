@@ -4,7 +4,7 @@
     android:id="@+id/linearLayoutForTools"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    tools:context="com.example.key.beekeepernote.ToolsListFragment">
+    tools:context="com.example.key.beekeepernote.fragments.ToolsListFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote;
+package com.example.key.beekeepernote.fragments;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -11,9 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.key.beekeepernote.database.Apiary;
+import com.example.key.beekeepernote.R;
+import com.example.key.beekeepernote.adapters.RecyclerAdapter;
+import com.example.key.beekeepernote.models.Apiary;
 
-import static com.example.key.beekeepernote.StartActivity.MODE_CLEAN_ITEM;
+import static com.example.key.beekeepernote.activities.StartActivity.MODE_CLEAN_ITEM;
 
 /**
  *
@@ -22,12 +24,13 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
     public static final int DADAN = 1;
     public static final int UKRAINIAN = 2 ;
     private int mFragId;
-    public RecyclerView recyclerView;
+    public RecyclerView recyclerView = null;
     public Apiary apiary;
     public FloatingActionButton buttonAddNewBeehive;
     private RecyclerView.LayoutManager mLayoutManager;
     public View fragmentView;
-
+    private int modeType = MODE_CLEAN_ITEM;
+    private RecyclerAdapter dataAdapter;
 
     public ApiaryFragment() {
         // Required empty public constructor
@@ -52,19 +55,19 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
         } else if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
         }
-       createList(MODE_CLEAN_ITEM);
+       createList(modeType);
         return fragmentView;
     }
 
     private void createList(int mode) {
-        RecyclerAdapter dataAdapter = new RecyclerAdapter(apiary.getBeehives(), apiary.getNameApiary(), mode);
+        dataAdapter = new RecyclerAdapter(apiary.getBeehives(), apiary.getNameApiary(), mode);
         recyclerView.setAdapter(dataAdapter);
         buttonAddNewBeehive = (FloatingActionButton)fragmentView.findViewById(R.id.buttonAddNewBeehive);
         buttonAddNewBeehive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FragmentManager fm = getFragmentManager();
-                NewBeehiveFragment dialogFragment = new NewBeehiveFragment_ ();
+                NewBeehiveFragment dialogFragment = new NewBeehiveFragment_();
                 dialogFragment.setData(apiary);
                 dialogFragment.show(fm, "Sample Fragment");
             }
@@ -78,6 +81,12 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
     }
 
     public  void selectMode(int mode){
-        createList(mode);
+
+        if (dataAdapter != null){
+            modeType = mode;
+       dataAdapter.notifyDataSetChanged();
+        }else{
+           modeType = mode;
+        }
     }
 }

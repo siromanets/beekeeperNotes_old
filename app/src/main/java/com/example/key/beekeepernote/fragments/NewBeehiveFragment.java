@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote;
+package com.example.key.beekeepernote.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -11,9 +11,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.key.beekeepernote.database.Apiary;
-import com.example.key.beekeepernote.database.BeeColony;
-import com.example.key.beekeepernote.database.Beehive;
+import com.example.key.beekeepernote.interfaces.Communicator;
+import com.example.key.beekeepernote.R;
+import com.example.key.beekeepernote.models.Apiary;
+import com.example.key.beekeepernote.models.BeeColony;
+import com.example.key.beekeepernote.models.Beehive;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -23,8 +25,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.key.beekeepernote.ApiaryFragment.DADAN;
-import static com.example.key.beekeepernote.ApiaryFragment.UKRAINIAN;
+import static com.example.key.beekeepernote.fragments.ApiaryFragment.DADAN;
+import static com.example.key.beekeepernote.fragments.ApiaryFragment.UKRAINIAN;
 
 @EFragment
 public class NewBeehiveFragment extends DialogFragment {

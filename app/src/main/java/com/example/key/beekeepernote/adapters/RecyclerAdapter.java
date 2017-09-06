@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote;
+package com.example.key.beekeepernote.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,13 +9,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.key.beekeepernote.database.Beehive;
+import com.example.key.beekeepernote.R;
+import com.example.key.beekeepernote.activities.ActionActivity_;
+import com.example.key.beekeepernote.interfaces.Communicator;
+import com.example.key.beekeepernote.models.Beehive;
 
 import java.util.List;
 
-import static com.example.key.beekeepernote.StartActivity.MODE_CLEAN_ITEM;
-import static com.example.key.beekeepernote.StartActivity.MODE_MULTI_SELECT;
-import static com.example.key.beekeepernote.StartActivity.MODE_SELECT_ALL;
+import static com.example.key.beekeepernote.activities.StartActivity.MODE_CLEAN_ITEM;
+import static com.example.key.beekeepernote.activities.StartActivity.MODE_MULTI_SELECT;
+import static com.example.key.beekeepernote.activities.StartActivity.MODE_SELECT_ALL;
 
 /**
  * Created by Key on 09.07.2017.
@@ -30,14 +33,12 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
     public Communicator communicator;
         //use context to intent Url
     public Context context;
-    private ToolsListFragment mDialogFragment = null;
 
 
     public RecyclerAdapter(List<Beehive> beehiveList, String nameApiary, int mode) {
             this.mBeehiveList = beehiveList;
             this.nameApiary = nameApiary;
             this.selectMode = mode;
-
         }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
@@ -121,10 +122,13 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 
     @Override
         public void onBindViewHolder(RecyclerAdapter.ViewHolder holder, int position) {
+
+            holder.mBeehive = mBeehiveList.get(position);
         if (selectMode == MODE_SELECT_ALL){
             holder.itemView.setBackgroundResource(R.drawable.green_frame);
+            communicator = (Communicator)context;
+            communicator.setDataForTools(holder.mBeehive, holder.itemView, nameApiary);
         }
-            holder.mBeehive = mBeehiveList.get(position);
             holder.mBeehiveNumber.setText(String.valueOf(holder.mBeehive.getNumberBeehive()));
             holder.mCountBeecolony.setText(String.valueOf(holder.mBeehive.getBeeColonies().size()));
 

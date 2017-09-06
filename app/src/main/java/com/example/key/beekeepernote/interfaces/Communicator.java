@@ -1,9 +1,9 @@
-package com.example.key.beekeepernote;
+package com.example.key.beekeepernote.interfaces;
 
 import android.view.View;
 
-import com.example.key.beekeepernote.database.BeeColony;
-import com.example.key.beekeepernote.database.Beehive;
+import com.example.key.beekeepernote.models.BeeColony;
+import com.example.key.beekeepernote.models.Beehive;
 
 import java.util.Set;
 
@@ -18,5 +18,6 @@ public interface Communicator{
     void selectAll();
     void multiSelectMod();
     void deleteBeehive(Set<Beehive> deletedBeehives, String nameApiary, boolean refreshBeehivesListItem);
-    void moveBeehive(Set<Beehive> copiedBeehivesSet, Beehive itemBeehive, String fromWhichApiary, String inWhichApiary);
+    void moveBeehive(Set<Beehive> moveBeehives,Beehive itemBeehive , String fromWhichApiary, String inWhichApiary, boolean inFront);
+    void replaceBeehive(Set<Beehive> replaceBeehives, Beehive itemBeehive, String fromWhichApiary, String inWhichApiary);
 }

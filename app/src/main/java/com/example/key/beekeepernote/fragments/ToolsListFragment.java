@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote;
+package com.example.key.beekeepernote.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,7 +11,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.key.beekeepernote.database.Beehive;
+import com.example.key.beekeepernote.interfaces.Communicator;
+import com.example.key.beekeepernote.R;
+import com.example.key.beekeepernote.models.Beehive;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
@@ -28,6 +30,8 @@ import java.util.Set;
 @EFragment
 public class ToolsListFragment extends DialogFragment {
 
+    public static final boolean BEHIND = false;
+    public static final boolean IN_FRONT = true;
     View mView;
     String mFromApiary;
     String mInApiary;
@@ -37,6 +41,7 @@ public class ToolsListFragment extends DialogFragment {
     Beehive mBeehive;
     Set<View> mViewSet = new ArraySet<>();
     boolean moveChecker = false;
+    boolean moveB = false;
 
     @ViewById(R.id.buttonMark)
     LinearLayout buttonMark;
@@ -99,6 +104,7 @@ public class ToolsListFragment extends DialogFragment {
     void buttonMarkWasClicked(){
         mCommunicator = (Communicator)getActivity();
         mCommunicator.selectAll();
+        mBeehiveSet.clear();
     }
 
     @Click(R.id.buttonReplace)
@@ -109,13 +115,12 @@ public class ToolsListFragment extends DialogFragment {
         buttonMark.setClickable(false);
         buttonMove.setAlpha((float) 0.5);
         buttonMove.setClickable(false);
-        moveChecker = true;
         Toast.makeText(getContext(),
                 "Будь ласка виберіть вулик для заміни "
                 ,Toast.LENGTH_SHORT).show();
         mCommunicator = (Communicator)getActivity();
         mCommunicator.multiSelectMod();
-
+        moveChecker = true;
     }
 
     @Click(R.id.buttonMove)
@@ -125,11 +130,12 @@ public class ToolsListFragment extends DialogFragment {
         buttonMark.setAlpha((float) 0.5);
         buttonMark.setClickable(false);
         moveChecker = true;
+        moveB = true;
         Toast.makeText(getContext(),
                 "Будь ласка виберіть вулик біля якого ви хочете розмістити ці вулики "
                 ,Toast.LENGTH_SHORT).show();
         mCommunicator = (Communicator)getActivity();
-        mCommunicator.multiSelectMod();
+        mCommunicator.deleteBeehive(mBeehiveSet, mFromApiary, true );
     }
 
     @Click(R.id.buttonDelete)
@@ -141,17 +147,26 @@ public class ToolsListFragment extends DialogFragment {
 
     @Click(R.id.buttonNo)
     void buttonNoWasClicked(){
+        if(moveB){
+            mCommunicator = (Communicator) getActivity();
+            mCommunicator.moveBeehive(mBeehiveSet, mBeehive, mFromApiary, mInApiary, BEHIND);
+        }
         this.dismiss();
     }
 
     @Click(R.id.buttonYes)
     void buttonYesWasClicked(){
-        mCommunicator = (Communicator) getActivity();
-        mCommunicator.moveBeehive(mBeehiveSet, mBeehive, mFromApiary, mInApiary);
+        if(moveB){
+            mCommunicator = (Communicator) getActivity();
+            mCommunicator.moveBeehive(mBeehiveSet, mBeehive, mFromApiary, mInApiary, IN_FRONT);
+        }else {
+            mCommunicator = (Communicator) getActivity();
+            mCommunicator.replaceBeehive(mBeehiveSet, mBeehive, mFromApiary, mInApiary);
+        }
         this.dismiss();
     }
 
-    void setData(Beehive beehive, View view, String nameApiary) {
+    public void setData(Beehive beehive, View view, String nameApiary) {
         if (!noMoreFlag) {
             if (moveChecker) {
                 questionGroup.setVisibility(View.VISIBLE);
@@ -160,6 +175,12 @@ public class ToolsListFragment extends DialogFragment {
                 mInApiary = nameApiary;
                 view.setBackgroundResource(R.drawable.yellow_frame);
                 noMoreFlag = true;
+                if (moveB){
+                    buttonNo.setText("behind");
+                    buttonYes.setText("in front");
+                }else{
+
+                }
             } else {
                 mBeehiveSet.add(beehive);
                 view.setBackgroundResource(R.drawable.green_frame);

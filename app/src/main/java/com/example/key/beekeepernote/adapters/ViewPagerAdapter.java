@@ -1,4 +1,4 @@
-package com.example.key.beekeepernote;
+package com.example.key.beekeepernote.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
