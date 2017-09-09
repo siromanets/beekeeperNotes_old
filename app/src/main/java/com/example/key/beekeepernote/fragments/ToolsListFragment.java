@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.R;
+import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.models.Beehive;
 
 import org.androidannotations.annotations.Click;
@@ -43,7 +44,7 @@ public class ToolsListFragment extends DialogFragment {
     boolean moveChecker = false;
     boolean moveB = false;
 
-    @ViewById(R.id.buttonMark)
+    @ViewById(R.id.buttonSelectAll)
     LinearLayout buttonMark;
 
     @ViewById(R.id.buttonMove)
@@ -66,6 +67,15 @@ public class ToolsListFragment extends DialogFragment {
 
     @ViewById(R.id.buttonNo)
     Button buttonNo;
+
+    @ViewById(R.id.infoGroup)
+    LinearLayout infoGroup;
+
+    @ViewById(R.id.textMessage)
+    TextView textMessage;
+
+    @ViewById(R.id.toolsButtonGroup)
+    LinearLayout toolsButtonGroup;
 
     public ToolsListFragment() {
         // Required empty public constructor
@@ -100,8 +110,8 @@ public class ToolsListFragment extends DialogFragment {
 
     }
 
-    @Click(R.id.buttonMark)
-    void buttonMarkWasClicked(){
+    @Click(R.id.buttonSelectAll)
+    void buttonSelectAllWasClicked(){
         mCommunicator = (Communicator)getActivity();
         mCommunicator.selectAll();
         mBeehiveSet.clear();
@@ -115,12 +125,17 @@ public class ToolsListFragment extends DialogFragment {
         buttonMark.setClickable(false);
         buttonMove.setAlpha((float) 0.5);
         buttonMove.setClickable(false);
-        Toast.makeText(getContext(),
-                "Будь ласка виберіть вулик для заміни "
-                ,Toast.LENGTH_SHORT).show();
+        showMessage("Будь ласка виберіть вулик для заміни");
         mCommunicator = (Communicator)getActivity();
         mCommunicator.multiSelectMod();
         moveChecker = true;
+    }
+
+    private void showMessage(String s) {
+        toolsButtonGroup.setVisibility(View.GONE);
+        questionGroup.setVisibility(View.GONE);
+        infoGroup.setVisibility(View.VISIBLE);
+        textMessage.setText(s);
     }
 
     @Click(R.id.buttonMove)
@@ -131,9 +146,7 @@ public class ToolsListFragment extends DialogFragment {
         buttonMark.setClickable(false);
         moveChecker = true;
         moveB = true;
-        Toast.makeText(getContext(),
-                "Будь ласка виберіть вулик біля якого ви хочете розмістити ці вулики "
-                ,Toast.LENGTH_SHORT).show();
+        showMessage("виберіть вулик біля якого ви хочете розмістити");
         mCommunicator = (Communicator)getActivity();
         mCommunicator.deleteBeehive(mBeehiveSet, mFromApiary, true );
     }
@@ -170,6 +183,8 @@ public class ToolsListFragment extends DialogFragment {
         if (!noMoreFlag) {
             if (moveChecker) {
                 questionGroup.setVisibility(View.VISIBLE);
+                infoGroup.setVisibility(View.GONE);
+                toolsButtonGroup.setVisibility(View.GONE);
                 buttonToolsGroup(false);
                 mBeehive = beehive;
                 mInApiary = nameApiary;

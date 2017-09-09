@@ -234,4 +234,15 @@
         android:layout_marginLeft="33dp"
         android:layout_marginStart="33dp" />
 
+    <Button
+        android:id="@+id/saveChanges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_below="@+id/buttonAddFrame"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
+        android:text="Save"/>
+
 </RelativeLayout>

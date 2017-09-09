@@ -78,6 +78,7 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
     public void setData(Apiary apiary, int id){
         this.apiary = apiary;
         this.mFragId = id;
+
     }
 
     public  void selectMode(int mode){

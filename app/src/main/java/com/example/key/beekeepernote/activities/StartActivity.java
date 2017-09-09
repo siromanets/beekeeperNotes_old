@@ -2,6 +2,7 @@ package com.example.key.beekeepernote.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.FragmentManager;
@@ -49,7 +50,6 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     public static final int MODE_MULTI_SELECT = 2;
     public AlertDialog alertDialog;
     public  DatabaseReference myRef;
-    private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
@@ -58,11 +58,23 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     private int pasteSettingsChecker;
     private boolean multiSelectMode = false;
     private DataSnapshot mDataSnapshot;
-
+    private ToolsListFragment mDialogFragment = null;
 
     @ViewById (R.id.buttonAddApiary)
     Button buttonAddApiary;
-    private ToolsListFragment mDialogFragment = null;
+
+    @ViewById(R.id.appBarlayout)
+    AppBarLayout appBarLayout;
+
+    @ViewById(R.id.toolbar)
+    Toolbar toolbar;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -315,8 +327,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
     @Override
     public void saveColony(BeeColony beeColony, String nameApiary, int nameBeehive) {
-        myRef.child("apiary").child(nameApiary).child("beehives").child(String.valueOf(nameBeehive))
-                .child("beeColonies").child(beeColony.getNoteBeeColony()).setValue(beeColony);
+
 
     }
 
@@ -530,7 +541,9 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     @Override
     public void onBackPressed() {
         if (mDialogFragment != null){
-            mDialogFragment.dismiss();
+            getSupportFragmentManager()
+                    .beginTransaction().
+                    remove(mDialogFragment).commit();
 	        mDialogFragment = null;
             multiSelectMode = false;
             loadDataSnapshot(mDataSnapshot);
