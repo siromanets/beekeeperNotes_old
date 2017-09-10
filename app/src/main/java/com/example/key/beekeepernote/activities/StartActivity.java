@@ -149,6 +149,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                 adapter.mFragmentList.remove(1);
                 adapter.mFragmentTitleList.remove(1);
                 adapter.notifyDataSetChanged();
+
             }
         }
         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {

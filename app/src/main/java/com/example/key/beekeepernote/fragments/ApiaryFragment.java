@@ -60,18 +60,20 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
     }
 
     private void createList(int mode) {
-        dataAdapter = new RecyclerAdapter(apiary.getBeehives(), apiary.getNameApiary(), mode);
-        recyclerView.setAdapter(dataAdapter);
-        buttonAddNewBeehive = (FloatingActionButton)fragmentView.findViewById(R.id.buttonAddNewBeehive);
-        buttonAddNewBeehive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentManager fm = getFragmentManager();
-                NewBeehiveFragment dialogFragment = new NewBeehiveFragment_();
-                dialogFragment.setData(apiary);
-                dialogFragment.show(fm, "Sample Fragment");
-            }
-        });
+        if (apiary != null) {
+            dataAdapter = new RecyclerAdapter(apiary.getBeehives(), apiary.getNameApiary(), mode);
+            recyclerView.setAdapter(dataAdapter);
+            buttonAddNewBeehive = (FloatingActionButton) fragmentView.findViewById(R.id.buttonAddNewBeehive);
+            buttonAddNewBeehive.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentManager fm = getFragmentManager();
+                    NewBeehiveFragment dialogFragment = new NewBeehiveFragment_();
+                    dialogFragment.setData(apiary);
+                    dialogFragment.show(fm, "Sample Fragment");
+                }
+            });
+        }
     }
 
 

@@ -47,7 +47,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/textMessage"
@@ -66,7 +66,9 @@
                 android:layout_gravity="center"
                 android:layout_weight="4"
                 android:clickable="true"
+                android:gravity="right|center"
                 android:maxLines="1"
+                android:paddingRight="10dp"
                 android:singleLine="true"
                 android:text="cancel"
                 android:textColor="@color/colorAccent"
