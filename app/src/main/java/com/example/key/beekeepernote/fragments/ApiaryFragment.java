@@ -2,6 +2,7 @@ package com.example.key.beekeepernote.fragments;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
@@ -15,6 +16,7 @@ import com.example.key.beekeepernote.R;
 import com.example.key.beekeepernote.adapters.RecyclerAdapter;
 import com.example.key.beekeepernote.models.Apiary;
 
+import static android.R.attr.id;
 import static com.example.key.beekeepernote.activities.StartActivity.MODE_CLEAN_ITEM;
 
 /**
@@ -36,10 +38,8 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
-
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
     }
@@ -77,19 +77,24 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
     }
 
 
-    public void setData(Apiary apiary, int id){
+    public void setData(Apiary apiary, int mode){
         this.apiary = apiary;
         this.mFragId = id;
-
+        if (dataAdapter != null){
+            dataAdapter.setList(apiary.getBeehives(), apiary.getNameApiary(), mode);
+            dataAdapter.notifyDataSetChanged();
+            recyclerView.invalidate();
+        }else if(fragmentView != null){
+            createList(modeType);
+        }
     }
 
     public  void selectMode(int mode){
 
-        if (dataAdapter != null){
-            modeType = mode;
-       dataAdapter.notifyDataSetChanged();
-        }else{
-           modeType = mode;
+        if (dataAdapter != null) {
+            dataAdapter.setList(apiary.getBeehives(), apiary.getNameApiary(), mode);
+            dataAdapter.notifyDataSetChanged();
+
         }
     }
 }

@@ -41,6 +41,12 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
             this.selectMode = mode;
         }
 
+        public void setList(List<Beehive> beehiveList, String nameApiary, int mode){
+            this.mBeehiveList = beehiveList;
+            this.nameApiary = nameApiary;
+            this.selectMode = mode;
+        }
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,View.OnLongClickListener {
             public ImageView imageBeehive;
             private ClickListener mClickListener;

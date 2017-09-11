@@ -1,6 +1,5 @@
 package com.example.key.beekeepernote.fragments;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.util.ArraySet;
@@ -20,6 +19,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -43,6 +43,9 @@ public class ToolsListFragment extends DialogFragment {
     Set<View> mViewSet = new ArraySet<>();
     boolean moveChecker = false;
     boolean moveB = false;
+
+    @ViewById(R.id.textViewSelectAll)
+    TextView textViewSelectAll;
 
     @ViewById(R.id.buttonSelectAll)
     LinearLayout buttonMark;
@@ -76,6 +79,7 @@ public class ToolsListFragment extends DialogFragment {
 
     @ViewById(R.id.toolsButtonGroup)
     LinearLayout toolsButtonGroup;
+    private boolean selectAllChecker = false;
 
     public ToolsListFragment() {
         // Required empty public constructor
@@ -96,25 +100,37 @@ public class ToolsListFragment extends DialogFragment {
      return view;
     }
 
-
-
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        if (!mViewSet.isEmpty()){
-            List<View> views = (List<View>) mViewSet;
-            for (int i = 0; i < mViewSet.size(); i++){
-                views.get(i).setBackgroundResource(0);
-            }
-        }
-        super.onDismiss(dialog);
+    public void onDetach() {
+        clearViewsBackground();
+        super.onDetach();
 
     }
 
+
     @Click(R.id.buttonSelectAll)
     void buttonSelectAllWasClicked(){
-        mCommunicator = (Communicator)getActivity();
-        mCommunicator.selectAll();
-        mBeehiveSet.clear();
+        if (!selectAllChecker){
+            mCommunicator = (Communicator)getActivity();
+            mCommunicator.selectAll();
+            clearViewsBackground();
+            mBeehiveSet.clear();
+            mViewSet.clear();
+            selectAllChecker = true;
+            textViewSelectAll.setText("Unselected All");
+        }else {
+            clearViewsBackground();
+            mBeehiveSet.clear();
+            mViewSet.clear();
+            buttonReplace.setAlpha((float) 0.5);
+            buttonReplace.setClickable(false);
+            buttonDelete.setAlpha((float) 0.5);
+            buttonDelete.setClickable(false);
+            buttonMove.setAlpha((float) 0.5);
+            buttonMove.setClickable(false);
+            textViewSelectAll.setText("Select All");
+            selectAllChecker = false;
+        }
     }
 
     @Click(R.id.buttonReplace)
@@ -149,6 +165,7 @@ public class ToolsListFragment extends DialogFragment {
         showMessage("виберіть вулик біля якого ви хочете розмістити");
         mCommunicator = (Communicator)getActivity();
         mCommunicator.deleteBeehive(mBeehiveSet, mFromApiary, true );
+        clearViewsBackground();
     }
 
     @Click(R.id.buttonDelete)
@@ -160,6 +177,7 @@ public class ToolsListFragment extends DialogFragment {
 
     @Click(R.id.buttonNo)
     void buttonNoWasClicked(){
+        clearViewsBackground();
         if(moveB){
             mCommunicator = (Communicator) getActivity();
             mCommunicator.moveBeehive(mBeehiveSet, mBeehive, mFromApiary, mInApiary, BEHIND);
@@ -169,6 +187,7 @@ public class ToolsListFragment extends DialogFragment {
 
     @Click(R.id.buttonYes)
     void buttonYesWasClicked(){
+        clearViewsBackground();
         if(moveB){
             mCommunicator = (Communicator) getActivity();
             mCommunicator.moveBeehive(mBeehiveSet, mBeehive, mFromApiary, mInApiary, IN_FRONT);
@@ -177,6 +196,15 @@ public class ToolsListFragment extends DialogFragment {
             mCommunicator.replaceBeehive(mBeehiveSet, mBeehive, mFromApiary, mInApiary);
         }
         this.dismiss();
+    }
+
+    private void clearViewsBackground() {
+        mView.setBackgroundResource(0);
+
+        List<View> view = new ArrayList<>(mViewSet);
+        for(int i = 0; i < view.size(); i++){
+            view.get(i).setBackgroundResource(0);
+        }
     }
 
     public void setData(Beehive beehive, View view, String nameApiary) {
@@ -188,6 +216,7 @@ public class ToolsListFragment extends DialogFragment {
                 buttonToolsGroup(false);
                 mBeehive = beehive;
                 mInApiary = nameApiary;
+                mView = view;
                 view.setBackgroundResource(R.drawable.yellow_frame);
                 noMoreFlag = true;
                 if (moveB){
@@ -206,7 +235,14 @@ public class ToolsListFragment extends DialogFragment {
                     mView.setBackgroundResource(0);
                     mBeehiveSet.remove(beehive);
                 }
-                if (mBeehiveSet.size() > 1) {
+                if (mBeehiveSet.size() == 1 && toolsButtonGroup != null) {
+                    buttonReplace.setAlpha((float) 1);
+                    buttonReplace.setClickable(true);
+                    buttonDelete.setAlpha((float) 1);
+                    buttonDelete.setClickable(true);
+                    buttonMove.setAlpha((float) 1);
+                    buttonMove.setClickable(true);
+                }else if (mBeehiveSet.size() > 1) {
                     buttonReplace.setAlpha((float) 0.5);
                     buttonReplace.setClickable(false);
                 } else {

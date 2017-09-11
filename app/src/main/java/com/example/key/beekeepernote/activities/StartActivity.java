@@ -48,6 +48,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     public static final int MODE_CLEAN_ITEM = 0;
     public static final int MODE_SELECT_ALL = 3;
     public static final int MODE_MULTI_SELECT = 2;
+    private static final String STATE_PAGE_NUMBER = "start_page_number";
     public AlertDialog alertDialog;
     public  DatabaseReference myRef;
     private TabLayout tabLayout;
@@ -56,6 +57,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     private int mNumberBeehiveInt = 0;
     private int startPageNumber = 0;
     private int pasteSettingsChecker;
+	private int mSelectMode = 0;
     private boolean multiSelectMode = false;
     private DataSnapshot mDataSnapshot;
     private ToolsListFragment mDialogFragment = null;
@@ -77,8 +79,18 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt(STATE_PAGE_NUMBER, startPageNumber);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            startPageNumber = savedInstanceState.getInt(STATE_PAGE_NUMBER);
+        }
         setContentView(R.layout.activity_start);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -118,8 +130,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
         });
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new NewBlankFragment(), "ADD NEW");
-        viewPager.setAdapter(adapter);
-
+	    adapter.notifyDataSetChanged();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
         Query myApiaries = myRef.child("apiary");
@@ -142,28 +153,32 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     }
 
     private void loadDataSnapshot(DataSnapshot dataSnapshot) {
-        int d = tabLayout.getTabCount();
-        if (d >= 2 ) {
-            for (int i = 1; i < d; i++) {
-                tabLayout.removeTabAt(1);
-                adapter.mFragmentList.remove(1);
-                adapter.mFragmentTitleList.remove(1);
-                adapter.notifyDataSetChanged();
-            }
-        }
+       tabLayout.getTabCount();
+	   int count = 1;
         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
             Apiary apiary = postSnapshot.getValue(Apiary.class);
-            ApiaryFragment apiaryFragment = new ApiaryFragment();
-            adapter.addFragment(apiaryFragment, apiary.getNameApiary());
-            int id = adapter.getItemPosition(apiaryFragment);
-            apiaryFragment.setData(apiary, id);
-            viewPager.setAdapter(adapter);
-            addOnLongClickListener();
-            if (mDialogFragment != null && multiSelectMode) {
-                apiaryFragment.selectMode(MODE_MULTI_SELECT);
-            }
+	       if (count < tabLayout.getTabCount() && tabLayout.getTabCount() > 1 ) {
+
+		      ApiaryFragment apu = (ApiaryFragment)adapter.getItem(count);
+		       apu.setData(apiary,mSelectMode);
+		       adapter.notifyDataSetChanged();
+		       count++;
+
+	       }else {
+		       ApiaryFragment apiaryFragment = new ApiaryFragment();
+		       adapter.addFragment(apiaryFragment, apiary.getNameApiary());
+		       int id = adapter.getItemPosition(apiaryFragment);
+		       apiaryFragment.setData(apiary, mSelectMode);
+		       adapter.notifyDataSetChanged();
+
+	       }
+
+		       addOnLongClickListener();
 
         }
+       if (viewPager.getAdapter() == null) {
+	       viewPager.setAdapter(adapter);
+       }
         viewPager.setCurrentItem(startPageNumber);
         viewPager.setOffscreenPageLimit(tabLayout.getTabCount() -1);
     }
@@ -350,7 +365,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
     @Override
     public void selectAll() {
-        multiSelectMode = true;
+        multiSelectMode = false;
         loadDataSnapshot(mDataSnapshot);
         ApiaryFragment fr = (ApiaryFragment) adapter.getItem(tabLayout.getSelectedTabPosition());
         fr.selectMode(MODE_SELECT_ALL);
@@ -360,6 +375,8 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     @Override
     public void multiSelectMod() {
         multiSelectMode = true;
+	    mSelectMode = 1;
+
     }
 
     @Override
@@ -390,7 +407,8 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                 }
                 myRef.child("apiary").child(nameApiary).setValue(apiary);
                 if (refreshBeehivesListItem){
-                    multiSelectMode = true;
+                    mSelectMode = 1;
+	                multiSelectMode = true;
                 }else{
                     mDialogFragment = null;
                 }
@@ -439,6 +457,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                 public void onCancelled(DatabaseError databaseError) {
                 }
             });
+	    mSelectMode = 0;
         multiSelectMode = false;
         mDialogFragment = null;
     }
@@ -448,6 +467,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     public void replaceBeehive(final Set<Beehive> replaceBeehives, final Beehive itemBeehive, final String fromWhichApiary,
                                final String inWhichApiary) {
         multiSelectMode = false;
+	    mSelectMode = 0;
         if (fromWhichApiary.equals(inWhichApiary)) {
             Query apiary = myRef.child("apiary").child(inWhichApiary);
             apiary.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -549,4 +569,5 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             loadDataSnapshot(mDataSnapshot);
         }
     }
+
 }
