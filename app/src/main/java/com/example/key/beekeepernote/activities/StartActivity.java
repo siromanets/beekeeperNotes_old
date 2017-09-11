@@ -149,7 +149,6 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                 adapter.mFragmentList.remove(1);
                 adapter.mFragmentTitleList.remove(1);
                 adapter.notifyDataSetChanged();
-
             }
         }
         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
@@ -465,18 +464,18 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                             if (itemBeehive.getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()) {
                                 apiary.getBeehives().remove(numberBeehivesInDatabase);
                                 for (int x = 0; x < pastedBeehives.size(); x++) {
-                                    apiary.getBeehives().add(itemBeehive.getNumberBeehive() - 1 + x, new Beehive(pastedBeehives.get(x)));
+	                                Beehive addBeehive = new Beehive(pastedBeehives.get(x));
+	                                addBeehive.setNumberBeehive(itemBeehive.getNumberBeehive());
+                                    apiary.getBeehives().add(itemBeehive.getNumberBeehive() - 1 + x, new Beehive(addBeehive));
                                 }
                             }
                             if (pastedBeehives.get(0).getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()) {
                                 apiary.getBeehives().remove(numberBeehivesInDatabase);
-                                apiary.getBeehives().add(pastedBeehives.get(0).getNumberBeehive() - 1, new Beehive(itemBeehive));
+	                            Beehive addBeehive = new Beehive(itemBeehive);
+	                            addBeehive.setNumberBeehive(pastedBeehives.get(0).getNumberBeehive());
+                                apiary.getBeehives().add(pastedBeehives.get(0).getNumberBeehive() - 1, new Beehive(addBeehive));
                             }
                         }
-                    }
-                    int finalNumberBeehives = apiary.getBeehives().size();
-                    for (int a = 0; a < finalNumberBeehives; a++) {
-                        apiary.getBeehives().get(a).setNumberBeehive(a + 1);
                     }
                     myRef.child("apiary").child(fromWhichApiary).setValue(apiary);
                 }
