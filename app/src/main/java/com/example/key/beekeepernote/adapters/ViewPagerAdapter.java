@@ -3,6 +3,8 @@ package com.example.key.beekeepernote.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,5 +42,21 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
     }
+
+	@Override
+	public int getItemPosition(Object object) {
+		return PagerAdapter.POSITION_NONE;
+	}
+
+	@Override
+	public void destroyItem(ViewGroup container, int position, Object object) {
+		super.destroyItem(container, position, object);
+	}
+
+	public void deleteFragment(int position){
+        mFragmentList.remove(position);
+        mFragmentTitleList.remove(position);
+    }
+
 
 }

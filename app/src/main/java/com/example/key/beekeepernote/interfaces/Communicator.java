@@ -2,7 +2,6 @@ package com.example.key.beekeepernote.interfaces;
 
 import android.view.View;
 
-import com.example.key.beekeepernote.models.BeeColony;
 import com.example.key.beekeepernote.models.Beehive;
 
 import java.util.Set;
@@ -13,7 +12,6 @@ import java.util.Set;
 
 public interface Communicator{
     void saveBeehive(Beehive beehive, String nameApiary);
-    void saveColony(BeeColony beeColony, String nameApiary, int nameBeehive);
 	void setDataForTools(Beehive beehive, View view, String nameApiary);
     void selectAll();
     void multiSelectMod();

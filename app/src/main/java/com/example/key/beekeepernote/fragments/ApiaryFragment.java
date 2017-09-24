@@ -88,6 +88,9 @@ public class ApiaryFragment extends android.support.v4.app.Fragment {
             createList(modeType);
         }
     }
+    public String getName(){
+	   return apiary.getNameApiary();
+    }
 
     public  void selectMode(int mode){
 

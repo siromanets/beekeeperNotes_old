@@ -70,6 +70,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
     @ViewById(R.id.toolbar)
     Toolbar toolbar;
+    private int position;
 
     @Override
     protected void onStart() {
@@ -106,6 +107,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             public void onTabSelected(TabLayout.Tab tab) {
               if (tab.getPosition() > 0) {
                   startPageNumber = tab.getPosition();
+
               }
             }
 
@@ -154,33 +156,47 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
     private void loadDataSnapshot(DataSnapshot dataSnapshot) {
        tabLayout.getTabCount();
-	   int count = 1;
         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
             Apiary apiary = postSnapshot.getValue(Apiary.class);
-	       if (count < tabLayout.getTabCount() && tabLayout.getTabCount() > 1 ) {
-
-		      ApiaryFragment apu = (ApiaryFragment)adapter.getItem(count);
-		       apu.setData(apiary,mSelectMode);
-		       adapter.notifyDataSetChanged();
-		       count++;
-
+	       if ( tabLayout.getTabCount() > 1 ) {
+                if (alreadyExist(apiary.nameApiary)) {
+                    ApiaryFragment apu = (ApiaryFragment) adapter.getItem(position);
+                    apu.setData(apiary, mSelectMode);
+                }else{
+                    ApiaryFragment apiaryFragment = new ApiaryFragment();
+                    adapter.addFragment(apiaryFragment, apiary.getNameApiary());
+                    int id = adapter.getItemPosition(apiaryFragment);
+                    apiaryFragment.setData(apiary, mSelectMode);
+                    adapter.notifyDataSetChanged();
+                }
 	       }else {
 		       ApiaryFragment apiaryFragment = new ApiaryFragment();
 		       adapter.addFragment(apiaryFragment, apiary.getNameApiary());
 		       int id = adapter.getItemPosition(apiaryFragment);
 		       apiaryFragment.setData(apiary, mSelectMode);
-		       adapter.notifyDataSetChanged();
-
+               adapter.notifyDataSetChanged();
 	       }
 
-		       addOnLongClickListener();
-
         }
+
        if (viewPager.getAdapter() == null) {
 	       viewPager.setAdapter(adapter);
        }
+       addOnLongClickListener();
         viewPager.setCurrentItem(startPageNumber);
         viewPager.setOffscreenPageLimit(tabLayout.getTabCount() -1);
+    }
+
+    private boolean alreadyExist(String nameApiary) {
+        boolean isExist = false;
+        for (int i = 1; i < adapter.getCount(); i++){
+            if (nameApiary.equals(adapter.getPageTitle(i).toString())){
+               isExist = true;
+                position = i;
+                break;
+            }
+        }
+        return isExist;
     }
 
 
@@ -192,7 +208,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             tabStrip.getChildAt(i).setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    showDeleteDialog(String.valueOf(tabLayout.getTabAt(v.getId()).getText()), v);
+                    showDeleteDialog(String.valueOf(tabLayout.getTabAt(v.getId()).getText()), v.getId());
                     return true;
                 }
             });
@@ -200,14 +216,14 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
     }
 
-    private void showDeleteDialog(final String s, final View v) {
+    private void showDeleteDialog(final String s, final int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("WARNING");
         builder.setMessage("Do you want to delete " + s +" Apiary?" + "All data in this section will be lost forever" );
         builder.setPositiveButton("YES",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        deleteApiary(s, v.getId());
+                        deleteApiary(s, position);
                         dialog.cancel();
                     }
                 });
@@ -222,14 +238,15 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     }
 
     private void deleteApiary(String name, final int position) {
-        mDialogFragment = null;
         if (tabLayout.getTabCount() >= 1 && position < tabLayout.getTabCount() && position != 0) {
-            myRef.child("apiary").child(name).removeValue(new DatabaseReference.CompletionListener() {
-                @Override
-                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                    Toast.makeText(StartActivity.this, "Apiary was delete", Toast.LENGTH_SHORT).show();
-                }
-            });
+           // tabLayout.removeTabAt(position);
+            adapter.deleteFragment(position);
+            adapter.notifyDataSetChanged();
+            mSelectMode = 1;
+            multiSelectMode = true;
+            myRef.child("apiary").child(name).removeValue();
+
+            Toast.makeText(StartActivity.this, "Apiary was delete", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -340,11 +357,6 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
     }
 
-    @Override
-    public void saveColony(BeeColony beeColony, String nameApiary, int nameBeehive) {
-
-
-    }
 
     @Override
     public void setDataForTools(Beehive beehive, View view, String nameApiary) {
@@ -365,7 +377,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
 
     @Override
     public void selectAll() {
-        multiSelectMode = false;
+        multiSelectMode = true;
         loadDataSnapshot(mDataSnapshot);
         ApiaryFragment fr = (ApiaryFragment) adapter.getItem(tabLayout.getSelectedTabPosition());
         fr.selectMode(MODE_SELECT_ALL);
@@ -389,31 +401,35 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Apiary apiary = dataSnapshot.getValue(Apiary.class);
-                if (deletedBeehives.size() != 0){
-                    int numberDeletedBeehives = 0;
-                    for (int numberBeehivesInDatabase = 0; numberDeletedBeehives < deletedBeehives.size();numberBeehivesInDatabase++){
-                        if (deletedBeehives.get(numberDeletedBeehives).getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()){
-                            apiary.getBeehives().remove(numberBeehivesInDatabase);
-                            numberDeletedBeehives++;
-                            numberBeehivesInDatabase = 0;
-                        }
-                    }
+                if (apiary.getBeehives().size() == deletedBeehives.size()) {
+                    showDeleteDialog(nameApiary, tabLayout.getSelectedTabPosition() );
 
-                }
+                } else {
+                    if (deletedBeehives.size() != 0) {
+                        int numberDeletedBeehives = 0;
+                        for (int numberBeehivesInDatabase = 0; numberDeletedBeehives < deletedBeehives.size(); numberBeehivesInDatabase++) {
+                            if (deletedBeehives.get(numberDeletedBeehives).getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()) {
+                                apiary.getBeehives().remove(numberBeehivesInDatabase);
+                                numberDeletedBeehives++;
+                                numberBeehivesInDatabase = -1;
+                            }
+                        }
+
+                    }
                     int finalNumberBeehives = apiary.getBeehives().size();
-                    for (int a = 0; a < finalNumberBeehives; a++ ) {
+                    for (int a = 0; a < finalNumberBeehives; a++) {
                         apiary.getBeehives().get(a).setNumberBeehive(a + 1);
 
-                }
-                myRef.child("apiary").child(nameApiary).setValue(apiary);
-                if (refreshBeehivesListItem){
-                    mSelectMode = 1;
-	                multiSelectMode = true;
-                }else{
-                    mDialogFragment = null;
+                    }
+                    myRef.child("apiary").child(nameApiary).setValue(apiary);
+                    if (refreshBeehivesListItem) {
+                        mSelectMode = 1;
+                        multiSelectMode = true;
+                    } else {
+                        mDialogFragment = null;
+                    }
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -570,4 +586,16 @@ public class StartActivity extends AppCompatActivity implements Communicator {
         }
     }
 
+    @Override
+    protected void onPause() {
+        if (mDialogFragment != null){
+            getSupportFragmentManager()
+                    .beginTransaction().
+                    remove(mDialogFragment).commit();
+            mDialogFragment = null;
+            multiSelectMode = false;
+            loadDataSnapshot(mDataSnapshot);
+        }
+        super.onPause();
+    }
 }

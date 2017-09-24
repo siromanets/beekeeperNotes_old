@@ -171,7 +171,7 @@ public class ToolsListFragment extends DialogFragment {
     @Click(R.id.buttonDelete)
     void buttonDeleteWasClicked(View view){
         mCommunicator = (Communicator)getActivity();
-        mCommunicator.deleteBeehive(mBeehiveSet, mFromApiary, true);
+        mCommunicator.deleteBeehive(mBeehiveSet, mFromApiary, false);
         this.dismiss();
     }
 
