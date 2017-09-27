@@ -1,5 +1,7 @@
 package com.example.key.beekeepernote.fragments;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -14,6 +16,8 @@ import android.widget.Toast;
 import com.example.key.beekeepernote.R;
 import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.models.BeeColony;
+import com.example.key.beekeepernote.utils.AlarmService;
+import com.example.key.beekeepernote.utils.TimeNotification;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -28,6 +32,7 @@ public class BeeColonyFragment extends Fragment{
     public int nameBeehive;
     public String nameApiary;
     public String nameColony;
+    private Button wasChecked;
     public int quantityWormsFrames = 0;
     public int quantityHoneyFrames = 0;
     public int countFrames = 0;
@@ -39,6 +44,7 @@ public class BeeColonyFragment extends Fragment{
     private Communicator mCommunicator;
     private DatabaseReference myRef;
     private int mNumberCollony;
+    private PendingIntent mAlarmSender;
 
     public BeeColonyFragment() {
         // Required empty public constructor
@@ -56,6 +62,7 @@ public class BeeColonyFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.fragment_beehive, container, false);
+        mAlarmSender = PendingIntent.getBroadcast(getContext(), 0, new Intent(getContext(), TimeNotification.class), 0);
 
         ImageView imageWormsFrame = (ImageView)view.findViewById(R.id.imageWormsFrame);
         ImageView imageHoneysFrame = (ImageView)view.findViewById(R.id.imageHoneysFrame);
@@ -80,6 +87,16 @@ public class BeeColonyFragment extends Fragment{
         quantityWormsFrames = beeColony.getBeeWormsFrame();
         quantityHoneyFrames = beeColony.getBeeHoneyFrame();
         countFrames = quantityEmptyFrames + quantityWormsFrames + quantityHoneyFrames;
+        wasChecked = (Button)view.findViewById(R.id.buttonWasChecked);
+        wasChecked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlarmService alarmService = new AlarmService(getContext());
+                alarmService.startAlarm();
+
+
+            }
+        });
         Button buttonSaveChanges = (Button)view.findViewById(R.id.saveChanges);
         buttonSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +186,7 @@ public class BeeColonyFragment extends Fragment{
             }
         });
         return view;
+
     }
 
 

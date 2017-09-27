@@ -245,4 +245,13 @@
         android:layout_marginRight="17dp"
         android:text="Save"/>
 
+    <Button
+        android:id="@+id/buttonWasChecked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/saveChanges"
+        android:layout_alignRight="@+id/saveChanges"
+        android:layout_below="@+id/buttonMinusForWorms"
+        android:text="checked"/>
+
 </RelativeLayout>

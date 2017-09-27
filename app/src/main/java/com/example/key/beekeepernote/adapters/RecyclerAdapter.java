@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.key.beekeepernote.R;
@@ -14,6 +15,7 @@ import com.example.key.beekeepernote.activities.ActionActivity_;
 import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.models.Beehive;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static com.example.key.beekeepernote.activities.StartActivity.MODE_CLEAN_ITEM;
@@ -53,16 +55,22 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
             private Beehive mBeehive;
             private TextView mBeehiveNumber;
             private TextView mCountBeecolony;
-            private View itemView;
+            private View mItemView;
+            private ProgressBar mCheckedTimeProgress;
+            private ProgressBar mFoodProgress;
 
             public ViewHolder(View itemView, ClickListener listener) {
                 super(itemView);
 
                 mClickListener = listener;
-                this.itemView = itemView;
+                this.mItemView = itemView;
                 imageBeehive = (ImageView)itemView.findViewById(R.id.imageBeeHive);
                 mBeehiveNumber = (TextView)itemView.findViewById(R.id.textNumberBeeColony);
                 mCountBeecolony = (TextView)itemView.findViewById(R.id.textCountBeecolony);
+                mCheckedTimeProgress = (ProgressBar)itemView.findViewById(R.id.progressBarCheckedTime);
+                mCheckedTimeProgress.setMax(10);
+                mFoodProgress = (ProgressBar)itemView.findViewById(R.id.progressBarFood);
+                mFoodProgress.setMax(10);
                 mBeehive = null;
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
@@ -131,10 +139,14 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 
             holder.mBeehive = mBeehiveList.get(position);
         if (selectMode == MODE_SELECT_ALL){
-            holder.itemView.setBackgroundResource(R.drawable.green_frame);
+            holder.mItemView.setBackgroundResource(R.drawable.green_frame);
             communicator = (Communicator)context;
-            communicator.setDataForTools(holder.mBeehive, holder.itemView, nameApiary);
+            communicator.setDataForTools(holder.mBeehive, holder.mItemView, nameApiary);
         }
+            long diff = holder.mBeehive.getCheckedTime().getTime() + (11 * 24 * 60 * 60 * 1000) - Calendar.getInstance().getTime().getTime();
+            int deys = (int)diff /24 / 60 / 60 / 1000;
+
+            holder.mFoodProgress.setProgress(deys);
             holder.mBeehiveNumber.setText(String.valueOf(holder.mBeehive.getNumberBeehive()));
             holder.mCountBeecolony.setText(String.valueOf(holder.mBeehive.getBeeColonies().size()));
 

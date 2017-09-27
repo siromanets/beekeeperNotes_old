@@ -2,6 +2,7 @@ package com.example.key.beekeepernote.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputEditText;
@@ -26,6 +27,8 @@ import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.models.Apiary;
 import com.example.key.beekeepernote.models.BeeColony;
 import com.example.key.beekeepernote.models.Beehive;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +41,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -61,7 +65,8 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     private boolean multiSelectMode = false;
     private DataSnapshot mDataSnapshot;
     private ToolsListFragment mDialogFragment = null;
-
+    private Calendar mCalendar;
+    private String userUid;
     @ViewById (R.id.buttonAddApiary)
     Button buttonAddApiary;
 
@@ -71,6 +76,8 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     @ViewById(R.id.toolbar)
     Toolbar toolbar;
     private int position;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseUser mUser;
 
     @Override
     protected void onStart() {
@@ -92,6 +99,33 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             // Restore value of members from saved state
             startPageNumber = savedInstanceState.getInt(STATE_PAGE_NUMBER);
         }
+        mCalendar = Calendar.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                mUser = firebaseAuth.getCurrentUser();
+                if (mUser != null && !mUser.isAnonymous()) {
+                    userUid = mUser.getUid();
+                } else {
+                    AlertDialog.Builder autorisationDialog = new AlertDialog.Builder(StartActivity.this);
+                    autorisationDialog.setTitle("Autorisation!");
+                    autorisationDialog.setMessage("Потрібно авторизуватися");
+                    autorisationDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                    autorisationDialog.setNegativeButton("Anonim", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                    });
+                }
+            }
+        };
+
         setContentView(R.layout.activity_start);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -328,7 +362,8 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             if (mNumberBeehiveInt > 0) {
                 for (int i = 1; i<= mNumberBeehiveInt; i++){
                     Beehive beehive = new Beehive();
-                    beehive.setFounded(1209939);
+                    beehive.setFounded(mCalendar.getTime());
+                    beehive.setCheckedTime(mCalendar.getTime());
                     beehive.setNumberBeehive(i);
                     beehive.setNoteBeehive("dkfsdlkj;k");
                     beehive.setTypeBeehive(DADAN);

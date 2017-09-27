@@ -2,14 +2,13 @@ package com.example.key.beekeepernote.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.example.key.beekeepernote.R;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 
 
@@ -19,10 +18,6 @@ import org.androidannotations.annotations.EFragment;
 @EFragment
 public class NewBlankFragment extends Fragment {
     View view;
-    EditText nameApiary;
-    EditText numberBeehive;
-    String nameApiaryString;
-    AlertDialog alertDialog;
 
     public NewBlankFragment() {
         // Required empty public constructor
@@ -43,5 +38,8 @@ public class NewBlankFragment extends Fragment {
         return view;
     }
 
+    @AfterViews
+    void afterViews(){
 
+    }
 }

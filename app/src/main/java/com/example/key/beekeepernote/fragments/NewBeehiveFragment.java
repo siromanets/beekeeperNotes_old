@@ -23,6 +23,7 @@ import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.example.key.beekeepernote.fragments.ApiaryFragment.DADAN;
@@ -132,6 +133,8 @@ public class NewBeehiveFragment extends DialogFragment {
             Beehive mBeehive = new Beehive();
             mBeehive.setNumberBeehive(mSerialNumber);
             mBeehive.setTypeBeehive(mTypeBeehive);
+            mBeehive.setFounded(Calendar.getInstance().getTime());
+            mBeehive.setCheckedTime(Calendar.getInstance().getTime());
             List<BeeColony> beeColonyList = new  ArrayList<BeeColony>();
             for (int i = 0; i < mQuantityOfColonies; i++){
                 BeeColony beeColony = new BeeColony();

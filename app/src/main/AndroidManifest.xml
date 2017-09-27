@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.key.beekeepernote">
+          package="com.example.key.beekeepernote">
 
     <!-- To access Google+ APIs: -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_PROFILE"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
 
     <application
         android:name=".utils.BeekeperApp"
@@ -15,15 +22,23 @@
         android:theme="@style/MyMaterialTheme">
         <activity android:name=".activities.StartActivity_">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ActionActivity_"></activity>
+        <activity android:name=".activities.ActionActivity_"/>
+
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="3cd4e2115409f973dd60f7e2d226f5e282e78129" />
+            android:value="3cd4e2115409f973dd60f7e2d226f5e282e78129"/>
+
+        <receiver android:name=".utils.TimeNotification"/>
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login">
+        </activity>
     </application>
 
 </manifest>
