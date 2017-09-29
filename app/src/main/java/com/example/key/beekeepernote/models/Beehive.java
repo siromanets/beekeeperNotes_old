@@ -37,6 +37,7 @@ public class Beehive implements Serializable {
         noteBeehive = beehive.getNoteBeehive();
         typeBeehive = beehive.getTypeBeehive();
         beeColonies = beehive.getBeeColonies();
+        checkedTime = beehive.getCheckedTime();
     }
 
     public Date getFounded() {
