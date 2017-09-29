@@ -1,6 +1,5 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:gravity="center_horizontal"
@@ -12,36 +11,18 @@
               tools:context="com.example.key.beekeepernote.activities.LoginActivity">
 
     <!-- Login progress -->
-    <android.support.v7.widget.CardView
-        android:id="@+id/graphView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp">
-
-        <ProgressBar
-            android:id="@+id/login_progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:visibility="gone"/>
-    </android.support.v7.widget.CardView>
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/userAcountImage"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_margin="25dp"
-        android:src="@drawable/com_facebook_profile_picture_blank_portrait"
-        app:civ_border_color="@color/colorAccent"
-        app:civ_border_width="2dp" />
-
+    <ProgressBar
+        android:id="@+id/login_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone"/>
 
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_anchorGravity="bottom"
-        app:layout_behavior="@id/graphView">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -93,4 +74,4 @@
 
         </LinearLayout>
     </ScrollView>
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
