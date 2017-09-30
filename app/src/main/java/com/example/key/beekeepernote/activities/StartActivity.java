@@ -1,6 +1,7 @@
 package com.example.key.beekeepernote.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -78,6 +79,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     private int position;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mUser;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onStart() {
@@ -95,6 +97,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
         if (savedInstanceState != null) {
             // Restore value of members from saved state
             startPageNumber = savedInstanceState.getInt(STATE_PAGE_NUMBER);
@@ -113,13 +116,15 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                     autorisationDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-
+                            Intent intentToLoginActivity = new Intent(StartActivity.this, LoginActivity.class);
+                            startActivity(intentToLoginActivity);
                         }
                     });
-                    autorisationDialog.setNegativeButton("Anonim", new DialogInterface.OnClickListener() {
+                    autorisationDialog.setNegativeButton("quick autorisation", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-
+                            Intent intentToLoginActivity = new Intent(StartActivity.this, LoginActivity.class);
+                            startActivity(intentToLoginActivity);
                         }
                     });
                 }
