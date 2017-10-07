@@ -67,6 +67,7 @@ public class ActionActivity extends AppCompatActivity implements CommunicatorAct
                 viewPager.setAdapter(adapter);
             }
         }
+        tabLayout.setupWithViewPager(viewPager);
         setupTabIcons(beeColonyList.size());
     }
 

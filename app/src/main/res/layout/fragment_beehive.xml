@@ -1,257 +1,298 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:context="com.example.key.beekeepernote.fragments.BeeColonyFragment">
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.key.beekeepernote.fragments.BeeColonyFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/yellow_round_shape"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="0dp">
 
-        <TextView
-            android:id="@+id/textView"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingLeft="20dp"
-            android:text="Кількість рамок у вулику"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/yellow_round_shape"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
-        <TextView
-            android:id="@+id/countOfFrames"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_above="@+id/buttonPlasForWorms"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentRight="false"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/blue_rond_shape"
-            android:foregroundGravity="center_vertical"
-            android:gravity="center"
-            android:text="1"/>
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentRight="false"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/blue_rond_shape"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center"
+                android:text="1" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:paddingLeft="4dp"
+                android:text="вулик" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="РАМКИ" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:paddingRight="4dp"
+                android:text="склад" />
+
+            <TextView
+                android:id="@+id/countOfFrames"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentRight="false"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/blue_rond_shape"
+                android:foregroundGravity="center_vertical"
+                android:gravity="center"
+                android:text="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageWormsFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_honeycomb" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/buttonMinusForWorms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/imageHoneysFrame"
+                        android:layout_alignEnd="@+id/buttonPlasForWorms"
+                        android:layout_alignRight="@+id/buttonPlasForWorms"
+                        android:layout_gravity="bottom|right"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="4dp"
+                        android:clickable="true"
+                        app:backgroundTint="@android:color/holo_orange_light"
+                        app:fabSize="normal"
+                        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/buttonPlasForWorms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/imageWormsFrame"
+                        android:layout_gravity="right"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginStart="27dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_toEndOf="@+id/imageWormsFrame"
+                        android:layout_toRightOf="@+id/imageWormsFrame"
+                        android:clickable="true"
+                        app:backgroundTint="@android:color/holo_orange_light"
+                        app:fabSize="normal"
+                        app:srcCompat="@android:drawable/ic_menu_add" />
+
+                    <TextView
+                        android:id="@+id/countFrameWithWorm"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_gravity="left|center"
+                        android:background="@drawable/blue_rond_shape"
+                        android:gravity="center"
+                        android:text="1"
+                        android:textColor="@color/common_google_signin_btn_text_dark_focused" />
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageHoneysFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_honeycomb" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/buttonPlasForHoney"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/buttonMinusForWorms"
+                        android:layout_alignStart="@+id/buttonMinusForWorms"
+                        android:layout_alignTop="@+id/imageHoneysFrame"
+                        android:layout_gravity="top|right"
+                        android:clickable="true"
+                        app:backgroundTint="@android:color/holo_orange_light"
+                        app:fabSize="normal"
+                        app:srcCompat="@android:drawable/ic_menu_add" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/buttonMinusForHoney"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/imageEmptyFrame"
+                        android:layout_alignLeft="@+id/buttonPlasForHoney"
+                        android:layout_alignStart="@+id/buttonPlasForHoney"
+                        android:layout_gravity="bottom|right"
+                        android:clickable="true"
+                        app:backgroundTint="@android:color/holo_orange_light"
+                        app:fabSize="normal"
+                        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+                    <TextView
+                        android:id="@+id/countFrameWithHoney"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_gravity="left|center"
+                        android:background="@drawable/blue_rond_shape"
+                        android:gravity="center"
+                        android:text="1" />
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageEmptyFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/ic_honeycomb" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/buttonAddFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@+id/buttonMinusForWorms"
+                        android:layout_alignStart="@+id/buttonMinusForWorms"
+                        android:layout_alignTop="@+id/imageEmptyFrame"
+                        android:layout_gravity="top|right"
+                        android:clickable="true"
+                        app:backgroundTint="@android:color/holo_orange_light"
+                        app:fabSize="normal"
+                        app:srcCompat="@android:drawable/ic_menu_add" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/buttonDellFrame"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/imageEmptyFrame"
+                        android:layout_alignLeft="@+id/buttonAddFrame"
+                        android:layout_alignStart="@+id/buttonAddFrame"
+                        android:layout_gravity="bottom|right"
+                        android:clickable="true"
+                        app:backgroundTint="@android:color/holo_orange_light"
+                        app:fabSize="normal"
+                        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+                    <TextView
+                        android:id="@+id/countEmptyFrame"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_gravity="left|center"
+                        android:background="@drawable/blue_rond_shape"
+                        android:gravity="center"
+                        android:text="1" />
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/saveChanges"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@+id/linearLayout"
+                    android:layout_alignRight="@+id/linearLayout"
+                    android:layout_below="@+id/buttonAddFrame"
+                    android:text="Save"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/buttonPlasForWorms"
+                    android:layout_toEndOf="@+id/buttonPlasForWorms"
+                    android:layout_toRightOf="@+id/buttonPlasForWorms"
+                    android:background="@drawable/blue_rond_shape"
+                    app:srcCompat="@mipmap/ic_launcher"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
+
+                <Button
+                    android:id="@+id/buttonWasChecked"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="checked"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="0dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignLeft="@+id/linearLayout"
-        android:layout_alignStart="@+id/linearLayout"
-        android:layout_below="@+id/imageEmptyFrame"
-        android:layout_marginTop="34dp"
-        android:background="@drawable/yellow_round_shape"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:id="@+id/linearLayout2">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingLeft="20dp"
-            android:text="Рамки на складіі" />
-
-        <TextView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_above="@+id/buttonPlasForWorms"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentRight="false"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/blue_rond_shape"
-            android:foregroundGravity="center_vertical"
-            android:gravity="center"
-            android:text="1"/>
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imageWormsFrame"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignLeft="@+id/imageHoneysFrame"
-        android:layout_alignStart="@+id/imageHoneysFrame"
-        android:layout_below="@+id/linearLayout"
-        android:layout_marginTop="21dp"
-        app:srcCompat="@drawable/ic_honeycomb" />
-
-    <ImageView
-        android:id="@+id/imageHoneysFrame"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignLeft="@+id/imageEmptyFrame"
-        android:layout_alignStart="@+id/imageEmptyFrame"
-        android:layout_below="@+id/imageWormsFrame"
-        android:layout_marginTop="21dp"
-        app:srcCompat="@drawable/ic_honeycomb" />
-
-    <ImageView
-        android:id="@+id/imageEmptyFrame"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_alignLeft="@+id/linearLayout2"
-        android:layout_alignStart="@+id/linearLayout2"
-        android:layout_below="@+id/imageHoneysFrame"
-        android:layout_marginLeft="14dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="21dp"
-        app:srcCompat="@drawable/ic_honeycomb" />
-
-    <TextView
-        android:id="@+id/countFrameWithWorm"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/imageWormsFrame"
-        android:layout_alignStart="@+id/imageWormsFrame"
-        android:layout_alignTop="@+id/imageWormsFrame"
-        android:background="@drawable/blue_rond_shape"
-        android:gravity="center"
-        android:text="1"
-        android:textColor="@color/common_google_signin_btn_text_dark_focused"/>
-
-    <TextView
-        android:id="@+id/countFrameWithHoney"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/imageHoneysFrame"
-        android:layout_alignStart="@+id/imageHoneysFrame"
-        android:layout_alignTop="@+id/imageHoneysFrame"
-        android:background="@drawable/blue_rond_shape"
-        android:gravity="center"
-        android:text="1"/>
-
-    <TextView
-        android:id="@+id/countEmptyFrame"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignLeft="@+id/imageEmptyFrame"
-        android:layout_alignStart="@+id/imageEmptyFrame"
-        android:layout_alignTop="@+id/imageEmptyFrame"
-        android:background="@drawable/blue_rond_shape"
-        android:gravity="center"
-        android:text="1"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/buttonPlasForWorms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/imageWormsFrame"
-        android:layout_marginLeft="27dp"
-        android:layout_marginStart="27dp"
-        android:layout_toEndOf="@+id/imageWormsFrame"
-        android:layout_toRightOf="@+id/imageWormsFrame"
-        android:clickable="true"
-        app:backgroundTint="@android:color/holo_orange_light"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_add"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/buttonMinusForWorms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/imageHoneysFrame"
-        android:layout_alignEnd="@+id/buttonPlasForWorms"
-        android:layout_alignRight="@+id/buttonPlasForWorms"
-        android:clickable="true"
-        app:backgroundTint="@android:color/holo_orange_light"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/buttonPlasForHoney"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonMinusForWorms"
-        android:layout_alignStart="@+id/buttonMinusForWorms"
-        android:layout_alignTop="@+id/imageHoneysFrame"
-        android:clickable="true"
-        app:backgroundTint="@android:color/holo_orange_light"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_add"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/buttonMinusForHoney"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/imageEmptyFrame"
-        android:layout_alignLeft="@+id/buttonPlasForHoney"
-        android:layout_alignStart="@+id/buttonPlasForHoney"
-        android:clickable="true"
-        app:backgroundTint="@android:color/holo_orange_light"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/buttonAddFrame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonMinusForWorms"
-        android:layout_alignStart="@+id/buttonMinusForWorms"
-        android:layout_alignTop="@+id/imageEmptyFrame"
-        android:clickable="true"
-        app:backgroundTint="@android:color/holo_orange_light"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_add"/>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/buttonDellFrame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageEmptyFrame"
-        android:layout_alignLeft="@+id/buttonAddFrame"
-        android:layout_alignStart="@+id/buttonAddFrame"
-        android:clickable="true"
-        app:backgroundTint="@android:color/holo_orange_light"
-        app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"/>
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/blue_rond_shape"
-        app:srcCompat="@mipmap/ic_launcher"
-        android:layout_alignTop="@+id/buttonPlasForWorms"
-        android:layout_toRightOf="@+id/buttonPlasForWorms"
-        android:layout_toEndOf="@+id/buttonPlasForWorms"
-        android:layout_marginLeft="33dp"
-        android:layout_marginStart="33dp" />
-
-    <Button
-        android:id="@+id/saveChanges"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/linearLayout"
-        android:layout_alignRight="@+id/linearLayout"
-        android:layout_below="@+id/buttonAddFrame"
-        android:layout_marginEnd="17dp"
-        android:layout_marginRight="17dp"
-        android:text="Save"/>
-
-    <Button
-        android:id="@+id/buttonWasChecked"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/saveChanges"
-        android:layout_alignRight="@+id/saveChanges"
-        android:layout_below="@+id/buttonMinusForWorms"
-        android:text="checked"/>
-
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

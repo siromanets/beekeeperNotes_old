@@ -270,8 +270,18 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
+                        if (mDialogFragment != null) {
+                            getSupportFragmentManager()
+                                    .beginTransaction().
+                                    remove(mDialogFragment).commit();
+                            mDialogFragment.dismiss();
+                            mDialogFragment = null;
+                            multiSelectMode = false;
+                            loadDataSnapshot(mDataSnapshot);
+                        }
                     }
                 });
+
         alertDialog = builder.create();
         alertDialog.show();
     }
@@ -281,8 +291,8 @@ public class StartActivity extends AppCompatActivity implements Communicator {
            // tabLayout.removeTabAt(position);
             adapter.deleteFragment(position);
             adapter.notifyDataSetChanged();
-            mSelectMode = 1;
-            multiSelectMode = true;
+            mSelectMode = 0;
+            multiSelectMode = false;
             myRef.child("apiary").child(name).removeValue();
 
             Toast.makeText(StartActivity.this, "Apiary was delete", Toast.LENGTH_SHORT).show();
@@ -427,7 +437,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
     @Override
     public void multiSelectMod() {
         multiSelectMode = true;
-	    mSelectMode = 1;
+	    mSelectMode = 2;
 
     }
 
@@ -463,7 +473,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
                     }
                     myRef.child("apiary").child(nameApiary).setValue(apiary);
                     if (refreshBeehivesListItem) {
-                        mSelectMode = 1;
+                        mSelectMode = 2;
                         multiSelectMode = true;
                     } else {
                         mDialogFragment = null;
@@ -620,8 +630,10 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             getSupportFragmentManager()
                     .beginTransaction().
                     remove(mDialogFragment).commit();
+            mDialogFragment.dismiss();
 	        mDialogFragment = null;
             multiSelectMode = false;
+            mSelectMode = 0;
             loadDataSnapshot(mDataSnapshot);
         }
     }

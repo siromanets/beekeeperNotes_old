@@ -57,7 +57,7 @@
                 android:layout_weight="1"
                 android:text="TextView"
                 android:textColor="@android:color/background_light"
-                android:textSize="18sp"/>
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/button2"
@@ -72,8 +72,8 @@
                 android:singleLine="true"
                 android:text="cancel"
                 android:textColor="@color/colorAccent"
-                android:textSize="18sp"
-                android:textStyle="italic"/>
+                android:textSize="14sp"
+                android:textStyle="italic" />
 
         </LinearLayout>
 

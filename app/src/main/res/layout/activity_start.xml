@@ -21,10 +21,10 @@
             <Button
                 android:id="@+id/buttonAddApiary"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:background="@color/colorPrimaryDark"
-                android:text="Add"/>
+                android:text="Add" />
 
         </android.support.v7.widget.Toolbar>
 

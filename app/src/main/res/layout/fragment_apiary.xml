@@ -16,36 +16,32 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_below="@+id/imageView1"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
             android:text="Apiary Name"
-            android:textSize="24sp"/>
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/locationApiary"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="v. Racovec"
-            android:textSize="24sp"/>
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:gravity="center"
             android:text="TextView"
-            android:textSize="24sp"/>
+            android:textSize="14sp" />
 
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
-        android:scrollbars="vertical">
-    </android.support.v7.widget.RecyclerView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/buttonAddNewBeehive"
@@ -57,4 +53,11 @@
         android:src="@android:drawable/ic_input_add"
         app:backgroundTint="@color/colorPrimaryDark"
         app:fabSize="normal"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
 </android.support.design.widget.CoordinatorLayout>

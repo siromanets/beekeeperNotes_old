@@ -2,7 +2,9 @@ package com.example.key.beekeepernote.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +37,8 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
     public Communicator communicator;
         //use context to intent Url
     public Context context;
-
+    private int mHheight ;
+    private int mWigth;
 
     public RecyclerAdapter(List<Beehive> beehiveList, String nameApiary, int mode) {
             this.mBeehiveList = beehiveList;
@@ -58,6 +61,7 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
             private View mItemView;
             private ProgressBar mCheckedTimeProgress;
             private ProgressBar mFoodProgress;
+
 
             public ViewHolder(View itemView, ClickListener listener) {
                 super(itemView);
@@ -101,7 +105,19 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
             View mView = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_beehive, parent, false);
             context = mView.getContext();
+            DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+            int wight = metrics.widthPixels;
 
+            ViewGroup.LayoutParams params = mView.getLayoutParams();
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+                params.width = (wight / 3) - 5;
+                params.height = params.width;
+            }else if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                params.width = (wight / 5) - 3;
+                params.height = params.width;
+            }
+            mView.setLayoutParams(params);
+            mWigth = (wight / 3) - 5;
             ViewHolder mHolder = new ViewHolder(mView, new ViewHolder.ClickListener() {
                 @Override
                 public void onPressed(Beehive beehive, View view) {
@@ -147,6 +163,17 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
             int deys = (int)diff /24 / 60 / 60 / 1000;
 
             holder.mFoodProgress.setProgress(deys);
+            if (mWigth != 0){
+                ViewGroup.LayoutParams params = holder.mBeehiveNumber.getLayoutParams();
+                params.width = mWigth / 4;
+                params.height = mWigth / 4;
+                holder.mBeehiveNumber.setLayoutParams(params);
+
+                ViewGroup.LayoutParams params1 = holder.mCountBeecolony.getLayoutParams();
+                params1.width = mWigth / 6;
+                params1.height = mWigth / 6;
+                holder.mCountBeecolony.setLayoutParams(params1);
+            }
             holder.mBeehiveNumber.setText(String.valueOf(holder.mBeehive.getNumberBeehive()));
             holder.mCountBeecolony.setText(String.valueOf(holder.mBeehive.getBeeColonies().size()));
 
