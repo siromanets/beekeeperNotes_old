@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import com.example.key.beekeepernote.R;
 import com.example.key.beekeepernote.adapters.ViewPagerAdapter;
 import com.example.key.beekeepernote.fragments.BeeColonyFragment;
+import com.example.key.beekeepernote.fragments.BeeColonyFragment_;
 import com.example.key.beekeepernote.interfaces.CommunicatorActionActivity;
 import com.example.key.beekeepernote.models.BeeColony;
 import com.example.key.beekeepernote.models.Beehive;
@@ -61,7 +62,7 @@ public class ActionActivity extends AppCompatActivity implements CommunicatorAct
         List<BeeColony> beeColonyList = beehive.getBeeColonies();
         if (beeColonyList != null && beeColonyList.size() > 0){
             for (int i = 0; i < beeColonyList.size(); i++){
-                BeeColonyFragment colonyFragment = new BeeColonyFragment();
+                BeeColonyFragment colonyFragment = new BeeColonyFragment_();
                 adapter.addFragment(colonyFragment, "colony " + (i + 1));
                 colonyFragment.setData(beeColonyList.get(i), mNameApiary, beehive.getNumberBeehive(), String.valueOf(i));
                 viewPager.setAdapter(adapter);
@@ -87,8 +88,8 @@ public class ActionActivity extends AppCompatActivity implements CommunicatorAct
     }
 
     @Override
-    public void writeCheckedTimeForBeehive() {
-        beehive.setCheckedTime(Calendar.getInstance().getTime());
+    public void writeCheckedTimeForBeehive(int colonyNumber) {
+        beehive.getBeeColonies().get(colonyNumber).setCheckedTime(Calendar.getInstance().getTime().getTime());
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
         myRef.child("apiary").child(mNameApiary).child("beehives").child(String.valueOf(beehive.getNumberBeehive() -1)).setValue(beehive);
     }

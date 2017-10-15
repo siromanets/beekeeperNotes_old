@@ -10,12 +10,7 @@ import com.example.key.beekeepernote.R;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MoveBeehiveFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MoveBeehiveFragment#newInstance} factory method to
- * create an instance of this fragment.
+ *
  */
 public class MoveBeehiveFragment extends Fragment {
 
@@ -24,8 +19,6 @@ public class MoveBeehiveFragment extends Fragment {
     public MoveBeehiveFragment() {
         // Required empty public constructor
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

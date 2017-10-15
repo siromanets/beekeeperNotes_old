@@ -3,7 +3,6 @@ package com.example.key.beekeepernote.models;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,11 +20,11 @@ public class Beehive implements Serializable {
     }
 
     public int numberBeehive;
-    public Date founded;
+    public long founded;
     public String noteBeehive;
     public int typeBeehive;
     public List<BeeColony>beeColonies;
-    public Date checkedTime;
+
 
 
 
@@ -37,14 +36,13 @@ public class Beehive implements Serializable {
         noteBeehive = beehive.getNoteBeehive();
         typeBeehive = beehive.getTypeBeehive();
         beeColonies = beehive.getBeeColonies();
-        checkedTime = beehive.getCheckedTime();
     }
 
-    public Date getFounded() {
+    public long getFounded() {
         return founded;
     }
 
-    public void setFounded(Date founded) {
+    public void setFounded(long founded) {
         this.founded = founded;
     }
 
@@ -71,11 +69,5 @@ public class Beehive implements Serializable {
     public void setBeeColonies(List<BeeColony> iBeeColonies) {
         this.beeColonies = iBeeColonies;
     }
-    public Date getCheckedTime() {
-        return checkedTime;
-    }
 
-    public void setCheckedTime(Date checkedTime) {
-        this.checkedTime = checkedTime;
-    }
 }

@@ -362,9 +362,10 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             beeColony.setHaveFood(true);
             beeColony.setNoteBeeColony("ffd");
             beeColony.setOutput("ff");
-            beeColony.setQueen(true);
-            beeColony.setRiskOfSwaddling(false);
-            beeColony.setWorm(true);
+            beeColony.setQueen(mCalendar.getTime().getTime());
+            beeColony.setRiskOfSwaddling(mCalendar.getTime().getTime());
+            beeColony.setWorm(mCalendar.getTime().getTime());
+            beeColony.setCheckedTime(mCalendar.getTime().getTime());
             beeColony.setBeeEmptyFrame(5);
             beeColony.setBeeHoneyFrame(0);
             beeColony.setBeeWormsFrame(0);
@@ -377,8 +378,7 @@ public class StartActivity extends AppCompatActivity implements Communicator {
             if (mNumberBeehiveInt > 0) {
                 for (int i = 1; i<= mNumberBeehiveInt; i++){
                     Beehive beehive = new Beehive();
-                    beehive.setFounded(mCalendar.getTime());
-                    beehive.setCheckedTime(mCalendar.getTime());
+                    beehive.setFounded(mCalendar.getTime().getTime());
                     beehive.setNumberBeehive(i);
                     beehive.setNoteBeehive("dkfsdlkj;k");
                     beehive.setTypeBeehive(DADAN);

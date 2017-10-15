@@ -5,5 +5,5 @@ package com.example.key.beekeepernote.interfaces;
  */
 
 public interface CommunicatorActionActivity {
-	void writeCheckedTimeForBeehive();
+	void writeCheckedTimeForBeehive(int colonyNumber);
 }

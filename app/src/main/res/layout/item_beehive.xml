@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/itemView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="200dp"
+    android:layout_height="200dp"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
@@ -28,26 +29,10 @@
 
         <ProgressBar
             android:id="@+id/progressBarFood"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="4dp"
             android:layout_marginTop="10dp" />
-
-        <TextView
-            android:id="@+id/textCountBeecolony"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/imageBeeHive"
-            android:layout_alignParentTop="false"
-            android:layout_alignRight="@+id/imageBeeHive"
-            android:layout_gravity="right"
-            android:layout_marginEnd="14dp"
-            android:layout_marginRight="14dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/blue_rond_shape"
-            android:gravity="center"
-            android:text="1"
-            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/textNumberBeeColony"
@@ -57,18 +42,51 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:background="@drawable/yellow_round_shape"
+            android:foregroundGravity="center_horizontal"
             android:gravity="center"
             android:text="12"
+            android:textAlignment="center"
             android:textSize="18sp" />
 
-        <ProgressBar
-            android:id="@+id/progressBarCheckedTime"
-            style="?android:attr/progressBarStyleHorizontal"
+        <LinearLayout
+            android:id="@+id/progressContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="10dp" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="false"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    </android.support.v7.widget.CardView>
+            <ProgressBar
+                android:id="@+id/progressBarCheckedTime1"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_margin="1dp" />
 
-</LinearLayout>
+            <ProgressBar
+                android:id="@+id/progressBarCheckedTime2"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_margin="1dp" />
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageEye"
+            android:layout_width="20dp"
+
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:clickable="false"
+            android:cropToPadding="false"
+            android:elevation="4dp"
+            android:src="@drawable/ic_eye"
+            app:civ_border_width="1dp" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

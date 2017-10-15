@@ -30,7 +30,7 @@
             android:paddingRight="10dp">
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/countOfFrames"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="false"
@@ -71,7 +71,7 @@
                 android:text="склад" />
 
             <TextView
-                android:id="@+id/countOfFrames"
+                android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="false"
@@ -93,10 +93,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:orientation="vertical">
 
-                <android.support.v7.widget.CardView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -109,50 +109,46 @@
                         app:srcCompat="@drawable/ic_honeycomb" />
 
                     <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/buttonMinusForWorms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_above="@+id/imageHoneysFrame"
-                        android:layout_alignEnd="@+id/buttonPlasForWorms"
-                        android:layout_alignRight="@+id/buttonPlasForWorms"
-                        android:layout_gravity="bottom|right"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginTop="4dp"
-                        android:clickable="true"
-                        app:backgroundTint="@android:color/holo_orange_light"
-                        app:fabSize="normal"
-                        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
-
-                    <android.support.design.widget.FloatingActionButton
                         android:id="@+id/buttonPlasForWorms"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignTop="@+id/imageWormsFrame"
-                        android:layout_gravity="right"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginLeft="27dp"
-                        android:layout_marginStart="27dp"
-                        android:layout_marginTop="4dp"
-                        android:layout_toEndOf="@+id/imageWormsFrame"
-                        android:layout_toRightOf="@+id/imageWormsFrame"
+                        android:layout_alignParentBottom="false"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
                         android:clickable="true"
                         app:backgroundTint="@android:color/holo_orange_light"
-                        app:fabSize="normal"
+                        app:fabSize="mini"
                         app:srcCompat="@android:drawable/ic_menu_add" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/buttonMinusForWorms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="false"
+                        android:layout_alignParentTop="false"
+                        android:layout_alignRight="@+id/buttonPlasForWorms"
+                        android:clickable="true"
+                        app:backgroundTint="@android:color/holo_orange_light"
+                        app:fabSize="mini"
+                        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
                     <TextView
                         android:id="@+id/countFrameWithWorm"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="false"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="left|center"
                         android:background="@drawable/blue_rond_shape"
                         android:gravity="center"
                         android:text="1"
                         android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
-                </android.support.v7.widget.CardView>
+                </RelativeLayout>
 
-                <android.support.v7.widget.CardView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -168,45 +164,44 @@
                         android:id="@+id/buttonPlasForHoney"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/buttonMinusForWorms"
-                        android:layout_alignStart="@+id/buttonMinusForWorms"
-                        android:layout_alignTop="@+id/imageHoneysFrame"
-                        android:layout_gravity="top|right"
+                        android:layout_alignParentBottom="false"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
                         android:clickable="true"
                         app:backgroundTint="@android:color/holo_orange_light"
-                        app:fabSize="normal"
+                        app:fabSize="mini"
                         app:srcCompat="@android:drawable/ic_menu_add" />
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/buttonMinusForHoney"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_above="@+id/imageEmptyFrame"
-                        android:layout_alignLeft="@+id/buttonPlasForHoney"
-                        android:layout_alignStart="@+id/buttonPlasForHoney"
-                        android:layout_gravity="bottom|right"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="false"
                         android:clickable="true"
                         app:backgroundTint="@android:color/holo_orange_light"
-                        app:fabSize="normal"
+                        app:fabSize="mini"
                         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
                     <TextView
                         android:id="@+id/countFrameWithHoney"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:layout_gravity="left|center"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerHorizontal="false"
+                        android:layout_centerVertical="true"
                         android:background="@drawable/blue_rond_shape"
                         android:gravity="center"
                         android:text="1" />
 
-                </android.support.v7.widget.CardView>
+                </RelativeLayout>
 
-                <android.support.v7.widget.CardView
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:layout_weight="1">
-
                     <ImageView
                         android:id="@+id/imageEmptyFrame"
                         android:layout_width="match_parent"
@@ -217,78 +212,132 @@
                         android:id="@+id/buttonAddFrame"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@+id/buttonMinusForWorms"
-                        android:layout_alignStart="@+id/buttonMinusForWorms"
-                        android:layout_alignTop="@+id/imageEmptyFrame"
-                        android:layout_gravity="top|right"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
                         android:clickable="true"
                         app:backgroundTint="@android:color/holo_orange_light"
-                        app:fabSize="normal"
+                        app:fabSize="mini"
                         app:srcCompat="@android:drawable/ic_menu_add" />
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/buttonDellFrame"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/imageEmptyFrame"
-                        android:layout_alignLeft="@+id/buttonAddFrame"
-                        android:layout_alignStart="@+id/buttonAddFrame"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_gravity="bottom|right"
                         android:clickable="true"
                         app:backgroundTint="@android:color/holo_orange_light"
-                        app:fabSize="normal"
+                        app:fabSize="mini"
                         app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
                     <TextView
                         android:id="@+id/countEmptyFrame"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="left|center"
                         android:background="@drawable/blue_rond_shape"
                         android:gravity="center"
                         android:text="1" />
-                </android.support.v7.widget.CardView>
+                </RelativeLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/saveChanges"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/linearLayout"
-                    android:layout_alignRight="@+id/linearLayout"
-                    android:layout_below="@+id/buttonAddFrame"
-                    android:text="Save"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="0dp" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/buttonPlasForWorms"
-                    android:layout_toEndOf="@+id/buttonPlasForWorms"
-                    android:layout_toRightOf="@+id/buttonPlasForWorms"
-                    android:background="@drawable/blue_rond_shape"
-                    app:srcCompat="@mipmap/ic_launcher"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="0dp" />
+                    <com.jackandphantom.circularprogressbar.CircleProgressbar
+                        android:id="@+id/progressIsBeeQueen"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_margin="30dp"
+                        app:cpb_backgroundProgressWidth="5"
+                        app:cpb_foregroundProgressColor="#1864c2"
+                        app:cpb_foregroundProgressWidth="5"
+                        app:cpb_progress="50"
+                        app:cpb_roundedCorner="true"
+                        app:cpb_touchEnabled="true" />
 
-                <Button
-                    android:id="@+id/buttonWasChecked"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/buttonIsBeeQueen"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_margin="32dp"
+                        android:clickable="true"
+                        android:elevation="2dp"
+                        android:src="@drawable/queen_bee"
+                        app:layout_anchor="@+id/imageBeckground"
+                        app:layout_anchorGravity="bottom|center_horizontal" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:text="checked"
-                    tools:layout_editor_absoluteX="0dp"
-                    tools:layout_editor_absoluteY="0dp" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <com.jackandphantom.circularprogressbar.CircleProgressbar
+                        android:id="@+id/progressHaveChecked"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_margin="30dp"
+                        app:cpb_backgroundProgressWidth="5"
+                        app:cpb_foregroundProgressColor="#1864c2"
+                        app:cpb_foregroundProgressWidth="5"
+                        app:cpb_progress="50"
+                        app:cpb_roundedCorner="true"
+                        app:cpb_touchEnabled="true" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/buttonHavaChecked"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_margin="32dp"
+                        android:clickable="true"
+                        android:elevation="2dp"
+                        android:src="@drawable/ic_eye"
+                        app:layout_anchor="@+id/imageBeckground"
+                        app:layout_anchorGravity="bottom|center_horizontal" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="@android:color/transparent">
+
+                    <ImageView
+                        android:id="@+id/buttonCreateMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_message" />
+
+                </RelativeLayout>
             </LinearLayout>
 
         </LinearLayout>

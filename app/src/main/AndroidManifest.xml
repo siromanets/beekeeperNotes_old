@@ -6,11 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
+    <use-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
 
     <application
         android:name=".utils.BeekeperApp"
@@ -53,7 +51,12 @@
             android:name="io.fabric.ApiKey"
             android:value="3cd4e2115409f973dd60f7e2d226f5e282e78129" />
 
-        <receiver android:name=".utils.TimeNotification" />
+        <receiver android:name=".utils.TimeNotification"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name=".activities.LoginActivity_"

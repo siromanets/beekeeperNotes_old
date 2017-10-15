@@ -20,6 +20,8 @@ import com.example.key.beekeepernote.models.Beehive;
 import java.util.Calendar;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import static com.example.key.beekeepernote.activities.StartActivity.MODE_CLEAN_ITEM;
 import static com.example.key.beekeepernote.activities.StartActivity.MODE_MULTI_SELECT;
 import static com.example.key.beekeepernote.activities.StartActivity.MODE_SELECT_ALL;
@@ -57,10 +59,11 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
             private ClickListener mClickListener;
             private Beehive mBeehive;
             private TextView mBeehiveNumber;
-            private TextView mCountBeecolony;
             private View mItemView;
-            private ProgressBar mCheckedTimeProgress;
+            private ProgressBar mCheckedTimeProgress1;
+            private ProgressBar mCheckedTimeProgress2;
             private ProgressBar mFoodProgress;
+            private CircleImageView imageEye;
 
 
             public ViewHolder(View itemView, ClickListener listener) {
@@ -70,11 +73,13 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
                 this.mItemView = itemView;
                 imageBeehive = (ImageView)itemView.findViewById(R.id.imageBeeHive);
                 mBeehiveNumber = (TextView)itemView.findViewById(R.id.textNumberBeeColony);
-                mCountBeecolony = (TextView)itemView.findViewById(R.id.textCountBeecolony);
-                mCheckedTimeProgress = (ProgressBar)itemView.findViewById(R.id.progressBarCheckedTime);
-                mCheckedTimeProgress.setMax(10);
+                mCheckedTimeProgress1 = (ProgressBar)itemView.findViewById(R.id.progressBarCheckedTime1);
+                mCheckedTimeProgress1.setMax(10);
+                mCheckedTimeProgress2 = (ProgressBar)itemView.findViewById(R.id.progressBarCheckedTime2);
+                mCheckedTimeProgress2.setMax(10);
                 mFoodProgress = (ProgressBar)itemView.findViewById(R.id.progressBarFood);
                 mFoodProgress.setMax(10);
+                imageEye = (CircleImageView)itemView.findViewById(R.id.imageEye);
                 mBeehive = null;
                 itemView.setOnClickListener(this);
                 itemView.setOnLongClickListener(this);
@@ -159,23 +164,38 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
             communicator = (Communicator)context;
             communicator.setDataForTools(holder.mBeehive, holder.mItemView, nameApiary);
         }
-            long diff = holder.mBeehive.getCheckedTime().getTime() + (11 * 24 * 60 * 60 * 1000) - Calendar.getInstance().getTime().getTime();
-            int deys = (int)diff /24 / 60 / 60 / 1000;
+            long diff = holder.mBeehive.getBeeColonies().get(0).getCheckedTime() + (11 * 24 * 60 * 60 * 1000) - Calendar.getInstance().getTime().getTime();
+            int deys1 = (int)diff /24 / 60 / 60 / 1000;
+            holder.mCheckedTimeProgress1.setProgress(deys1);
+        if (holder.mBeehive.getBeeColonies().size() > 1) {
+            long diff2 = holder.mBeehive.getBeeColonies().get(1).getCheckedTime() + (11 * 24 * 60 * 60 * 1000) - Calendar.getInstance().getTime().getTime();
+            int deys2 = (int) diff2 / 24 / 60 / 60 / 1000;
+            holder.mCheckedTimeProgress2.setProgress(deys2);
+        }else{
+            holder.mCheckedTimeProgress2.setVisibility(View.INVISIBLE);
+        }
 
-            holder.mFoodProgress.setProgress(deys);
             if (mWigth != 0){
                 ViewGroup.LayoutParams params = holder.mBeehiveNumber.getLayoutParams();
                 params.width = mWigth / 4;
                 params.height = mWigth / 4;
                 holder.mBeehiveNumber.setLayoutParams(params);
 
-                ViewGroup.LayoutParams params1 = holder.mCountBeecolony.getLayoutParams();
-                params1.width = mWigth / 6;
-                params1.height = mWigth / 6;
-                holder.mCountBeecolony.setLayoutParams(params1);
+
+                ViewGroup.LayoutParams paramsProgress = holder.mCheckedTimeProgress1.getLayoutParams();
+                paramsProgress.height = mWigth / 23;
+                holder.mCheckedTimeProgress1.setLayoutParams(paramsProgress);
+                holder.mCheckedTimeProgress2.setLayoutParams(paramsProgress);
+                ViewGroup.LayoutParams paramsFoodProgress = holder.mFoodProgress.getLayoutParams();
+                paramsFoodProgress.height = mWigth / 23;
+                holder.mFoodProgress.setLayoutParams(paramsFoodProgress);
+                ViewGroup.LayoutParams paramsEye = holder.imageEye.getLayoutParams();
+                paramsEye.width = mWigth / 7;
+                paramsEye.height = mWigth / 7;
+                holder.imageEye.setLayoutParams(paramsEye);
             }
             holder.mBeehiveNumber.setText(String.valueOf(holder.mBeehive.getNumberBeehive()));
-            holder.mCountBeecolony.setText(String.valueOf(holder.mBeehive.getBeeColonies().size()));
+
 
             switch (holder.mBeehive.getTypeBeehive()){
                 case 1: holder.imageBeehive.setImageResource(R.drawable.ic_beehive_one);

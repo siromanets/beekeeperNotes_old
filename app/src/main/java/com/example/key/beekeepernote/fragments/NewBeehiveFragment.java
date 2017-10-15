@@ -133,12 +133,13 @@ public class NewBeehiveFragment extends DialogFragment {
             Beehive mBeehive = new Beehive();
             mBeehive.setNumberBeehive(mSerialNumber);
             mBeehive.setTypeBeehive(mTypeBeehive);
-            mBeehive.setFounded(Calendar.getInstance().getTime());
-            mBeehive.setCheckedTime(Calendar.getInstance().getTime());
+            mBeehive.setFounded(Calendar.getInstance().getTime().getTime());
+
             List<BeeColony> beeColonyList = new  ArrayList<BeeColony>();
             for (int i = 0; i < mQuantityOfColonies; i++){
                 BeeColony beeColony = new BeeColony();
                 beeColony.setBeeEmptyFrame(5);
+                beeColony.setCheckedTime(Calendar.getInstance().getTime().getTime());
                 beeColonyList.add(beeColony);
             }
             mBeehive.setBeeColonies(beeColonyList);

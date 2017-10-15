@@ -7,41 +7,58 @@ import java.io.Serializable;
  */
 
 public class BeeColony implements Serializable {
-    public boolean queen;
-    public boolean worm;
-    public boolean riskOfSwaddling;
+    public long queen;
+    public long worm;
+    public long riskOfSwaddling;
     public boolean haveFood;
     public String noteBeeColony;
     public String output;
     public int beeHoneyFrame;
     public int beeWormsFrame;
     public int beeEmptyFrame;
-
+    public long checkedTime;
+    public long founded;
 
     public BeeColony() {
     }
 
-    public boolean isQueen() {
+    public long getCheckedTime() {
+        return checkedTime;
+    }
+
+    public void setCheckedTime(long checkedTime) {
+        this.checkedTime = checkedTime;
+    }
+
+    public long getFounded() {
+        return founded;
+    }
+
+    public void setFounded(long founded) {
+        this.founded = founded;
+    }
+
+    public long isQueen() {
         return queen;
     }
 
-    public void setQueen(boolean queen) {
+    public void setQueen(long queen) {
         this.queen = queen;
     }
 
-    public boolean isWorm() {
+    public long isWorm() {
         return worm;
     }
 
-    public void setWorm(boolean worm) {
+    public void setWorm(long worm) {
         this.worm = worm;
     }
 
-    public boolean isRiskOfSwaddling() {
+    public long isRiskOfSwaddling() {
         return riskOfSwaddling;
     }
 
-    public void setRiskOfSwaddling(boolean riskOfSwaddling) {
+    public void setRiskOfSwaddling(long riskOfSwaddling) {
         this.riskOfSwaddling = riskOfSwaddling;
     }
 
