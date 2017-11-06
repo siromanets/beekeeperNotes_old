@@ -13,6 +13,8 @@ import com.example.key.beekeepernote.fragments.BeeColonyFragment_;
 import com.example.key.beekeepernote.interfaces.CommunicatorActionActivity;
 import com.example.key.beekeepernote.models.BeeColony;
 import com.example.key.beekeepernote.models.Beehive;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -39,10 +41,13 @@ public class ActionActivity extends AppCompatActivity implements CommunicatorAct
             R.drawable.ic_beehive_right,
             R.drawable.ic_beehive_one
     };
+    private FirebaseUser mCurUseer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action);
+
         toolbar = (Toolbar) findViewById(R.id.toolbarActionActivity);
         setSupportActionBar(toolbar);
 
@@ -56,6 +61,7 @@ public class ActionActivity extends AppCompatActivity implements CommunicatorAct
 
         viewPager.setAdapter(adapter);
         mCalendar = Calendar.getInstance();
+         mCurUseer = FirebaseAuth.getInstance().getCurrentUser();
 
         beehive = (Beehive) getIntent().getSerializableExtra(USER_SELECTED_BEEHIVE);
         mNameApiary = getIntent().getStringExtra(NAME_APIARY);
@@ -64,7 +70,7 @@ public class ActionActivity extends AppCompatActivity implements CommunicatorAct
             for (int i = 0; i < beeColonyList.size(); i++){
                 BeeColonyFragment colonyFragment = new BeeColonyFragment_();
                 adapter.addFragment(colonyFragment, "colony " + (i + 1));
-                colonyFragment.setData(beeColonyList.get(i), mNameApiary, beehive.getNumberBeehive(), String.valueOf(i));
+                colonyFragment.setData(beeColonyList.get(i), mNameApiary, beehive, i, mCurUseer.getUid());
                 viewPager.setAdapter(adapter);
             }
         }

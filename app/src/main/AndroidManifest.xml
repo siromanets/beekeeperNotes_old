@@ -55,6 +55,10 @@
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+                <action android:name="com.example.key.beekeepernote.action.QUEEN"></action>
+                <action android:name="com.example.key.beekeepernote.action.CHECKING"></action>
+                <action android:name="com.example.key.beekeepernote.action.NOTATION"></action>
+                <action android:name="com.example.key.beekeepernote.action.HISTORY"></action>
             </intent-filter>
         </receiver>
 
@@ -63,6 +67,11 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".activities.ResetPasswordActivity_" />
         <activity android:name=".activities.SignupActivity_"></activity>
+
+        <service
+            android:enabled="true"
+            android:name=".utils.AlarmService">
+        </service>
     </application>
 
 </manifest>

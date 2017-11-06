@@ -1,5 +1,6 @@
 package com.example.key.beekeepernote.fragments;
 
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,12 +12,16 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.key.beekeepernote.R;
 import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.models.BeeColony;
+import com.example.key.beekeepernote.models.Beehive;
+import com.example.key.beekeepernote.models.Notifaction;
 import com.example.key.beekeepernote.utils.AlarmService;
 import com.example.key.beekeepernote.utils.TimeNotification;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +37,11 @@ import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.example.key.beekeepernote.utils.AlarmService.CHECKING;
+import static com.example.key.beekeepernote.utils.AlarmService.NOTATION;
+import static com.example.key.beekeepernote.utils.AlarmService.QUEEN;
+import static com.example.key.beekeepernote.utils.AlarmService.TO_SERVICE_COMMANDS;
+
 
 /**
  *
@@ -39,10 +49,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 @EFragment
 public class BeeColonyFragment extends Fragment{
 
+    public static final int CHECKING_CONSTANT_NUMBER = 2;
+    public static final int QUEEN_CONSTANT_NUMBER = 3;
+    public static final int NOTATION_CONSTANT_NUMBER = 4;
     public BeeColony beeColony;
-    public int nameBeehive;
+    public Beehive nameBeehive;
     public String nameApiary;
-    public String nameColony;
+    public int nameColony;
     public int quantityWormsFrames = 0;
     public int quantityHoneyFrames = 0;
     public int countFrames = 0;
@@ -87,7 +100,9 @@ public class BeeColonyFragment extends Fragment{
 
     @ViewById(R.id.progressIsBeeQueen)
     CircleProgressbar progressIsBeeQueen;
-
+    private String mUserUId;
+    private boolean complitText;
+    private AlertDialog alertDialogReminder;
 
 
     @Override
@@ -110,6 +125,8 @@ public class BeeColonyFragment extends Fragment{
         quantityWormsFrames = beeColony.getBeeWormsFrame();
         quantityHoneyFrames = beeColony.getBeeHoneyFrame();
         countFrames = quantityEmptyFrames + quantityWormsFrames + quantityHoneyFrames;
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
         refreshTextViews();
         refreshProgressViews();
     }
@@ -145,14 +162,98 @@ public class BeeColonyFragment extends Fragment{
 
     @Click(R.id.buttonIsBeeQueen)
     public void buttonIsBeeQueenWasClicked(){
-        //todo need add logic
+        enabledMessagesSender(getContext());
+        long time =  Calendar.getInstance().getTime().getTime();
+        Notifaction notifaction = new Notifaction();
+        notifaction.setTypeNotifaction(QUEEN);
+        notifaction.setNameNotifaction("Beequeen exist");
+        notifaction.setSchowTime(time);
+        int ir = (int) (nameBeehive.getFounded());
+        int id = ir /nameBeehive.getNumberBeehive() / (nameColony + 1) / QUEEN_CONSTANT_NUMBER;
+        notifaction.setuId(id);
+        notifaction.setPathNotifaction(notifaction.createPath(nameApiary, String.valueOf(nameBeehive), String.valueOf(nameColony)));
+        notifaction.setTextNotifaction(" In beeColony number "+ nameColony + "was seeing beeQuen " + nameApiary +". " + nameBeehive);
+        setNotificationToFirebase(notifaction);
+        Intent i = new Intent(getContext(), AlarmService.class);
+        i.putExtra(TO_SERVICE_COMMANDS, notifaction);
+        getContext().startService(i);
     }
     @Click(R.id.buttonHavaChecked)
     public void buttonWasCheckedWasClicked(){
-        saveData();
-        AlarmService alarmService = new AlarmService(getContext());
-        int time = 10;
-        alarmService.startAlarm(time);
+        enabledMessagesSender(getContext());
+        long time =  Calendar.getInstance().getTime().getTime();
+        Notifaction notifaction = new Notifaction();
+        notifaction.setTypeNotifaction(CHECKING);
+        notifaction.setNameNotifaction("Colony was checking");
+        notifaction.setSchowTime(time);
+        int ir = (int) (nameBeehive.getFounded());
+        int id = ir /nameBeehive.getNumberBeehive() / (nameColony + 1) / CHECKING_CONSTANT_NUMBER;
+        notifaction.setuId(id);
+        notifaction.setPathNotifaction(notifaction.createPath(nameApiary, String.valueOf(nameBeehive), String.valueOf(nameColony)));
+        notifaction.setTextNotifaction(" In beeColony number "+ nameColony + "was seeing beeQuen " + nameApiary +". " + nameBeehive);
+        setNotificationToFirebase(notifaction);
+        Intent i = new Intent(getContext(), AlarmService.class);
+        i.putExtra(TO_SERVICE_COMMANDS, notifaction);
+        getContext().startService(i);
+    }
+    @Click(R.id.buttonCreateMessage)
+    public void buttonCreateMessageWasClicked(){
+        showCreateNoteDialog();
+
+    }
+
+    private void showCreateNoteDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Remind");
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.fragment_new_remindeer, null);
+        builder.setView(dialogView);
+
+        final DatePicker datePicker = (DatePicker)dialogView.findViewById(R.id.dataPickerReminder);
+        datePicker.setMinDate(Calendar.getInstance().getTime().getTime());
+        final EditText textReminder = (EditText)dialogView.findViewById(R.id.editTextReminder);
+        final FloatingActionButton fabSendReminder = (FloatingActionButton)dialogView.findViewById(R.id.fabSendReminder);
+
+        fabSendReminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (textReminder.getText().toString().length() != 0 ){
+                    BeeColony beeColony = nameBeehive.getBeeColonies().get(nameColony);
+                    beeColony.setNoteBeeColony( textReminder.getText().toString());
+                    beeColony.setCheckedTime(Calendar.getInstance().getTime().getTime());
+                    long t =  Calendar.getInstance().getTime().getTime();
+                    FirebaseDatabase.getInstance().getReference().child("apiary").child(nameApiary)
+                            .child("beehives").child(String.valueOf(nameBeehive.getNumberBeehive() -1))
+                            .child("beeColonies").child(String.valueOf(nameColony)).setValue(beeColony);
+                    Notifaction notifaction = new Notifaction();
+                    notifaction.setTypeNotifaction(NOTATION);
+                    notifaction.setNameNotifaction("REMINDER");
+                    notifaction.setTextNotifaction(textReminder.getText().toString());
+                    notifaction.setSchowTime(Calendar.getInstance().getTime().getTime());
+                    int ir = (int) (nameBeehive.getFounded());
+                    int id = ir /nameBeehive.getNumberBeehive() / (nameColony + 1) / NOTATION_CONSTANT_NUMBER;
+                    notifaction.setuId(id);
+                    notifaction.setPathNotifaction(notifaction.createPath(nameApiary, String.valueOf(nameBeehive), String.valueOf(nameColony)));
+                    setNotificationToFirebase(notifaction);
+                    Calendar calendar = Calendar.getInstance();
+                    long currentTime = calendar.getTime().getTime();
+                    calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), 9, 00);
+                    if (currentTime < calendar.getTime().getTime()) {
+                        notifaction.setSchowTime(calendar.getTime().getTime());
+                        Intent i = new Intent(getContext(), AlarmService.class);
+                        i.putExtra(TO_SERVICE_COMMANDS, notifaction);
+                        getContext().startService(i);
+                    }
+                    alertDialogReminder.dismiss();
+                }else{
+                    textReminder.setError("Enter text");
+                }
+
+            }
+
+        });
+       alertDialogReminder =  builder.create();
+           alertDialogReminder.show();
     }
 
     @Click(R.id.buttonPlasForWorms)
@@ -239,10 +340,8 @@ public class BeeColonyFragment extends Fragment{
         beeColony.setBeeHoneyFrame(quantityHoneyFrames);
         beeColony.setCheckedTime(Calendar.getInstance().getTime().getTime());
         beeColony.setNoteBeeColony("");
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
-        myRef.child("apiary").child(nameApiary).child("beehives").child(String.valueOf(nameBeehive -1))
-                .child("beeColonies").child(nameColony).setValue(beeColony);
+        myRef.child("apiary").child(nameApiary).child("beehives").child(String.valueOf(nameBeehive.getNumberBeehive() -1))
+                .child("beeColonies").child(String.valueOf(nameColony)).setValue(beeColony);
     }
 
 
@@ -253,12 +352,15 @@ public class BeeColonyFragment extends Fragment{
         countFramesOfColony.setText(String.valueOf(countFrames));
     }
 
-    public void setData(BeeColony beeColony, String nameApiary, int numberBeehive, String nameColony){
+    public void setData(BeeColony beeColony, String nameApiary, Beehive numberBeehive, int nameColony, String userUId){
         this.beeColony = beeColony;
         this.nameApiary = nameApiary;
         this.nameBeehive = numberBeehive;
         this.nameColony = nameColony;
-
+        this.mUserUId = userUId;
     }
 
+    public void setNotificationToFirebase(Notifaction notificationToFirebase) {
+        myRef.child(mUserUId).child("history").child(String.valueOf(notificationToFirebase.getSchowTime())).setValue(notificationToFirebase);
+    }
 }

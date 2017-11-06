@@ -62,7 +62,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 @EActivity
 public class LoginActivity extends AppCompatActivity implements
 		GoogleApiClient.OnConnectionFailedListener {
-	private static final int RC_SIGN_IN = 9001;
+	public static final int RC_SIGN_IN = 9001;
 	private static final String TAG ="LoginActivity" ;
 	private FirebaseAuth mAuth;
 	private CallbackManager mCallbackManager;

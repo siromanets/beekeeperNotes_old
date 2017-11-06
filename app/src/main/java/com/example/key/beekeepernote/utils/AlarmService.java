@@ -5,11 +5,14 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.example.key.beekeepernote.models.Apiary;
 import com.example.key.beekeepernote.models.BeeColony;
+import com.example.key.beekeepernote.models.Beehive;
+import com.example.key.beekeepernote.models.Notifaction;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,11 +34,17 @@ public class AlarmService  extends Service{
 	public static final int SEND_NOTIFACTION = 101;
 	public static final int NO_SEND_NOTIFACTION = 102;
 	public static final String TYPE_MESSAGE = "type_message";
-
+	public static final String CREATE_ALAR = "create_alarm";
+	public static final String PATH_MESSAGE = "path_message";
+	public static final String NAME_MESSAGE = "name_message";
+	public static final String QUEEN = "com.example.key.beekeepernote.action.QUEEN";
+	public static final String CHECKING = "com.example.key.beekeepernote.action.CHECKING";
+	public static final String NOTATION = "com.example.key.beekeepernote.action.NOTATION";
+	public static final String HISTORY ="com.example.key.beekeepernote.action.HISTORY";
 	private PendingIntent mAlarmSender;
 	private Calendar mCalender;
 	FirebaseDatabase database;
-
+	private Integer i;
 
 
 	@Override
@@ -50,6 +59,10 @@ public class AlarmService  extends Service{
 			refreshAlarm();
 		}else if(intent.getIntExtra(TO_SERVICE_COMMANDS, 0) == CREATE_ALARM){
 
+		}else if (intent.getSerializableExtra(TO_SERVICE_COMMANDS) != null){
+			Notifaction notifaction = (Notifaction) intent.getSerializableExtra(TO_SERVICE_COMMANDS);
+			 i = new Integer(notifaction.getuId()) ;
+			startAlarm(notifaction.getPathNotifaction(), notifaction.getTypeNotifaction(), notifaction.getSchowTime());
 		}
 
 		return START_NOT_STICKY;
@@ -66,15 +79,17 @@ public class AlarmService  extends Service{
 						Apiary apiary = postSnapshot.getValue(Apiary.class);
 						if (apiary != null) {
 							for(int i = 0; i < apiary.getBeehives().size(); i++){
+								Beehive beehive = apiary.getBeehives().get(i);
 								List<BeeColony> colonyList =  apiary.getBeehives().get(i).getBeeColonies();
 								if (colonyList.size() > 0) {
 									for (int c = 0; c < colonyList.size(); c++) {
 										if (colonyList.get(i).getCheckedTime() > mCalender.getTime().getTime()) {
-											startAlarm(colonyList.get(i).getCheckedTime(), SEND_NOTIFACTION);
+											String path = Uri.fromParts(apiary.getNameApiary(), String.valueOf(beehive.getNumberBeehive()), String.valueOf(i)).toString();
+											startAlarm( path, CHECKING, colonyList.get(i).getCheckedTime());
 										}
 										if (colonyList.get(i).isQueen() > mCalender.getTime().getTime()) {
-											startAlarm(colonyList.get(i).getCheckedTime(), NO_SEND_NOTIFACTION);
-										}
+											String path = Uri.fromParts(apiary.getNameApiary(), String.valueOf(beehive.getNumberBeehive()), String.valueOf(i)).toString();
+											startAlarm( path, QUEEN, colonyList.get(i).isQueen());										}
 									}
 								}
 							}
@@ -95,17 +110,20 @@ public class AlarmService  extends Service{
 
 
 
-	public void startAlarm(long time, int requestCode){
+	public void startAlarm(String pathNotifaction, String action, long time){
+
 		Intent intent = new Intent(this, TimeNotification.class);
-		intent.putExtra(TYPE_MESSAGE, requestCode);
-		mAlarmSender = PendingIntent.getBroadcast(this, requestCode, intent , 0);
-		mCalender.add(Calendar.SECOND, (int)time);
-		long firstTime = mCalender.getTimeInMillis();
-		// Schedule the alarm!
+		intent.putExtra(PATH_MESSAGE, pathNotifaction);
+
+
+		intent.setAction(action);
+		mAlarmSender = PendingIntent.getBroadcast(this, i, intent , PendingIntent.FLAG_CANCEL_CURRENT);
 
 		AlarmManager am = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-		am.set(AlarmManager.RTC_WAKEUP, firstTime, mAlarmSender);
+		am.set(AlarmManager.RTC_WAKEUP, time +20000, mAlarmSender);
 	}
+
+
 
 
 	@Nullable

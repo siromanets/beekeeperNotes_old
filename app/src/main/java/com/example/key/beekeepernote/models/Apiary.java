@@ -11,12 +11,20 @@ import java.util.List;
 
 @IgnoreExtraProperties
 public class Apiary implements Serializable {
+    public int uId;
     public String nameApiary;
     public String noteApiary;
     public String locationApiary;
     public List<Beehive> beehives;
 
     public Apiary() {
+    }
+    public int getuId() {
+        return uId;
+    }
+
+    public void setuId(int uId) {
+        this.uId = uId;
     }
 
     public String getNameApiary() {
