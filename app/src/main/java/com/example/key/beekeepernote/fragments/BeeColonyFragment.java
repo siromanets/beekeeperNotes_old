@@ -214,6 +214,8 @@ public class BeeColonyFragment extends Fragment{
         final EditText textReminder = (EditText)dialogView.findViewById(R.id.editTextReminder);
         final FloatingActionButton fabSendReminder = (FloatingActionButton)dialogView.findViewById(R.id.fabSendReminder);
 
+
+
         fabSendReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
