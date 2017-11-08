@@ -1,6 +1,8 @@
 package com.example.key.beekeepernote.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,9 +10,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.key.beekeepernote.R;
+import com.example.key.beekeepernote.activities.ActionActivity_;
+import com.example.key.beekeepernote.models.Beehive;
 import com.example.key.beekeepernote.models.Notifaction;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
+
+import static com.example.key.beekeepernote.adapters.RecyclerAdapter.COLONY_NUMBER;
+import static com.example.key.beekeepernote.adapters.RecyclerAdapter.NAME_APIARY;
+import static com.example.key.beekeepernote.adapters.RecyclerAdapter.USER_SELECTED_BEEHIVE;
 
 /**
  * Created by key on 04.11.17.
@@ -38,8 +51,36 @@ public NotifactionReciclerAdapter.NotifactionViewHolder onCreateViewHolder(final
 
         NotifactionViewHolder mHolder = new NotifactionViewHolder(mView, new NotifactionViewHolder.ClickListener() {
 @Override
-public void onPressed(int position, Notifaction routObject) {
-        if ( routObject != null) {
+public void onPressed(int position, Notifaction notifaction) {
+        if ( notifaction != null) {
+                Uri uri = Uri.parse(notifaction.getPathNotifaction());
+
+               final String apiaryName =  uri.getPathSegments().get(0);
+               int numberBeehive = Integer.parseInt(uri.getPathSegments().get(1));
+               final int numberColony =  Integer.parseInt(uri.getPathSegments().get(2));
+            FirebaseDatabase.getInstance().getReference()
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("apiary")
+                    .child(apiaryName).child("beehives").child(String.valueOf(numberBeehive - 1)).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                   Beehive beehive =  dataSnapshot.getValue(Beehive.class);
+                   if (beehive != null){
+                       Intent i = new Intent(context,  ActionActivity_.class);
+                       i.putExtra(NAME_APIARY, apiaryName);
+                       i.putExtra(USER_SELECTED_BEEHIVE, beehive);
+                       i.putExtra(COLONY_NUMBER, numberColony);
+                       context.startActivity(i);
+                   }
+                }
+
+
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
 
         }else{
 
@@ -47,7 +88,7 @@ public void onPressed(int position, Notifaction routObject) {
         }
 
 @Override
-public void onLongPressed(int position, Notifaction mRout, View view) {
+public void onLongPressed(int position, Notifaction notifaction, View view) {
         if (mMode > 1  ){
 
         /**
@@ -113,9 +154,9 @@ public static class NotifactionViewHolder extends RecyclerView.ViewHolder implem
     }
 
     interface ClickListener {
-        void onPressed(int position, Notifaction nameRout);
+        void onPressed(int position, Notifaction notifaction);
 
-        void onLongPressed(int position, Notifaction mRout, View view);
+        void onLongPressed(int position, Notifaction notifaction, View view);
     }
 }
 
