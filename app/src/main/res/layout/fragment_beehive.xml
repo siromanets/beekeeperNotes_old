@@ -110,7 +110,7 @@
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/buttonPlasForWorms"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="false"
                         android:layout_alignParentRight="true"
@@ -122,7 +122,7 @@
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/buttonMinusForWorms"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
@@ -162,7 +162,7 @@
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/buttonPlasForHoney"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="false"
                         android:layout_alignParentEnd="true"
@@ -175,7 +175,7 @@
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/buttonMinusForHoney"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentRight="true"
@@ -210,7 +210,7 @@
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/buttonAddFrame"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
@@ -222,7 +222,7 @@
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/buttonDellFrame"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"

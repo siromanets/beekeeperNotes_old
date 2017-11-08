@@ -33,7 +33,7 @@ android {
     buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.example.key.beekeepernote"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -90,6 +90,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     implementation 'com.jackandphantom.android:circularprogressbar:1.2.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.shawnlin:number-picker:2.4.4'
     implementation 'de.hdodenhof:circleimageview:2.1.0'
     testCompile 'junit:junit:4.12'
 }

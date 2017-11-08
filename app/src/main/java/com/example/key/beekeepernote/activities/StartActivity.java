@@ -24,6 +24,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -114,8 +116,6 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
     private ToolsListFragment mDialogFragment = null;
     private Calendar mCalendar;
     private String mUserUid;
-    @ViewById (R.id.buttonAddApiary)
-    Button buttonAddApiary;
 
     @ViewById(R.id.appBarlayout)
     AppBarLayout appBarLayout;
@@ -191,6 +191,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start1);
         setSupportActionBar(toolbar);
+        toolbar.showOverflowMenu();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -578,7 +579,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
             tabStrip.getChildAt(i).setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    showDeleteDialog(String.valueOf(tabLayout.getTabAt(v.getId()).getText()), v.getId());
+                    showDeleteApiaryDialog(String.valueOf(tabLayout.getTabAt(v.getId()).getText()), v.getId());
                     return true;
                 }
             });
@@ -586,35 +587,50 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
 
     }
 
-    private void showDeleteDialog(final String s, final int position) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("WARNING");
-        builder.setMessage("Do you want to delete " + s +" Apiary?" + "All data in this section will be lost forever" );
-        builder.setPositiveButton("YES",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        deleteApiary(s, position);
-                        dialog.cancel();
-                    }
-                });
-        builder.setNegativeButton("NO",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        if (mDialogFragment != null) {
-                            getSupportFragmentManager()
-                                    .beginTransaction().
-                                    remove(mDialogFragment).commit();
-                            mDialogFragment.dismiss();
-                            mDialogFragment = null;
-                            multiSelectMode = false;
-                            loadDataSnapshotApiary(mDataSnapshot);
+    private void showDeleteApiaryDialog(final String s, final int position) {
+        if (position > 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("WARNING");
+            builder.setMessage("Do you want to delete " + s + " Apiary?" + "All data in this section will be lost forever");
+            builder.setPositiveButton("YES",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            deleteApiary(s, position);
+                            dialog.cancel();
                         }
-                    }
-                });
+                    });
+            builder.setNegativeButton("NO",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            if (mDialogFragment != null) {
+                                getSupportFragmentManager()
+                                        .beginTransaction().
+                                        remove(mDialogFragment).commit();
+                                mDialogFragment.dismiss();
+                                mDialogFragment = null;
+                                multiSelectMode = false;
+                                loadDataSnapshotApiary(mDataSnapshot);
+                            }
+                        }
+                    });
 
-        alertDialog = builder.create();
-        alertDialog.show();
+            alertDialog = builder.create();
+            alertDialog.show();
+        }else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Action");
+            builder.setMessage("You can not delete history page");
+            builder.setPositiveButton("YES",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+            alertDialog = builder.create();
+            alertDialog.show();
+        }
     }
 
     private void deleteApiary(String name, final int position) {
@@ -630,8 +646,8 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    @Click(R.id. buttonAddApiary)
-    void buttonAddApiaryWasClicked(){
+
+    void createApiaryDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("NEW APIARY");
         builder.setMessage("Please, Enter name and count beehive Apiary");
@@ -694,7 +710,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
             beeColony.setNoteBeeColony("ffd");
             beeColony.setOutput("ff");
             beeColony.setQueen(mCalendar.getTime().getTime());
-            beeColony.setRiskOfSwaddling(mCalendar.getTime().getTime());
+            beeColony.setTimeReminder(mCalendar.getTime().getTime());
             beeColony.setWorm(mCalendar.getTime().getTime());
             beeColony.setCheckedTime(mCalendar.getTime().getTime());
             beeColony.setBeeEmptyFrame(5);
@@ -793,7 +809,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Apiary apiary = dataSnapshot.getValue(Apiary.class);
                 if (apiary.getBeehives().size() == deletedBeehives.size()) {
-                    showDeleteDialog(nameApiary, tabLayout.getSelectedTabPosition() );
+                    showDeleteApiaryDialog(nameApiary, tabLayout.getSelectedTabPosition() );
 
                 } else {
                     if (deletedBeehives.size() != 0) {
@@ -827,6 +843,26 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionNewApiary:
+                createApiaryDialog();
+                return true;
+            case R.id.actionDelete:
+                showDeleteApiaryDialog(String.valueOf(tabLayout.getTabAt(tabLayout.getSelectedTabPosition()).getText()), tabLayout.getSelectedTabPosition());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

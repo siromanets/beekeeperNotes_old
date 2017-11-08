@@ -33,6 +33,7 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 
     public static final String USER_SELECTED_BEEHIVE = "user_selected_beehive" ;
     public static final String NAME_APIARY = "name_apiary" ;
+    public static final String COLONY_NUMBER = "colony_number";
     private List<Beehive> mBeehiveList;
     private int selectMode;
     public String nameApiary;

@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class BeeColony implements Serializable {
     public long queen;
     public long worm;
-    public long riskOfSwaddling;
+    public long timeReminder;
     public boolean haveFood;
     public String noteBeeColony;
     public String output;
@@ -54,12 +54,12 @@ public class BeeColony implements Serializable {
         this.worm = worm;
     }
 
-    public long isRiskOfSwaddling() {
-        return riskOfSwaddling;
+    public long getTimeReminder() {
+        return timeReminder;
     }
 
-    public void setRiskOfSwaddling(long riskOfSwaddling) {
-        this.riskOfSwaddling = riskOfSwaddling;
+    public void setTimeReminder(long timeReminder) {
+        this.timeReminder = timeReminder;
     }
 
     public boolean isHaveFood() {

@@ -13,6 +13,7 @@ import com.example.key.beekeepernote.models.Apiary;
 import com.example.key.beekeepernote.models.BeeColony;
 import com.example.key.beekeepernote.models.Beehive;
 import com.example.key.beekeepernote.models.Notifaction;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,6 +23,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.List;
+
+import static com.example.key.beekeepernote.fragments.BeeColonyFragment.CHECKING_CONSTANT_NUMBER;
+import static com.example.key.beekeepernote.fragments.BeeColonyFragment.NOTATION_CONSTANT_NUMBER;
+import static com.example.key.beekeepernote.fragments.BeeColonyFragment.QUEEN_CONSTANT_NUMBER;
 
 /**
  * Created by key on 24.09.17.
@@ -44,7 +49,7 @@ public class AlarmService  extends Service{
 	private PendingIntent mAlarmSender;
 	private Calendar mCalender;
 	FirebaseDatabase database;
-	private Integer i;
+	private int unId;
 
 
 	@Override
@@ -61,7 +66,7 @@ public class AlarmService  extends Service{
 
 		}else if (intent.getSerializableExtra(TO_SERVICE_COMMANDS) != null){
 			Notifaction notifaction = (Notifaction) intent.getSerializableExtra(TO_SERVICE_COMMANDS);
-			 i = new Integer(notifaction.getuId()) ;
+			 unId = new Integer(notifaction.getuId()) ;
 			startAlarm(notifaction.getPathNotifaction(), notifaction.getTypeNotifaction(), notifaction.getSchowTime());
 		}
 
@@ -70,7 +75,7 @@ public class AlarmService  extends Service{
 
 	private void refreshAlarm() {
 		DatabaseReference myRef = database.getReference();
-		Query myApiaries = myRef.child("apiary");
+		Query myApiaries = myRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("apiary");
 		myApiaries.addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
@@ -78,26 +83,36 @@ public class AlarmService  extends Service{
 					for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
 						Apiary apiary = postSnapshot.getValue(Apiary.class);
 						if (apiary != null) {
-							for(int i = 0; i < apiary.getBeehives().size(); i++){
+							for (int i = 0; i < apiary.getBeehives().size(); i++) {
 								Beehive beehive = apiary.getBeehives().get(i);
-								List<BeeColony> colonyList =  apiary.getBeehives().get(i).getBeeColonies();
+								List<BeeColony> colonyList = apiary.getBeehives().get(i).getBeeColonies();
 								if (colonyList.size() > 0) {
 									for (int c = 0; c < colonyList.size(); c++) {
-										if (colonyList.get(i).getCheckedTime() > mCalender.getTime().getTime()) {
-											String path = Uri.fromParts(apiary.getNameApiary(), String.valueOf(beehive.getNumberBeehive()), String.valueOf(i)).toString();
-											startAlarm( path, CHECKING, colonyList.get(i).getCheckedTime());
+
+										if (colonyList.get(c).getCheckedTime() + (11 * 24 * 60 * 60 * 1000) > Calendar.getInstance().getTime().getTime()) {
+											unId = (int) beehive.getFounded() / beehive.getNumberBeehive() / (c + 1) / CHECKING_CONSTANT_NUMBER;
+											String path = new Uri.Builder().appendPath(apiary.getNameApiary()).appendPath(String.valueOf(beehive.getNumberBeehive())).appendPath(String.valueOf(i)).build().toString();
+											startAlarm(path, CHECKING, colonyList.get(c).getCheckedTime());
 										}
-										if (colonyList.get(i).isQueen() > mCalender.getTime().getTime()) {
-											String path = Uri.fromParts(apiary.getNameApiary(), String.valueOf(beehive.getNumberBeehive()), String.valueOf(i)).toString();
-											startAlarm( path, QUEEN, colonyList.get(i).isQueen());										}
+										if (colonyList.get(c).isQueen() + (11 * 24 * 60 * 60 * 1000) >Calendar.getInstance().getTime().getTime()) {
+											unId = (int) beehive.getFounded() / beehive.getNumberBeehive() / (c + 1) / QUEEN_CONSTANT_NUMBER;
+											String path = new Uri.Builder().appendPath(apiary.getNameApiary()).appendPath(String.valueOf(beehive.getNumberBeehive())).appendPath(String.valueOf(i)).build().toString();
+											startAlarm(path, QUEEN, colonyList.get(c).isQueen());
+										}
+										if (colonyList.get(c).getTimeReminder() > Calendar.getInstance().getTime().getTime()) {
+											unId = (int) beehive.getFounded() / beehive.getNumberBeehive() / (c + 1) / NOTATION_CONSTANT_NUMBER;
+											String path = new Uri.Builder().appendPath(apiary.getNameApiary()).appendPath(String.valueOf(beehive.getNumberBeehive())).appendPath(String.valueOf(i)).build().toString();
+											startAlarm(path, NOTATION, colonyList.get(c).getCheckedTime());
+
+										}
 									}
 								}
 							}
+
 						}
-
 					}
-				}
 
+				}
 			}
 
 			@Override
@@ -117,10 +132,24 @@ public class AlarmService  extends Service{
 
 
 		intent.setAction(action);
-		mAlarmSender = PendingIntent.getBroadcast(this, i, intent , PendingIntent.FLAG_CANCEL_CURRENT);
-
-		AlarmManager am = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-		am.set(AlarmManager.RTC_WAKEUP, time +20000, mAlarmSender);
+		mAlarmSender = PendingIntent.getBroadcast(this, unId, intent , PendingIntent.FLAG_CANCEL_CURRENT);
+		switch (action) {
+			case CHECKING: {
+				AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+				am.set(AlarmManager.RTC_WAKEUP, time + 20000 , mAlarmSender);
+				break;
+			}
+			case QUEEN: {
+				AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+				am.set(AlarmManager.RTC_WAKEUP, time + 20000, mAlarmSender);
+				break;
+			}
+			case NOTATION: {
+				AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+				am.set(AlarmManager.RTC_WAKEUP, time, mAlarmSender);
+				break;
+			}
+		}
 	}
 
 

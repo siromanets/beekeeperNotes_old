@@ -1,25 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/notificationContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textNameNot"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="150dp"
+        android:elevation="2dp"
+        app:cardBackgroundColor="@android:color/holo_orange_light"
+        app:cardCornerRadius="4dp">
 
-    <TextView
-        android:id="@+id/textTitleNote"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:background="@android:color/transparent"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textPathNot"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+            <TextView
+                android:id="@+id/textNameNot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="Name"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/textTitleNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="title"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textPathNot"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="TextView" />
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.NotificationCompat;
+import android.widget.Toast;
 
 import com.example.key.beekeepernote.R;
 import com.example.key.beekeepernote.activities.StartActivity_;
@@ -23,6 +24,8 @@ import static com.example.key.beekeepernote.utils.AlarmService.CHECKING;
 import static com.example.key.beekeepernote.utils.AlarmService.NOTATION;
 import static com.example.key.beekeepernote.utils.AlarmService.PATH_MESSAGE;
 import static com.example.key.beekeepernote.utils.AlarmService.QUEEN;
+import static com.example.key.beekeepernote.utils.AlarmService.REFRESH_ALARM;
+import static com.example.key.beekeepernote.utils.AlarmService.TO_SERVICE_COMMANDS;
 
 /**
  * Created by key on 24.09.17.
@@ -32,6 +35,10 @@ public class TimeNotification extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+			Toast.makeText(context.getApplicationContext(), "sssssssss", Toast.LENGTH_SHORT).show();
+			Intent i = new Intent(context.getApplicationContext(), AlarmService.class);
+			i.putExtra(TO_SERVICE_COMMANDS, REFRESH_ALARM);
+			context.getApplicationContext().startService(i);
 
 		}else if (intent.getAction().equals(QUEEN)) {
 			if (intent.getStringExtra(PATH_MESSAGE) != null) {
@@ -59,7 +66,7 @@ public class TimeNotification extends BroadcastReceiver {
 					// Send the notification.
 					// We use a layout id because it is a unique number. We use it later to cancel.
 
-					int i = (int)Math.round(Math.random());
+					int i = (int)Math.round(Math.random() * 1000);
 					mNM.notify(i, notification);
 				Notifaction notifaction = new Notifaction();
 				notifaction.setTypeNotifaction(QUEEN);
@@ -99,7 +106,8 @@ public class TimeNotification extends BroadcastReceiver {
 				// Set the info for the views that show in the notification panel.
 				// Send the notification.
 				// We use a layout id because it is a unique number. We use it later to cancel.
-				mNM.notify((int)Math.round(Math.random()), notification);
+				int r = (int)Math.round(Math.random()*1000);
+				mNM.notify(r, notification);
 
 
 				Notifaction notifaction = new Notifaction();
@@ -140,6 +148,7 @@ public class TimeNotification extends BroadcastReceiver {
 				// Set the info for the views that show in the notification panel.
 				// Send the notification.
 				// We use a layout id because it is a unique number. We use it later to cancel.
+				int r = (int)Math.round(Math.random() * 1000);
 				mNM.notify((int)Math.round(Math.random()), notification);
 
 

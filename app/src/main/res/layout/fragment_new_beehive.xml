@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,51 +8,27 @@
     tools:context="com.example.key.beekeepernote.fragments.NewBeehiveFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="5dp"
-        android:layout_weight="1"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:text="Serial number Beehive"
-        android:textSize="18sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="5dp"
-        android:layout_marginLeft="70dp"
-        android:layout_marginRight="70dp"
-        android:layout_weight="1"
+        android:layout_height="90dp"
+        android:layout_margin="20dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/buttonMinusSerialNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="-" />
-
-        <TextView
-            android:id="@+id/textViewSerialNumber"
+        <com.shawnlin.numberpicker.NumberPicker
+            android:id="@+id/number_picker"
+            style="@android:style/Widget.Material.NumberPicker"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="0" />
+            android:layout_centerInParent="true"
 
-        <Button
-            android:id="@+id/buttonPlasSerialNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="+" />
+            android:background="@color/colorPrimary"
+            app:np_dividerColor="@color/cardview_light_background"
+            app:np_dividerThickness="3dp"
+            app:np_height="90dp"
+            app:np_orientation="horizontal"
+            app:np_selectedTextColor="@color/colorAccent"
+            app:np_textColor="@color/cardview_light_background"
+            app:np_width="150dp" />
     </LinearLayout>
 
     <TextView
@@ -125,33 +102,8 @@
             android:text="TWO" />
     </RadioGroup>
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_weight="1"
-        android:background="@color/colorPrimary"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="NOTES"
-        android:textSize="18sp" />
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_weight="1">
-
-        <EditText
-            android:id="@+id/editTextNotes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="hint" />
-    </android.support.design.widget.TextInputLayout>
-
     <Button
-        android:id="@+id/createNewBehive"
+        android:id="@+id/buttonCreateNewBehive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
