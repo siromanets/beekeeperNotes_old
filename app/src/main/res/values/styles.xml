@@ -2,6 +2,8 @@
 
     <style name="MyMaterialTheme" parent="MyMaterialTheme.Base">
 
+        <item name="android:colorBackground">@android:color/holo_blue_light</item>
+        <item name="android:colorForeground">@android:color/holo_blue_dark</item>
     </style>
 
     <style name="MyMaterialTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -640,8 +640,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
             adapter.notifyDataSetChanged();
             mSelectMode = 0;
             multiSelectMode = false;
-            myRef.child("apiary").child(name).removeValue();
-
+            myRef.child(mUserUid).child("apiary").child(name).removeValue();
             Toast.makeText(StartActivity.this, "Apiary was delete", Toast.LENGTH_SHORT).show();
         }
     }
