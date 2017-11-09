@@ -5,6 +5,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.key.beekeepernote.R;
 import com.example.key.beekeepernote.adapters.ViewPagerAdapter;
@@ -16,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.Calendar;
 import java.util.List;
@@ -28,7 +31,6 @@ import static com.example.key.beekeepernote.adapters.RecyclerAdapter.USER_SELECT
 @EActivity
 public class ActionActivity extends AppCompatActivity {
     Beehive beehive;
-    Toolbar toolbar;
     Calendar mCalendar;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -39,6 +41,9 @@ public class ActionActivity extends AppCompatActivity {
             R.drawable.ic_beehive_right,
             R.drawable.ic_beehive_one
     };
+
+    @ViewById(R.id.toolbarActionActivity)
+    Toolbar toolbar;
     private FirebaseUser mCurUseer;
     private int mColonyNumber;
 
@@ -46,12 +51,9 @@ public class ActionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbarActionActivity);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        toolbar.showOverflowMenu();
         viewPager = (ViewPager) findViewById(R.id.viewpagerActionActivity);
 
         tabLayout = (TabLayout) findViewById(R.id.tabsActionActivity);
@@ -76,6 +78,26 @@ public class ActionActivity extends AppCompatActivity {
         }
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons(beeColonyList.size());
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_action_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.actionNewColony:
+                //todo
+                return true;
+            case R.id.actionDeleteColony:
+                //todo
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setupTabIcons(int count) {

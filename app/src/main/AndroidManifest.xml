@@ -21,30 +21,19 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
-        <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".activities.StartActivity_">
+        <activity android:name=".activities.StartActivity_"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:parentActivityName=".activities.StartActivity_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ActionActivity_" />
-
+        <activity android:name=".activities.ActionActivity_"
+            android:parentActivityName=".activities.StartActivity_">
+        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="3cd4e2115409f973dd60f7e2d226f5e282e78129" />
@@ -61,9 +50,7 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".activities.LoginActivity_"
-            android:label="@string/title_activity_login" />
+
         <activity android:name=".activities.ResetPasswordActivity_" />
         <activity android:name=".activities.SignupActivity_"></activity>
 
