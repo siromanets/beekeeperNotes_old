@@ -34,6 +34,12 @@
         <activity android:name=".activities.ActionActivity_"
             android:parentActivityName=".activities.StartActivity_">
         </activity>
+        <activity android:name=".activities.ResetPasswordActivity_"
+            android:parentActivityName=".activities.StartActivity_">
+        </activity>
+        <activity android:name=".activities.SignupActivity_"
+            android:parentActivityName=".activities.StartActivity_">
+        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="3cd4e2115409f973dd60f7e2d226f5e282e78129" />
@@ -49,11 +55,6 @@
                 <action android:name="com.example.key.beekeepernote.action.HISTORY"></action>
             </intent-filter>
         </receiver>
-
-
-        <activity android:name=".activities.ResetPasswordActivity_" />
-        <activity android:name=".activities.SignupActivity_"></activity>
-
         <service
             android:enabled="true"
             android:name=".utils.AlarmService">
