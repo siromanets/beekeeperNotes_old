@@ -181,7 +181,7 @@ alertDialog = builder.create();
     private void saveBeehive(Beehive mBeehive, Apiary apiary) {
         apiary.getBeehives().add(mBeehive.getNumberBeehive() - 1, mBeehive);
         for (int i = 0; i < apiary.getBeehives().size(); i ++ ){
-            apiary.getBeehives().get(i).setNumberBeehive(i - 1);
+            apiary.getBeehives().get(i).setNumberBeehive(i);
         }
         FirebaseDatabase.getInstance().getReference().child(FirebaseAuth.getInstance()
                 .getCurrentUser().getUid()).child("apiary").child(apiary.getNameApiary())
