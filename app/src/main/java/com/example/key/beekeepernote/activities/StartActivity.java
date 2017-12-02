@@ -6,24 +6,28 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,21 +35,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.key.beekeepernote.R;
+import com.example.key.beekeepernote.adapters.RecyclerAdapter;
 import com.example.key.beekeepernote.adapters.ViewPagerAdapter;
 import com.example.key.beekeepernote.fragments.ApiaryFragment;
+import com.example.key.beekeepernote.fragments.ApiaryFragment_;
 import com.example.key.beekeepernote.fragments.HistoryFragment;
-import com.example.key.beekeepernote.fragments.ToolsListFragment;
-import com.example.key.beekeepernote.fragments.ToolsListFragment_;
 import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.models.Apiary;
 import com.example.key.beekeepernote.models.BeeColony;
 import com.example.key.beekeepernote.models.Beehive;
 import com.example.key.beekeepernote.models.Notifaction;
+import com.example.key.beekeepernote.utils.ToolbarActionModeCallback;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
@@ -78,6 +84,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.shawnlin.numberpicker.NumberPicker;
 
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -86,7 +93,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -95,6 +101,8 @@ import static android.Manifest.permission.RECEIVE_BOOT_COMPLETED;
 import static android.Manifest.permission.VIBRATE;
 import static android.Manifest.permission.WAKE_LOCK;
 import static com.example.key.beekeepernote.fragments.ApiaryFragment.DADAN;
+import static com.example.key.beekeepernote.fragments.ApiaryFragment.UKRAINIAN;
+import static com.example.key.beekeepernote.utils.AlarmService.HISTORY_INT;
 
 @EActivity
 public class StartActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, Communicator {
@@ -106,19 +114,21 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
     private static final String STATE_PAGE_NUMBER = "start_page_number";
     public AlertDialog alertDialog;
     public  DatabaseReference myRef;
-    private ViewPagerAdapter adapter;
+    private ViewPagerAdapter pagerAdapter;
     private int mNumberBeehiveInt = 0;
     private int startPageNumber = 0;
     private int pasteSettingsChecker;
 	private int mSelectMode = 0;
     private boolean multiSelectMode = false;
     private DataSnapshot mDataSnapshot;
-    private ToolsListFragment mDialogFragment = null;
+    private ToolbarActionModeCallback toolbarActionModeCallback = null;
     private Calendar mCalendar;
     private String mUserUid;
 
     @ViewById(R.id.appBarlayout)
     AppBarLayout appBarLayout;
+    @ViewById(R.id.buttonAddNewBeehive)
+    FloatingActionButton buttonAddNewBeehive;
 
     private int position;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -172,6 +182,11 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
 
     ActionBarDrawerToggle actionBarDrawerToggle;
     private ArrayList<Notifaction> notifactionList = new ArrayList<Notifaction>();
+    private List<Apiary> apiaries = new ArrayList<>();
+    private int mTypeBeehive;
+    private int mQuantityOfColonies;
+    private Menu mOptionMenu;
+    private ActionMode mActionMode;
 
     @Override
     protected void onStart() {
@@ -213,37 +228,22 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
             }
         };
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-              if (tab.getPosition() > 0) {
-                  startPageNumber = tab.getPosition();
-
-              }
-            }
-
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                if (mDialogFragment != null && !multiSelectMode){
-                    mDialogFragment.dismiss();
-                    mDialogFragment = null;
-                    multiSelectMode = false;
-                    loadDataSnapshotApiary(mDataSnapshot);
-                    Toast.makeText(StartActivity.this, "Ви не можете вибирати одразу в обох вкладках", Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
             checkCurentUser();
             checkAllPermission();
 
+
+    }
+
+    private void setupActionView(int tabPos) {
+       if( tabPos > 0){
+           buttonAddNewBeehive.setVisibility(View.VISIBLE);
+           mOptionMenu.findItem(R.id.actionDelete).setVisible(true);
+           mOptionMenu.findItem(R.id.actionNewApiary).setVisible(true);
+       }else {
+           buttonAddNewBeehive.setVisibility(View.GONE);
+           mOptionMenu.findItem(R.id.actionDelete).setVisible(false);
+           mOptionMenu.findItem(R.id.actionNewApiary).setVisible(false);
+       }
 
     }
 
@@ -527,29 +527,43 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
        tabLayout.getTabCount();
         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
             Apiary apiary = postSnapshot.getValue(Apiary.class);
+            if (apiaries.size() == 0) {
+                apiaries. add(apiary);
+            }else{
+                boolean alrediExist = false;
+                for(int i = 0; i < apiaries.size(); i++){
+                    if (apiaries.get(i).getNameApiary().equals(apiary.getNameApiary())){
+                        apiaries.set(i, apiary);
+                        alrediExist = true;
+                    }
+                }
+                if (!alrediExist){
+                    apiaries.add(apiary);
+                }
+            }
 	       if ( tabLayout.getTabCount() > 1 ) {
                 if (alreadyExist(apiary.nameApiary)) {
-                    ApiaryFragment apu = (ApiaryFragment) adapter.getItem(position);
+                    ApiaryFragment apu = (ApiaryFragment) pagerAdapter.getItem(position);
                     apu.setData(apiary, mSelectMode);
                 }else{
-                    ApiaryFragment apiaryFragment = new ApiaryFragment();
-                    adapter.addFragment(apiaryFragment, apiary.getNameApiary());
-                    int id = adapter.getItemPosition(apiaryFragment);
-                    apiaryFragment.setData(apiary, mSelectMode);
-                    adapter.notifyDataSetChanged();
+                    ApiaryFragment apiaryFragment = new ApiaryFragment_().builder()
+                            .apiary(apiary)
+                            .build();
+                    pagerAdapter.addFragment(apiaryFragment, apiary.getNameApiary());
+                    pagerAdapter.notifyDataSetChanged();
                 }
 	       }else {
-		       ApiaryFragment apiaryFragment = new ApiaryFragment();
-		       adapter.addFragment(apiaryFragment, apiary.getNameApiary());
-		       int id = adapter.getItemPosition(apiaryFragment);
-		       apiaryFragment.setData(apiary, mSelectMode);
-               adapter.notifyDataSetChanged();
+		       ApiaryFragment apiaryFragment = new ApiaryFragment_().builder()
+                       .apiary(apiary)
+                       .build();
+		       pagerAdapter.addFragment(apiaryFragment, apiary.getNameApiary());
+               pagerAdapter.notifyDataSetChanged();
 	       }
 
         }
 
        if (viewPager.getAdapter() == null) {
-	       viewPager.setAdapter(adapter);
+	       viewPager.setAdapter(pagerAdapter);
        }
        addOnLongClickListener();
         viewPager.setCurrentItem(startPageNumber);
@@ -558,9 +572,9 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
 
     private boolean alreadyExist(String name) {
         boolean isExist = false;
-        if (adapter != null) {
-            for (int i = 0; i < adapter.getCount(); i++) {
-                if (name.equals(adapter.getPageTitle(i).toString())) {
+        if (pagerAdapter != null) {
+            for (int i = 0; i < pagerAdapter.getCount(); i++) {
+                if (name.equals(pagerAdapter.getPageTitle(i).toString())) {
                     isExist = true;
                     position = i;
                     break;
@@ -603,15 +617,15 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            if (mDialogFragment != null) {
+                    /**        if (toolbarActionModeCallback != null) {
                                 getSupportFragmentManager()
                                         .beginTransaction().
-                                        remove(mDialogFragment).commit();
-                                mDialogFragment.dismiss();
-                                mDialogFragment = null;
+                                        remove(toolbarActionModeCallback).commit();
+                                toolbarActionModeCallback.dismiss();
+                                toolbarActionModeCallback = null;
                                 multiSelectMode = false;
                                 loadDataSnapshotApiary(mDataSnapshot);
-                            }
+                            }*/
                         }
                     });
 
@@ -636,8 +650,8 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
     private void deleteApiary(String name, final int position) {
         if (tabLayout.getTabCount() >= 1 && position < tabLayout.getTabCount() && position != 0) {
            // tabLayout.removeTabAt(position);
-            adapter.deleteFragment(position);
-            adapter.notifyDataSetChanged();
+            pagerAdapter.deleteFragment(position);
+            pagerAdapter.notifyDataSetChanged();
             mSelectMode = 0;
             multiSelectMode = false;
             myRef.child(mUserUid).child("apiary").child(name).removeValue();
@@ -735,7 +749,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
 
 
             Apiary apiary = new Apiary();
-            apiary.setuId((int)Math.random());
+            apiary.setuId((int)Math.round(Math.random()*1000));
             apiary.setLocationApiary("flfsdldlk");
             apiary.setNameApiary(name);
             apiary.setNoteApiary("kdslfsdlk");
@@ -747,15 +761,33 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
             notifaction.setTextNotifaction("you did create new Apiary " + apiary.getNameApiary()+ "with " + beehiveList.size() + "beehives");
             notifaction.setuId(apiary.getuId());
             notifaction.setSchowTime(Calendar.getInstance().getTime().getTime());
-            notifaction.setPathNotifaction("apiary");
-            notifaction.setTypeNotifaction("");
-
-            myRef.child(mUserUid).child("history").child(String.valueOf(Calendar.getInstance().getTime().getTime())).setValue(notifaction);
+            notifaction.setPathNotifaction(new Uri.Builder().appendPath(apiary.getNameApiary()).build().toString());
+            notifaction.setTypeNotifaction(HISTORY_INT);
+            myRef.child(mUserUid).child("history").child(String.valueOf(notifaction.getSchowTime())).setValue(notifaction);
 
 
         }
     }
+    private void addBeehive(Beehive mBeehive, Apiary apiary) {
+        apiary.getBeehives().add(mBeehive.getNumberBeehive() - 1, mBeehive);
+        for (int i = 0; i < apiary.getBeehives().size(); i ++ ){
+            apiary.getBeehives().get(i).setNumberBeehive(i + 1);
+        }
+        FirebaseDatabase.getInstance().getReference().child(FirebaseAuth.getInstance()
+                .getCurrentUser().getUid()).child("apiary").child(apiary.getNameApiary())
+                .setValue(apiary);
+        Notifaction notifaction = new Notifaction();
+        notifaction.setNameNotifaction("Created Beehive");
+        notifaction.setTextNotifaction("you did create new Beehive № " + mBeehive.getNumberBeehive() + "in Apiary  " + apiary.getNameApiary());
+        notifaction.setuId(apiary.getuId());
+        notifaction.setSchowTime(Calendar.getInstance().getTime().getTime());
+        notifaction.setPathNotifaction(new Uri.Builder().appendPath(apiary.getNameApiary()).appendPath(String.valueOf(mBeehive.getNumberBeehive() - 1)).build().toString());
+        notifaction.setTypeNotifaction(HISTORY_INT);
+        myRef.child(mUserUid).child("history").child(String.valueOf(notifaction.getSchowTime())).setValue(notifaction);
 
+
+
+    }
 
     @Override
     public void saveBeehive(Beehive beehive, String nameApiary) {
@@ -765,56 +797,64 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
 
 
     @Override
-    public void setDataForTools(Beehive beehive, View view, String nameApiary) {
-        if (mDialogFragment == null) {
-            FragmentManager fm = getSupportFragmentManager();
-            mDialogFragment = new ToolsListFragment_();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = fm
+    public android.support.v7.view.ActionMode setDataForTools(final RecyclerAdapter recyclerAdapter, final List<Beehive> beehiveList, final Beehive itemBeehive, final String nameApiary, final int mode) {
 
-                    .beginTransaction();
-            fragmentTransaction.add(R.id.containerForToolsGroup, mDialogFragment);
-            fragmentTransaction.commit();
-            mDialogFragment.setData(beehive, view, nameApiary);
-        }else {
-            mDialogFragment.setData(beehive, view, nameApiary);
+        if (toolbarActionModeCallback == null && mode == 1) {
+            toolbarActionModeCallback = new ToolbarActionModeCallback(StartActivity.this, recyclerAdapter, beehiveList, nameApiary, 1);
+            mActionMode = ((AppCompatActivity) StartActivity.this).startSupportActionMode(toolbarActionModeCallback);
+            return mActionMode;
+        }else if(toolbarActionModeCallback != null && mode == 1){
+            toolbarActionModeCallback.setData(recyclerAdapter, beehiveList, itemBeehive, nameApiary, 1);
+            return mActionMode;
+        }else if (toolbarActionModeCallback != null && mode == 2){
+                toolbarActionModeCallback.setData(recyclerAdapter, beehiveList, itemBeehive, nameApiary, 1);
+                return mActionMode;
+        }else{
+            return null;
         }
-
     }
 
     @Override
     public void selectAll() {
         multiSelectMode = true;
         loadDataSnapshotApiary(mDataSnapshot);
-        ApiaryFragment fr = (ApiaryFragment) adapter.getItem(tabLayout.getSelectedTabPosition());
+        ApiaryFragment fr = (ApiaryFragment) pagerAdapter.getItem(tabLayout.getSelectedTabPosition());
         fr.selectMode(MODE_SELECT_ALL);
 
     }
 
     @Override
-    public void multiSelectMod() {
-        multiSelectMode = true;
-	    mSelectMode = 2;
+    public void moveTabTo(String nameApiary, int numberBeehive) {
+        if ( tabLayout.getTabCount() > 1 ) {
+            if (alreadyExist(nameApiary)) {
+              tabLayout.getTabAt(position).select();
+              if (numberBeehive != -1) {
+                  ApiaryFragment apu = (ApiaryFragment) pagerAdapter.getItem(position);
+                  apu.showItem(numberBeehive);
+              }
+            }else{
+                //todo need show dialog  about this apiary is not exist any more and do not show this notification any more
+            }
+        }
 
     }
 
     @Override
-    public void deleteBeehive( Set<Beehive> beehives, final String nameApiary, final boolean refreshBeehivesListItem) {
+    public void deleteBeehive( final List<Beehive> beehives, final String nameApiary, final boolean refreshBeehivesListItem) {
 
-       final List<Beehive> deletedBeehives = new ArrayList<Beehive>() {};
-        deletedBeehives.addAll(beehives);
-        Query apiary = myRef.child("apiary").child(nameApiary);
+        Query apiary = myRef.child(mUserUid).child("apiary").child(nameApiary);
         apiary.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Apiary apiary = dataSnapshot.getValue(Apiary.class);
-                if (apiary.getBeehives().size() == deletedBeehives.size()) {
+                if (apiary.getBeehives().size() == beehives.size()) {
                     showDeleteApiaryDialog(nameApiary, tabLayout.getSelectedTabPosition() );
 
                 } else {
-                    if (deletedBeehives.size() != 0) {
+                    if (beehives.size() != 0) {
                         int numberDeletedBeehives = 0;
-                        for (int numberBeehivesInDatabase = 0; numberDeletedBeehives < deletedBeehives.size(); numberBeehivesInDatabase++) {
-                            if (deletedBeehives.get(numberDeletedBeehives).getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()) {
+                        for (int numberBeehivesInDatabase = 0; numberDeletedBeehives < beehives.size(); numberBeehivesInDatabase++) {
+                            if (beehives.get(numberDeletedBeehives).getNumberBeehive() == apiary.getBeehives().get(numberBeehivesInDatabase).getNumberBeehive()) {
                                 apiary.getBeehives().remove(numberBeehivesInDatabase);
                                 numberDeletedBeehives++;
                                 numberBeehivesInDatabase = -1;
@@ -827,12 +867,13 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
                         apiary.getBeehives().get(a).setNumberBeehive(a + 1);
 
                     }
-                    myRef.child("apiary").child(nameApiary).setValue(apiary);
+                    myRef.child(mUserUid).child("apiary").child(nameApiary).setValue(apiary);
+                    toolbarActionModeCallback = null;
                     if (refreshBeehivesListItem) {
                         mSelectMode = 2;
                         multiSelectMode = true;
                     } else {
-                        mDialogFragment = null;
+                      //  toolbarActionModeCallback = null;
                     }
                 }
             }
@@ -847,6 +888,35 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        mOptionMenu = menu;
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                setupActionView(tab.getPosition());
+                if (tab.getPosition() > 0) {
+                    startPageNumber = tab.getPosition();
+                }
+            }
+
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+             /**   if (mActionMode != null && !multiSelectMode){
+                    mActionMode.finish();
+                    mActionMode = null;
+                    multiSelectMode = false;
+                    loadDataSnapshotApiary(mDataSnapshot);
+                    Toast.makeText(StartActivity.this, "Ви не можете вибирати одразу в обох вкладках", Toast.LENGTH_SHORT).show();
+
+                }*/
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
         return true;
     }
 
@@ -865,10 +935,10 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     @Override
-    public void moveBeehive(final Set<Beehive> moveBeehives, final Beehive itemBeehive,
+    public void moveBeehive(final List<Beehive> moveBeehives, final Beehive itemBeehive,
                             final String fromWhichApiary, final String inWhichApiary, final boolean inFront) {
 
-            Query apiary = myRef.child("apiary").child(inWhichApiary);
+            Query apiary = myRef.child(mUserUid).child("apiary").child(inWhichApiary);
             apiary.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -891,7 +961,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
                         beehives.get(a).setNumberBeehive(a + 1);
                     }
                     apiaryInWhich.setBeehives(beehives);
-                    myRef.child("apiary").child(inWhichApiary).setValue(apiaryInWhich);
+                    myRef.child(mUserUid).child("apiary").child(inWhichApiary).setValue(apiaryInWhich);
                 }
 
 
@@ -901,17 +971,105 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
             });
 	    mSelectMode = 0;
         multiSelectMode = false;
-        mDialogFragment = null;
+        //toolbarActionModeCallback = null;
+        toolbarActionModeCallback.onDestroyActionMode(mActionMode);
     }
 
+    @Click(R.id.buttonAddNewBeehive)
+    public void buttonAddNewBeehiveWasClicked(){
+        showDialogNewBeehive();
+    }
+
+    private void showDialogNewBeehive() {
+
+       AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("New Beehive");
+        LayoutInflater inflater = StartActivity.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.fragment_new_beehive, null);
+        builder.setView(dialogView);
+        final RadioGroup radiogroupTypeBeehive = (RadioGroup) dialogView.findViewById(R.id.radiogroupTypebeehive);
+        final RadioGroup radiogroupQuantityColonies = (RadioGroup) dialogView.findViewById(R.id.radiogroupQuantityColonies);
+        final Button createNewBeehive = (Button) dialogView.findViewById(R.id.buttonCreateNewBehive);
+        final NumberPicker numberPicker = (NumberPicker) dialogView.findViewById(R.id.number_picker);
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(apiaries.get(tabLayout.getSelectedTabPosition() - 1).getBeehives().size() + 1);
+        numberPicker.setValue(apiaries.get(tabLayout.getSelectedTabPosition() - 1).getBeehives().size() + 1);
+        radiogroupTypeBeehive.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                switch (i) {
+                    case R.id.radioButtonDadan:
+                        Toast.makeText(StartActivity.this, "Type beehive is dadan.",
+                                Toast.LENGTH_SHORT).show();
+                        mTypeBeehive = DADAN;
+                        break;
+                    case R.id.radioButtonUkrainian:
+                        Toast.makeText(StartActivity.this, "Type beehive is ukrainian.",
+                                Toast.LENGTH_SHORT).show();
+                        mTypeBeehive = UKRAINIAN;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        radiogroupQuantityColonies.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                switch (i) {
+                    case R.id.radioButtonOneColony:
+                        Toast.makeText(StartActivity.this, "Type beehive is dadan.",
+                                Toast.LENGTH_SHORT).show();
+                        mQuantityOfColonies = 1;
+                        break;
+                    case R.id.radioButtonTwoColony:
+                        Toast.makeText(StartActivity.this, "Type beehive is ukrainian.",
+                                Toast.LENGTH_SHORT).show();
+                        mQuantityOfColonies = 2;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        createNewBeehive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (numberPicker.getValue() != 0 && mQuantityOfColonies != 0){
+                    Beehive mBeehive = new Beehive();
+                    mBeehive.setNumberBeehive(numberPicker.getValue());
+                    mBeehive.setTypeBeehive(mTypeBeehive);
+                    mBeehive.setFounded(Calendar.getInstance().getTime().getTime());
+
+                    List<BeeColony> beeColonyList = new ArrayList<BeeColony>();
+                    for (int i = 0; i < mQuantityOfColonies; i++){
+                        BeeColony beeColony = new BeeColony();
+                        beeColony.setBeeEmptyFrame(5);
+                        beeColony.setCheckedTime(Calendar.getInstance().getTime().getTime());
+                        beeColonyList.add(beeColony);
+                    }
+                    mBeehive.setBeeColonies(beeColonyList);
+
+                    addBeehive(mBeehive, apiaries.get(tabLayout.getSelectedTabPosition() - 1));
+                    alertDialog.dismiss();
+                }else {
+                    Toast.makeText(StartActivity.this,"Please enter all necessary values ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        alertDialog = builder.create();
+        alertDialog.show();
+    }
 
     @Override
-    public void replaceBeehive(final Set<Beehive> replaceBeehives, final Beehive itemBeehive, final String fromWhichApiary,
+    public void replaceBeehive(final List<Beehive> replaceBeehives, final Beehive itemBeehive, final String fromWhichApiary,
                                final String inWhichApiary) {
         multiSelectMode = false;
+        toolbarActionModeCallback = null;
 	    mSelectMode = 0;
         if (fromWhichApiary.equals(inWhichApiary)) {
-            Query apiary = myRef.child(mUserUid).child("apiary").child(inWhichApiary);
+            Query apiary = myRef.child(mUserUid).child("apiary").child(fromWhichApiary);
             apiary.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -995,10 +1153,20 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
                 public void onCancelled(DatabaseError databaseError) {
                 }
             });
+
         }
 
-        mDialogFragment = null;
+
     }
+
+    @Override
+    public void dissmisActionMode() {
+        if (toolbarActionModeCallback != null){
+            toolbarActionModeCallback = null;
+
+        }
+    }
+
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -1092,12 +1260,12 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     public void onBackPressed() {
-        if (mDialogFragment != null){
-            getSupportFragmentManager()
+        if (mActionMode != null){
+        /**    getSupportFragmentManager()
                     .beginTransaction().
-                    remove(mDialogFragment).commit();
-            mDialogFragment.dismiss();
-	        mDialogFragment = null;
+                    remove(toolbarActionModeCallback).commit();*/
+            mActionMode.finish();
+            mActionMode = null;
             multiSelectMode = false;
             mSelectMode = 0;
             loadDataSnapshotApiary(mDataSnapshot);
@@ -1106,11 +1274,12 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
 
     @Override
     protected void onPause() {
-        if (mDialogFragment != null){
-            getSupportFragmentManager()
+        if (mActionMode != null){
+         /**   getSupportFragmentManager()
                     .beginTransaction().
-                    remove(mDialogFragment).commit();
-            mDialogFragment = null;
+                    remove(toolbarActionModeCallback).commit();*/
+            mActionMode.finish();
+            mActionMode = null;
             multiSelectMode = false;
             loadDataSnapshotApiary(mDataSnapshot);
         }
@@ -1124,8 +1293,8 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     public void getDataFromFirebase(String userUID) {
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        Query myHistory = myRef.child(userUID).child("history");
+        pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        Query myHistory = myRef.child(userUID).child("history").orderByChild("typeNotifaction").startAt(1).endAt(4);
         myHistory.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -1163,24 +1332,27 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
     }
 
     private void loadDataSnapshotHistory(DataSnapshot mDataSnapshot) {
+        if (notifactionList.size() != 0){
+            notifactionList.clear();
+        }
         for (DataSnapshot postSnapshot : mDataSnapshot.getChildren()) {
             Notifaction notifaction = postSnapshot.getValue(Notifaction.class);
             notifactionList.add(notifaction);
         }
             if ( tabLayout.getTabCount() > 0 && alreadyExist("History" ) ){
-                    HistoryFragment fragmentHistory = (HistoryFragment) adapter.getItem(position);
+                    HistoryFragment fragmentHistory = (HistoryFragment) pagerAdapter.getItem(position);
                     fragmentHistory.setDate(notifactionList);
 
             }else {
                 HistoryFragment fragmentHistory = new HistoryFragment();
                 fragmentHistory.setDate(notifactionList);
-                adapter.addFragment(fragmentHistory, "History");
-                adapter.notifyDataSetChanged();
+                pagerAdapter.addFragment(fragmentHistory, "History");
+                pagerAdapter.notifyDataSetChanged();
             }
 
 
         if (viewPager.getAdapter() == null) {
-            viewPager.setAdapter(adapter);
+            viewPager.setAdapter(pagerAdapter);
         }
         addOnLongClickListener();
         viewPager.setCurrentItem(startPageNumber);

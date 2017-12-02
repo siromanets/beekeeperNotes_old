@@ -21,9 +21,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.example.key.beekeepernote.utils.AlarmService.CHECKING;
+import static com.example.key.beekeepernote.utils.AlarmService.CHECKING_INT;
 import static com.example.key.beekeepernote.utils.AlarmService.NOTATION;
+import static com.example.key.beekeepernote.utils.AlarmService.NOTATION_INT;
 import static com.example.key.beekeepernote.utils.AlarmService.PATH_MESSAGE;
 import static com.example.key.beekeepernote.utils.AlarmService.QUEEN;
+import static com.example.key.beekeepernote.utils.AlarmService.QUEEN_INT;
 import static com.example.key.beekeepernote.utils.AlarmService.REFRESH_ALARM;
 import static com.example.key.beekeepernote.utils.AlarmService.TO_SERVICE_COMMANDS;
 
@@ -69,7 +72,7 @@ public class TimeNotification extends BroadcastReceiver {
 					int i = (int)Math.round(Math.random() * 1000);
 					mNM.notify(i, notification);
 				Notifaction notifaction = new Notifaction();
-				notifaction.setTypeNotifaction(QUEEN);
+				notifaction.setTypeNotifaction(QUEEN_INT);
 				notifaction.setTextNotifaction("за останні кілкість днів ви не помічали королеви");
 				notifaction.setNameNotifaction(QUEEN);
 				notifaction.setPathNotifaction(path);
@@ -77,7 +80,7 @@ public class TimeNotification extends BroadcastReceiver {
 					FirebaseAuth mAuth = FirebaseAuth.getInstance();
 					DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
 					myRef.child(mAuth.getCurrentUser().getUid()).child("Notifaction")
-							.child(String.valueOf(Calendar.getInstance().getTime().getTime()))
+							.child(String.valueOf(notifaction.getSchowTime()))
 							.setValue(notifaction);
 				}
 
@@ -111,15 +114,15 @@ public class TimeNotification extends BroadcastReceiver {
 
 
 				Notifaction notifaction = new Notifaction();
-				notifaction.setTypeNotifaction(CHECKING);
+				notifaction.setTypeNotifaction(CHECKING_INT);
 				notifaction.setTextNotifaction("Потрібно оглянути сімю");
 				notifaction.setNameNotifaction(CHECKING);
 				notifaction.setPathNotifaction(path);
 				notifaction.setSchowTime(Calendar.getInstance().getTime().getTime());
 				FirebaseAuth mAuth = FirebaseAuth.getInstance();
 				DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
-				myRef.child(mAuth.getCurrentUser().getUid()).child("Notifaction")
-						.child(String.valueOf(Calendar.getInstance().getTime().getTime()))
+				myRef.child(mAuth.getCurrentUser().getUid()).child("history")
+						.child(String.valueOf(notifaction.getSchowTime()))
 						.setValue(notifaction);
 
 			}
@@ -130,7 +133,8 @@ public class TimeNotification extends BroadcastReceiver {
 				List<String> pathes = uri.getPathSegments();
 				NotificationManager mNM;
 
-				PendingIntent contentIntent = PendingIntent.getActivity(context, 1, new Intent(context, StartActivity_.class), 0);
+				PendingIntent contentIntent = PendingIntent.getActivity(context, 1,
+						new Intent(context, StartActivity_.class), 0);
 
 				mNM = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 				// Set the icon, scrolling text and timestamp
@@ -153,7 +157,7 @@ public class TimeNotification extends BroadcastReceiver {
 
 
 				Notifaction notifaction = new Notifaction();
-				notifaction.setTypeNotifaction(NOTATION);
+				notifaction.setTypeNotifaction(NOTATION_INT);
 				notifaction.setTextNotifaction("Потрібно оглянути сімю");
 				notifaction.setNameNotifaction(NOTATION);
 				notifaction.setPathNotifaction(path);

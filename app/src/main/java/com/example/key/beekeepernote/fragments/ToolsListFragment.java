@@ -1,27 +1,8 @@
 package com.example.key.beekeepernote.fragments;
 
-import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.util.ArraySet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.key.beekeepernote.R;
-import com.example.key.beekeepernote.interfaces.Communicator;
-import com.example.key.beekeepernote.models.Beehive;
-
-import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.ViewById;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -30,7 +11,7 @@ import java.util.Set;
 
 @EFragment
 public class ToolsListFragment extends DialogFragment {
-
+/**
     public static final boolean BEHIND = false;
     public static final boolean IN_FRONT = true;
     View mView;
@@ -143,7 +124,7 @@ public class ToolsListFragment extends DialogFragment {
         buttonMove.setClickable(false);
         showMessage("Будь ласка виберіть вулик для заміни");
         mCommunicator = (Communicator)getActivity();
-        mCommunicator.multiSelectMod();
+        mCommunicator.moveTabTo();
         moveChecker = true;
     }
 
@@ -164,14 +145,14 @@ public class ToolsListFragment extends DialogFragment {
         moveB = true;
         showMessage("виберіть вулик біля якого ви хочете розмістити");
         mCommunicator = (Communicator)getActivity();
-        mCommunicator.deleteBeehive(mBeehiveSet, mFromApiary, true );
+      //  mCommunicator.deleteBeehive(mBeehiveSet, mFromApiary, true );
         clearViewsBackground();
     }
 
     @Click(R.id.buttonDelete)
     void buttonDeleteWasClicked(View view){
         mCommunicator = (Communicator)getActivity();
-        mCommunicator.deleteBeehive(mBeehiveSet, mFromApiary, false);
+    //    mCommunicator.deleteBeehive(mBeehiveSet, mFromApiary, false);
         this.dismiss();
     }
 
@@ -273,5 +254,5 @@ public class ToolsListFragment extends DialogFragment {
             buttonMark.setVisibility(View.GONE);
             buttonMove.setVisibility(View.GONE);
         }
-    }
+    }*/
 }

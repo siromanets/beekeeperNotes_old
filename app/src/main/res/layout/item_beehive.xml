@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/itemView"
-    android:layout_width="200dp"
-    android:layout_height="200dp"
-    android:orientation="vertical">
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="false"
+    android:layout_centerVertical="false"
+    android:layout_margin="10dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="false"
-        android:layout_centerVertical="false">
+
 
         <ImageView
             android:id="@+id/imageBeeHive"
@@ -25,14 +23,15 @@
             android:layout_alignParentTop="true"
             android:padding="15dp"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_beehive_one" />
+            app:srcCompat="@drawable/ic_beehive_one"
+            tools:ignore="VectorDrawableCompat" />
 
-        <ProgressBar
-            android:id="@+id/progressBarFood"
-            style="@android:style/Widget.ProgressBar.Horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:layout_marginTop="10dp" />
+    <ProgressBar
+        android:id="@+id/progressBarFood"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_marginTop="10dp" />
 
         <TextView
             android:id="@+id/textNumberBeeColony"
@@ -48,31 +47,31 @@
             android:textAlignment="center"
             android:textSize="18sp" />
 
-        <LinearLayout
-            android:id="@+id/progressContainer"
+    <LinearLayout
+        android:id="@+id/progressContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progressBarCheckedTime1"
+            style="@android:style/Widget.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="false"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_height="8dp"
+            android:layout_margin="1dp"
+            android:visibility="gone" />
 
-            <ProgressBar
-                android:id="@+id/progressBarCheckedTime1"
-                style="@android:style/Widget.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_margin="1dp" />
+        <ProgressBar
+            android:id="@+id/progressBarCheckedTime2"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_margin="1dp"
+            android:visibility="gone" />
 
-            <ProgressBar
-                android:id="@+id/progressBarCheckedTime2"
-                style="@android:style/Widget.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_margin="1dp" />
-
-        </LinearLayout>
+    </LinearLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageEye"
@@ -81,12 +80,12 @@
             android:layout_height="20dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:clickable="false"
             android:cropToPadding="false"
             android:elevation="4dp"
             android:src="@drawable/ic_eye"
             app:civ_border_width="1dp" />
 
-    </RelativeLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

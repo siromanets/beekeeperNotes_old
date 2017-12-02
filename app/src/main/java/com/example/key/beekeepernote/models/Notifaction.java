@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class Notifaction implements Serializable {
     public int uId;
     public String nameNotifaction;
-    public String typeNotifaction;
+    public int typeNotifaction;
     public long schowTime;
     public String textNotifaction;
     public String pathNotifaction;
@@ -20,7 +20,7 @@ public class Notifaction implements Serializable {
 
     public Notifaction(){
     }
-    public Notifaction(int uId, String nameNotifaction, String typeNotifaction, long schowTime, String textNotifaction, String pathNotifaction){
+    public Notifaction(int uId, String nameNotifaction, int typeNotifaction, long schowTime, String textNotifaction, String pathNotifaction){
         this.uId = uId;
         this.nameNotifaction = nameNotifaction;
         this.typeNotifaction = typeNotifaction;
@@ -49,11 +49,11 @@ public class Notifaction implements Serializable {
     public void setPathNotifaction(String pathNotifaction) {
         this.pathNotifaction = pathNotifaction;
     }
-    public String getTypeNotifaction() {
+    public int getTypeNotifaction() {
         return typeNotifaction;
     }
 
-    public void setTypeNotifaction(String typeNotifaction) {
+    public void setTypeNotifaction(int typeNotifaction) {
         this.typeNotifaction = typeNotifaction;
     }
 

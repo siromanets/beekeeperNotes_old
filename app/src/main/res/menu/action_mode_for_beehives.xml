@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/actionBehide"
+        android:title="Behide"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionInFront"
+        android:title="In Front"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionReplaceBeehive"
+        android:icon="@android:drawable/stat_notify_sync_noanim"
+        android:title="Replace"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionDeleteBeehive"
+        android:icon="@android:drawable/ic_delete"
+        android:title="Delete"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionSellecktAllBee"
+        android:icon="?attr/actionModeSelectAllDrawable"
+        android:title="Seleckt All"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionMoveBeehive"
+        android:icon="@android:drawable/ic_menu_set_as"
+        android:title="Move"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/actionOkBeehive"
+        android:icon="@drawable/ic_done_white_24px"
+        android:title="Ok"
+        android:visible="false"
+        app:showAsAction="always" />
+</menu>

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.key.beekeepernote.R;
 import com.example.key.beekeepernote.activities.ActionActivity_;
+import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.models.Beehive;
 import com.example.key.beekeepernote.models.Notifaction;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +25,7 @@ import java.util.List;
 import static com.example.key.beekeepernote.adapters.RecyclerAdapter.COLONY_NUMBER;
 import static com.example.key.beekeepernote.adapters.RecyclerAdapter.NAME_APIARY;
 import static com.example.key.beekeepernote.adapters.RecyclerAdapter.USER_SELECTED_BEEHIVE;
+import static com.example.key.beekeepernote.utils.AlarmService.DEFAULT_HISTORY;
 
 /**
  * Created by key on 04.11.17.
@@ -52,40 +54,62 @@ public NotifactionReciclerAdapter.NotifactionViewHolder onCreateViewHolder(final
         NotifactionViewHolder mHolder = new NotifactionViewHolder(mView, new NotifactionViewHolder.ClickListener() {
 @Override
 public void onPressed(int position, Notifaction notifaction) {
-        if ( notifaction != null) {
-                Uri uri = Uri.parse(notifaction.getPathNotifaction());
+    if (notifaction != null) {
+        notifaction.setTypeNotifaction(DEFAULT_HISTORY);
+        FirebaseDatabase.getInstance().getReference()
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("history")
+                .child(String.valueOf(notifaction.getSchowTime())).setValue(notifaction);
+        Uri uri = Uri.parse(notifaction.getPathNotifaction());
+        switch (uri.getPathSegments().size()) {
+            case 1: {
+                final String apiaryName = uri.getPathSegments().get(0);
+                Communicator communicator = (Communicator) context;
+                communicator.moveTabTo(apiaryName, -1);
+                return;
+            }
+            case 2: {
+                final String apiaryName = uri.getPathSegments().get(0);
+                int numberBeehive = Integer.parseInt(uri.getPathSegments().get(1));
+                Communicator communicator = (Communicator) context;
+                communicator.moveTabTo(apiaryName, numberBeehive - 1);
+                return;
+            }
+            case 3: {
+                final String apiaryName = uri.getPathSegments().get(0);
+                int numberBeehive = Integer.parseInt(uri.getPathSegments().get(1));
+                final int numberColony = Integer.parseInt(uri.getPathSegments().get(2));
+                FirebaseDatabase.getInstance().getReference()
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("apiary")
+                        .child(apiaryName).child("beehives").child(String.valueOf(numberBeehive - 1))
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Beehive beehive = dataSnapshot.getValue(Beehive.class);
+                                if (beehive != null) {
+                                    Intent i = new Intent(context, ActionActivity_.class);
+                                    i.putExtra(NAME_APIARY, apiaryName);
+                                    i.putExtra(USER_SELECTED_BEEHIVE, beehive);
+                                    i.putExtra(COLONY_NUMBER, numberColony);
+                                    context.startActivity(i);
+                                }
+                            }
 
-               final String apiaryName =  uri.getPathSegments().get(0);
-               int numberBeehive = Integer.parseInt(uri.getPathSegments().get(1));
-               final int numberColony =  Integer.parseInt(uri.getPathSegments().get(2));
-            FirebaseDatabase.getInstance().getReference()
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("apiary")
-                    .child(apiaryName).child("beehives").child(String.valueOf(numberBeehive - 1)).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                   Beehive beehive =  dataSnapshot.getValue(Beehive.class);
-                   if (beehive != null){
-                       Intent i = new Intent(context,  ActionActivity_.class);
-                       i.putExtra(NAME_APIARY, apiaryName);
-                       i.putExtra(USER_SELECTED_BEEHIVE, beehive);
-                       i.putExtra(COLONY_NUMBER, numberColony);
-                       context.startActivity(i);
-                   }
-                }
 
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-
-
-        }else{
+                            }
+                        });
+            }
+            default: {
+                return;
+            }
 
         }
-        }
+
+    }
+
+}
 
 @Override
 public void onLongPressed(int position, Notifaction notifaction, View view) {
@@ -103,7 +127,9 @@ public void onLongPressed(int position, Notifaction notifaction, View view) {
         return mHolder;
         }
 
-@Override
+
+
+    @Override
 public void onBindViewHolder(NotifactionViewHolder holder, int position) {
     holder.mPosition = position;
     holder.notifaction = notifactions.get(position);

@@ -31,7 +31,7 @@ import java.util.List;
 import static com.example.key.beekeepernote.adapters.RecyclerAdapter.COLONY_NUMBER;
 import static com.example.key.beekeepernote.adapters.RecyclerAdapter.NAME_APIARY;
 import static com.example.key.beekeepernote.adapters.RecyclerAdapter.USER_SELECTED_BEEHIVE;
-import static com.example.key.beekeepernote.utils.AlarmService.HISTORY;
+import static com.example.key.beekeepernote.utils.AlarmService.HISTORY_INT;
 
 
 @EActivity
@@ -99,6 +99,8 @@ public class ActionActivity extends AppCompatActivity {
         setupTabIcons(beeColonyList.size());
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_action_activity, menu);
@@ -123,7 +125,7 @@ public class ActionActivity extends AppCompatActivity {
                             .child(String.valueOf(beehive.getNumberBeehive() - 1)).setValue(beehive);
                     setupTabs(beehive);
                     Notifaction notifaction = new Notifaction();
-                    notifaction.setTypeNotifaction(HISTORY);
+                    notifaction.setTypeNotifaction(HISTORY_INT);
                     notifaction.setNameNotifaction("Created new Colony");
                     notifaction.setSchowTime(mCalendar.getTimeInMillis());
                     notifaction.setuId((int) (beehive.getFounded())/ beehive.getNumberBeehive());

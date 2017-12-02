@@ -17,6 +17,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/buttonAddNewBeehive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:src="@android:drawable/ic_input_add"
+                app:backgroundTint="@color/colorPrimaryDark"
+                app:fabSize="normal" />
+
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appBarlayout"
                 android:layout_width="match_parent"

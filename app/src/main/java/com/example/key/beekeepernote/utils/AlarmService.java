@@ -42,10 +42,15 @@ public class AlarmService  extends Service{
 	public static final String CREATE_ALAR = "create_alarm";
 	public static final String PATH_MESSAGE = "path_message";
 	public static final String NAME_MESSAGE = "name_message";
-	public static final String QUEEN = "com.example.key.beekeepernote.action.QUEEN";
-	public static final String CHECKING = "com.example.key.beekeepernote.action.CHECKING";
-	public static final String NOTATION = "com.example.key.beekeepernote.action.NOTATION";
-	public static final String HISTORY ="com.example.key.beekeepernote.action.HISTORY";
+	public static final String QUEEN = "com.example.key.beekeepernote.action.QUEEN"; // 1
+	public static final String CHECKING = "com.example.key.beekeepernote.action.CHECKING"; //2
+	public static final String NOTATION = "com.example.key.beekeepernote.action.NOTATION"; //3
+	public static final String HISTORY ="com.example.key.beekeepernote.action.HISTORY"; //4
+	public static final int QUEEN_INT =  1;
+	public static final int CHECKING_INT = 2;
+	public static final int NOTATION_INT = 3;
+	public static final int HISTORY_INT = 4;
+	public static final int DEFAULT_HISTORY = 0;
 	private PendingIntent mAlarmSender;
 	private Calendar mCalender;
 	FirebaseDatabase database;
@@ -92,17 +97,17 @@ public class AlarmService  extends Service{
 										if (colonyList.get(c).getCheckedTime() + (11 * 24 * 60 * 60 * 1000) > Calendar.getInstance().getTime().getTime()) {
 											unId = (int) beehive.getFounded() / beehive.getNumberBeehive() / (c + 1) / CHECKING_CONSTANT_NUMBER;
 											String path = new Uri.Builder().appendPath(apiary.getNameApiary()).appendPath(String.valueOf(beehive.getNumberBeehive())).appendPath(String.valueOf(i)).build().toString();
-											startAlarm(path, CHECKING, colonyList.get(c).getCheckedTime());
+											startAlarm(path, CHECKING_INT, colonyList.get(c).getCheckedTime());
 										}
 										if (colonyList.get(c).isQueen() + (11 * 24 * 60 * 60 * 1000) >Calendar.getInstance().getTime().getTime()) {
 											unId = (int) beehive.getFounded() / beehive.getNumberBeehive() / (c + 1) / QUEEN_CONSTANT_NUMBER;
 											String path = new Uri.Builder().appendPath(apiary.getNameApiary()).appendPath(String.valueOf(beehive.getNumberBeehive())).appendPath(String.valueOf(i)).build().toString();
-											startAlarm(path, QUEEN, colonyList.get(c).isQueen());
+											startAlarm(path, QUEEN_INT, colonyList.get(c).isQueen());
 										}
 										if (colonyList.get(c).getTimeReminder() > Calendar.getInstance().getTime().getTime()) {
 											unId = (int) beehive.getFounded() / beehive.getNumberBeehive() / (c + 1) / NOTATION_CONSTANT_NUMBER;
 											String path = new Uri.Builder().appendPath(apiary.getNameApiary()).appendPath(String.valueOf(beehive.getNumberBeehive())).appendPath(String.valueOf(i)).build().toString();
-											startAlarm(path, NOTATION, colonyList.get(c).getCheckedTime());
+											startAlarm(path, NOTATION_INT, colonyList.get(c).getCheckedTime());
 
 										}
 									}
@@ -125,26 +130,29 @@ public class AlarmService  extends Service{
 
 
 
-	public void startAlarm(String pathNotifaction, String action, long time){
+	public void startAlarm(String pathNotifaction, int action, long time){
 
 		Intent intent = new Intent(this, TimeNotification.class);
 		intent.putExtra(PATH_MESSAGE, pathNotifaction);
 
 
-		intent.setAction(action);
+
 		mAlarmSender = PendingIntent.getBroadcast(this, unId, intent , PendingIntent.FLAG_CANCEL_CURRENT);
 		switch (action) {
-			case CHECKING: {
+			case CHECKING_INT: {
+				intent.setAction(CHECKING);
 				AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 				am.set(AlarmManager.RTC_WAKEUP, time + 20000 , mAlarmSender);
 				break;
 			}
-			case QUEEN: {
+			case QUEEN_INT: {
+				intent.setAction(QUEEN);
 				AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 				am.set(AlarmManager.RTC_WAKEUP, time + 20000, mAlarmSender);
 				break;
 			}
-			case NOTATION: {
+			case NOTATION_INT: {
+				intent.setAction(NOTATION);
 				AlarmManager am = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
 				am.set(AlarmManager.RTC_WAKEUP, time, mAlarmSender);
 				break;

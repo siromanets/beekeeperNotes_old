@@ -16,8 +16,9 @@ import com.example.key.beekeepernote.models.Notifaction;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
 
-import java.util.List;
+import java.util.ArrayList;
 
 
 /**
@@ -26,7 +27,8 @@ import java.util.List;
 @EFragment
 public class HistoryFragment extends Fragment {
     View view;
-    private List<Notifaction> notificationList;
+    @FragmentArg
+    ArrayList<Notifaction> notificationList;
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private NotifactionReciclerAdapter adapter;
@@ -64,7 +66,7 @@ public class HistoryFragment extends Fragment {
     void afterViews(){
 
     }
-    public void setDate(List<Notifaction> notificationList){
+    public void setDate(ArrayList<Notifaction> notificationList){
         this.notificationList = notificationList;
         if (adapter != null & notificationList != null) {
             adapter.setList(notificationList);

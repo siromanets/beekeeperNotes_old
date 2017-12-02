@@ -36,9 +36,9 @@ import java.util.Calendar;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.example.key.beekeepernote.utils.AlarmService.CHECKING;
-import static com.example.key.beekeepernote.utils.AlarmService.NOTATION;
-import static com.example.key.beekeepernote.utils.AlarmService.QUEEN;
+import static com.example.key.beekeepernote.utils.AlarmService.CHECKING_INT;
+import static com.example.key.beekeepernote.utils.AlarmService.NOTATION_INT;
+import static com.example.key.beekeepernote.utils.AlarmService.QUEEN_INT;
 import static com.example.key.beekeepernote.utils.AlarmService.TO_SERVICE_COMMANDS;
 
 
@@ -167,7 +167,7 @@ public class BeeColonyFragment extends Fragment{
         enabledMessagesSender(getContext());
         long time =  Calendar.getInstance().getTime().getTime();
         Notifaction notifaction = new Notifaction();
-        notifaction.setTypeNotifaction(QUEEN);
+        notifaction.setTypeNotifaction(QUEEN_INT);
         notifaction.setNameNotifaction("Beequeen exist");
         notifaction.setSchowTime(time);
         notifaction.setuId((int) (beehive.getFounded())/ beehive.getNumberBeehive() / (mNameColony + 1) / QUEEN_CONSTANT_NUMBER);
@@ -185,7 +185,7 @@ public class BeeColonyFragment extends Fragment{
         enabledMessagesSender(getContext());
         long time =  Calendar.getInstance().getTime().getTime();
         Notifaction notifaction = new Notifaction();
-        notifaction.setTypeNotifaction(CHECKING);
+        notifaction.setTypeNotifaction(CHECKING_INT);
         notifaction.setNameNotifaction("Colony was checking");
         notifaction.setSchowTime(time);
         notifaction.setuId((int) (beehive.getFounded()) / beehive.getNumberBeehive() / (mNameColony + 1) / CHECKING_CONSTANT_NUMBER);
@@ -234,7 +234,7 @@ public class BeeColonyFragment extends Fragment{
                             .child("beehives").child(String.valueOf(beehive.getNumberBeehive() -1))
                             .child("beeColonies").child(String.valueOf(mNameColony)).setValue(beeColony);
                     Notifaction notifaction = new Notifaction();
-                    notifaction.setTypeNotifaction(NOTATION);
+                    notifaction.setTypeNotifaction(NOTATION_INT);
                     notifaction.setNameNotifaction("REMINDER");
                     notifaction.setTextNotifaction(textReminder.getText().toString());
                     notifaction.setSchowTime(Calendar.getInstance().getTime().getTime());
