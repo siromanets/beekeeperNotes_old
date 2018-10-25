@@ -6,9 +6,6 @@ repositories {
     google()
 }
 
-
-
-
 def AAVersion = "4.5.1"
 dependencies {
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
