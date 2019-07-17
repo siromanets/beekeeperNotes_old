@@ -1,11 +1,10 @@
 package com.example.key.beekeepernote.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.view.ActionMode;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.key.beekeepernote.R;
-import com.example.key.beekeepernote.activities.ActionActivity_;
+
 import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.models.Beehive;
 
@@ -233,19 +232,19 @@ public class RecyclerAdapter extends  RecyclerView.Adapter<RecyclerAdapter.ViewH
 //            mActionMode.finish();
         }
 
-        if (mActionMode == null){
-            Intent actionActivityIntent = new Intent(context, ActionActivity_.class);
-            actionActivityIntent.putExtra(USER_SELECTED_BEEHIVE, beehive);
-            actionActivityIntent.putExtra(NAME_APIARY, nameApiary);
-            context.startActivity(actionActivityIntent);
-            removeSelection();
-        }else if (mActionMode != null && !replaceMode) {
-            //set action mode title on item selection
-            mActionMode.setTitle(String.valueOf(getSelectedCount()) + " selected");
-        }else if (mActionMode != null ) {
-            mActionMode = mCommunicator.setDataForTools(this, mBeehiveList, mBeehiveList.get(position), nameApiary, 1);
-
-        }
+//        if (mActionMode == null){
+//            Intent actionActivityIntent = new Intent(context, ActionActivity_.class);
+//            actionActivityIntent.putExtra(USER_SELECTED_BEEHIVE, beehive);
+//            actionActivityIntent.putExtra(NAME_APIARY, nameApiary);
+//            context.startActivity(actionActivityIntent);
+//            removeSelection();
+//        }else if (mActionMode != null && !replaceMode) {
+//            //set action mode title on item selection
+//            mActionMode.setTitle(String.valueOf(getSelectedCount()) + " selected");
+//        }else if (mActionMode != null ) {
+//            mActionMode = mCommunicator.setDataForTools(this, mBeehiveList, mBeehiveList.get(position), nameApiary, 1);
+//
+//        }
 
     }
     public void moveBeehiveInFront(Beehive itemBeehive, String nameApiary2) {

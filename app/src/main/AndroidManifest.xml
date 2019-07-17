@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.key.beekeepernote">
-
     <!-- To access Google+ APIs: -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-
 
     <application
         android:name=".utils.BeekeperApp"
@@ -17,49 +15,59 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/MyMaterialTheme">
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-        <activity android:name=".activities.StartActivity_"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:parentActivityName=".activities.StartActivity_"
+        android:theme="@style/MyMaterialTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".activities.MainActivity"
             android:launchMode="singleTop">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.ActionActivity_"
-            android:parentActivityName=".activities.StartActivity_">
-        </activity>
-        <activity android:name=".activities.ResetPasswordActivity_"
-            android:parentActivityName=".activities.StartActivity_">
-        </activity>
-        <activity android:name=".activities.SignupActivity_"
-            android:parentActivityName=".activities.StartActivity_">
-        </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".activities.StartActivity_"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.StartActivity_"/>
+        <activity
+            android:name=".activities.ActionActivity_"
+            android:parentActivityName=".activities.StartActivity_"/>
+        <activity
+            android:name=".activities.ResetPasswordActivity_"
+            android:parentActivityName=".activities.StartActivity_"/>
+        <activity
+            android:name=".activities.SignupActivity_"
+            android:parentActivityName=".activities.StartActivity_"/>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="3cd4e2115409f973dd60f7e2d226f5e282e78129" />
 
-        <receiver android:name=".utils.TimeNotification"
+        <receiver
+            android:name=".utils.TimeNotification"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
-                <action android:name="com.example.key.beekeepernote.action.QUEEN"></action>
-                <action android:name="com.example.key.beekeepernote.action.CHECKING"></action>
-                <action android:name="com.example.key.beekeepernote.action.NOTATION"></action>
-                <action android:name="com.example.key.beekeepernote.action.HISTORY"></action>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.example.key.beekeepernote.action.QUEEN" />
+                <action android:name="com.example.key.beekeepernote.action.CHECKING" />
+                <action android:name="com.example.key.beekeepernote.action.NOTATION" />
+                <action android:name="com.example.key.beekeepernote.action.HISTORY" />
             </intent-filter>
         </receiver>
+
         <service
-            android:enabled="true"
-            android:name=".utils.AlarmService">
-        </service>
+            android:name=".utils.AlarmService"
+            android:enabled="true"/>
     </application>
 
 </manifest>

@@ -2,16 +2,17 @@ package com.example.key.beekeepernote.utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.NotificationCompat;
+
 import android.widget.Toast;
 
+import androidx.core.app.NotificationCompat;
+
 import com.example.key.beekeepernote.R;
-import com.example.key.beekeepernote.activities.StartActivity_;
+
 import com.example.key.beekeepernote.models.Notifaction;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -50,7 +51,7 @@ public class TimeNotification extends BroadcastReceiver {
 				List<String> pathes = uri.getPathSegments();
 					NotificationManager mNM;
 
-					PendingIntent contentIntent = PendingIntent.getActivity(context, 1, new Intent(context, StartActivity_.class), 0);
+		//			PendingIntent contentIntent = PendingIntent.getActivity(context, 1, new Intent(context, StartActivity_.class), 0);
 
 					mNM = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 					// Set the icon, scrolling text and timestamp
@@ -59,7 +60,7 @@ public class TimeNotification extends BroadcastReceiver {
 					notyBilder.setContentTitle("QUEEN");
 					notyBilder.setContentText("за останні кілкість днів ви не помічали королеви в "
 							+ "Пасіка " + pathes.get(0) + "| " + "Вулик № " +  pathes.get(1) + "| " + "Сімя № " + pathes.get(2) + "| ");
-					notyBilder.setContentIntent(contentIntent);
+			//		notyBilder.setContentIntent(contentIntent);
 					Notification notification = notyBilder.build();
 
 					// The PendingIntent to launch our activity if the user selects this notification
@@ -91,7 +92,7 @@ public class TimeNotification extends BroadcastReceiver {
 				List<String> pathes = uri.getPathSegments();
 				NotificationManager mNM;
 
-				PendingIntent contentIntent = PendingIntent.getActivity(context, 1, new Intent(context, StartActivity_.class), 0);
+			//	PendingIntent contentIntent = PendingIntent.getActivity(context, 1, new Intent(context, StartActivity_.class), 0);
 
 				mNM = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 				// Set the icon, scrolling text and timestamp
@@ -100,7 +101,7 @@ public class TimeNotification extends BroadcastReceiver {
 				notyBilder.setContentTitle("CHECKING");
 				notyBilder.setContentText("Вам потрібно оглянути сімю  "
 						+ pathes.get(0) + "| " +  pathes.get(1) + "| " + pathes.get(2) + "| ");
-				notyBilder.setContentIntent(contentIntent);
+			//	notyBilder.setContentIntent(contentIntent);
 				Notification notification = notyBilder.build();
 
 				// The PendingIntent to launch our activity if the user selects this notification
@@ -133,8 +134,8 @@ public class TimeNotification extends BroadcastReceiver {
 				List<String> pathes = uri.getPathSegments();
 				NotificationManager mNM;
 
-				PendingIntent contentIntent = PendingIntent.getActivity(context, 1,
-						new Intent(context, StartActivity_.class), 0);
+//				PendingIntent contentIntent = PendingIntent.getActivity(context, 1,
+//						new Intent(context, StartActivity_.class), 0);
 
 				mNM = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 				// Set the icon, scrolling text and timestamp
@@ -143,7 +144,7 @@ public class TimeNotification extends BroadcastReceiver {
 				notyBilder.setContentTitle("NOTATION");
 				notyBilder.setContentText("Ви просили нагадати"
 						+ pathes.get(0) + "| " +  pathes.get(1) + "| " + pathes.get(2) + "| ");
-				notyBilder.setContentIntent(contentIntent);
+//				notyBilder.setContentIntent(contentIntent);
 				Notification notification = notyBilder.build();
 
 				// The PendingIntent to launch our activity if the user selects this notification

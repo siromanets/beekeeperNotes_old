@@ -8,22 +8,22 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ActionMode;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.widget.Toolbar;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -44,7 +44,7 @@ import com.example.key.beekeepernote.R;
 import com.example.key.beekeepernote.adapters.RecyclerAdapter;
 import com.example.key.beekeepernote.adapters.ViewPagerAdapter;
 import com.example.key.beekeepernote.fragments.ApiaryFragment;
-import com.example.key.beekeepernote.fragments.ApiaryFragment_;
+
 import com.example.key.beekeepernote.fragments.HistoryFragment;
 import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.models.Apiary;
@@ -236,11 +236,11 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void setupActionView(int tabPos) {
        if( tabPos > 0){
-           buttonAddNewBeehive.setVisibility(View.VISIBLE);
+           buttonAddNewBeehive.show();
            mOptionMenu.findItem(R.id.actionDelete).setVisible(true);
            mOptionMenu.findItem(R.id.actionNewApiary).setVisible(true);
        }else {
-           buttonAddNewBeehive.setVisibility(View.GONE);
+           buttonAddNewBeehive.hide();
            mOptionMenu.findItem(R.id.actionDelete).setVisible(false);
            mOptionMenu.findItem(R.id.actionNewApiary).setVisible(false);
        }
@@ -255,7 +255,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
             showLoginDialog();
 
         } else {
-            if (mUser.getProviders().get(0).equals("google.com")) {
+            if (mUser.getProviderData().get(0).equals("google.com")) {
                 mTypeMode = true;
                 loginGoogle();
                 mUserUid = mUser.getUid();
@@ -263,7 +263,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
                 updateUI(mUser.getProviderData().get(0).getDisplayName(),
                         String.valueOf(mUser.getProviderData().get(0).getPhotoUrl()));
                 buttonGoogleLogout.setVisibility(View.VISIBLE);
-            } else if (mUser.getProviders().get(0).equals("facebook.com")) {
+            } else if (mUser.getProviderData().get(0).equals("facebook.com")) {
 
                 mTypeMode = true;
                 mUserUid = mUser.getUid();
@@ -271,7 +271,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
                 loginFacebook();
                 updateUI(mUser.getProviderData().get(0).getDisplayName(),
                         String.valueOf(mUser.getProviderData().get(0).getPhotoUrl()));
-            } else if (mUser.getProviders().get(0).equals("password")) {
+            } else if (mUser.getProviderData().get(0).equals("password")) {
                 mTypeMode = true;
                 mUserUid = mUser.getUid();
                 getDataFromFirebase(mUserUid);
@@ -541,24 +541,24 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
                     apiaries.add(apiary);
                 }
             }
-	       if ( tabLayout.getTabCount() > 1 ) {
-                if (alreadyExist(apiary.nameApiary)) {
-                    ApiaryFragment apu = (ApiaryFragment) pagerAdapter.getItem(position);
-                    apu.setData(apiary, mSelectMode);
-                }else{
-                    ApiaryFragment apiaryFragment = new ApiaryFragment_().builder()
-                            .apiary(apiary)
-                            .build();
-                    pagerAdapter.addFragment(apiaryFragment, apiary.getNameApiary());
-                    pagerAdapter.notifyDataSetChanged();
-                }
-	       }else {
-		       ApiaryFragment apiaryFragment = new ApiaryFragment_().builder()
-                       .apiary(apiary)
-                       .build();
-		       pagerAdapter.addFragment(apiaryFragment, apiary.getNameApiary());
-               pagerAdapter.notifyDataSetChanged();
-	       }
+//	       if ( tabLayout.getTabCount() > 1 ) {
+//                if (alreadyExist(apiary.nameApiary)) {
+//                    ApiaryFragment apu = (ApiaryFragment) pagerAdapter.getItem(position);
+//                    apu.setData(apiary, mSelectMode);
+//                }else{
+//                    ApiaryFragment apiaryFragment = new ApiaryFragment_().builder()
+//                            .apiary(apiary)
+//                            .build();
+//                    pagerAdapter.addFragment(apiaryFragment, apiary.getNameApiary());
+//                    pagerAdapter.notifyDataSetChanged();
+//                }
+//	       }else {
+//		       ApiaryFragment apiaryFragment = new ApiaryFragment_().builder()
+//                       .apiary(apiary)
+//                       .build();
+//		       pagerAdapter.addFragment(apiaryFragment, apiary.getNameApiary());
+//               pagerAdapter.notifyDataSetChanged();
+//	       }
 
         }
 
@@ -797,7 +797,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
 
 
     @Override
-    public android.support.v7.view.ActionMode setDataForTools(final RecyclerAdapter recyclerAdapter, final List<Beehive> beehiveList, final Beehive itemBeehive, final String nameApiary, final int mode) {
+    public androidx.appcompat.view.ActionMode setDataForTools(final RecyclerAdapter recyclerAdapter, final List<Beehive> beehiveList, final Beehive itemBeehive, final String nameApiary, final int mode) {
 
         if (toolbarActionModeCallback == null && mode == 1) {
             toolbarActionModeCallback = new ToolbarActionModeCallback(StartActivity.this, recyclerAdapter, beehiveList, nameApiary, 1);
@@ -1217,7 +1217,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-            mDrawerLayout.openDrawer(Gravity.START, true);
+            mDrawerLayout.openDrawer(Gravity.RIGHT, true);
             }
         });
         builder.create().show();

@@ -1,16 +1,15 @@
 package com.example.key.beekeepernote.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.key.beekeepernote.R;
-import com.example.key.beekeepernote.activities.ActionActivity_;
+
 import com.example.key.beekeepernote.interfaces.Communicator;
 import com.example.key.beekeepernote.models.Beehive;
 import com.example.key.beekeepernote.models.Notifaction;
@@ -22,9 +21,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-import static com.example.key.beekeepernote.adapters.RecyclerAdapter.COLONY_NUMBER;
-import static com.example.key.beekeepernote.adapters.RecyclerAdapter.NAME_APIARY;
-import static com.example.key.beekeepernote.adapters.RecyclerAdapter.USER_SELECTED_BEEHIVE;
 import static com.example.key.beekeepernote.utils.AlarmService.DEFAULT_HISTORY;
 
 /**
@@ -85,13 +81,13 @@ public void onPressed(int position, Notifaction notifaction) {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Beehive beehive = dataSnapshot.getValue(Beehive.class);
-                                if (beehive != null) {
-                                    Intent i = new Intent(context, ActionActivity_.class);
-                                    i.putExtra(NAME_APIARY, apiaryName);
-                                    i.putExtra(USER_SELECTED_BEEHIVE, beehive);
-                                    i.putExtra(COLONY_NUMBER, numberColony);
-                                    context.startActivity(i);
-                                }
+//                                if (beehive != null) {
+//                                    Intent i = new Intent(context, ActionActivity_.class);
+//                                    i.putExtra(NAME_APIARY, apiaryName);
+//                                    i.putExtra(USER_SELECTED_BEEHIVE, beehive);
+//                                    i.putExtra(COLONY_NUMBER, numberColony);
+//                                    context.startActivity(i);
+//                                }
                             }
 
 

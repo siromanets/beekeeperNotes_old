@@ -2,19 +2,18 @@ package com.example.key.beekeepernote.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.tabs.TabLayout;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.key.beekeepernote.R;
 import com.example.key.beekeepernote.adapters.ViewPagerAdapter;
-import com.example.key.beekeepernote.fragments.BeeColonyFragment;
-import com.example.key.beekeepernote.fragments.BeeColonyFragment_;
+
 import com.example.key.beekeepernote.models.BeeColony;
 import com.example.key.beekeepernote.models.Beehive;
 import com.example.key.beekeepernote.models.Notifaction;
@@ -84,9 +83,9 @@ public class ActionActivity extends AppCompatActivity {
         if (beeColonyList != null && beeColonyList.size() > 0){
             for (int i = 0; i < beeColonyList.size(); i++){
                 if ( tabLayout.getTabAt(i) == null ){
-                    BeeColonyFragment colonyFragment = new BeeColonyFragment_();
-                    adapter.addFragment(colonyFragment, "colony " + (i + 1));
-                    colonyFragment.setData(beeColonyList.get(i), mNameApiary, beehive, i, mCurUseer.getUid());
+//                    BeeColonyFragment colonyFragment = new BeeColonyFragment_();
+//                    adapter.addFragment(colonyFragment, "colony " + (i + 1));
+//                    colonyFragment.setData(beeColonyList.get(i), mNameApiary, beehive, i, mCurUseer.getUid());
 
                 }
 

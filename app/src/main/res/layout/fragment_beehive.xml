@@ -1,4 +1,4 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -108,7 +108,7 @@
                         android:layout_height="match_parent"
                         app:srcCompat="@drawable/ic_honeycomb" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/buttonPlasForWorms"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                         app:fabSize="mini"
                         app:srcCompat="@android:drawable/ic_menu_add" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/buttonMinusForWorms"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -160,7 +160,7 @@
                         android:layout_height="match_parent"
                         app:srcCompat="@drawable/ic_honeycomb" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/buttonPlasForHoney"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -173,7 +173,7 @@
                         app:fabSize="mini"
                         app:srcCompat="@android:drawable/ic_menu_add" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/buttonMinusForHoney"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -208,7 +208,7 @@
                         android:layout_height="match_parent"
                         app:srcCompat="@drawable/ic_honeycomb" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/buttonAddFrame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -220,7 +220,7 @@
                         app:fabSize="mini"
                         app:srcCompat="@android:drawable/ic_menu_add" />
 
-                    <android.support.design.widget.FloatingActionButton
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
                         android:id="@+id/buttonDellFrame"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -344,4 +344,4 @@
 
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
