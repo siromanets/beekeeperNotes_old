@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/login_navigation"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.fivepro.autoparts.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.fivepro.autoparts.login.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_confirmSMSFragment"
+            app:destination="@id/confirmSMSFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@+id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmSMSFragment"
+        android:name="com.fivepro.autoparts.login.ConfirmSMSFragment"
+        android:label="fragment_confirm_sm"
+        tools:layout="@layout/fragment_confirm_sm" >
+        <action
+            android:id="@+id/action_confirmSMSFragment_to_setPasswordFragment"
+            app:destination="@id/setPasswordFragment" />
+        <action
+            android:id="@+id/action_confirmSMSFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpTo="@+id/signInFragment" />
+        <argument
+            android:name="sign_in_data"
+            android:defaultValue="@null"
+            app:nullable="true"
+            app:argType="com.fivepro.autoparts.models.ResponseSignInData" />
+    </fragment>
+    <fragment
+        android:id="@+id/setPasswordFragment"
+        android:name="com.fivepro.autoparts.login.SetPasswordFragment"
+        android:label="fragment_set_password"
+        tools:layout="@layout/fragment_set_password"
+        app:defaultNavHost="true">
+        <action
+            android:id="@+id/action_setPasswordFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpTo="@+id/signInFragment" />
+        <argument
+            android:name="verification_data"
+            android:defaultValue="@null"
+            app:nullable="true"
+            app:argType="com.fivepro.autoparts.models.ResponseVerificationData" />
+    </fragment>
+</navigation>
