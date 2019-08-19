@@ -93,7 +93,7 @@ public class ActionActivity extends AppCompatActivity {
             viewPager.setAdapter(adapter);
         }
         toolbar.setTitle(mNameApiary);
-        toolbar.setSubtitle("Beehive № " + beehive.getNumberBeehive() );
+        toolbar.setSubtitle("BeehiveActivity № " + beehive.getNumberBeehive() );
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons(beeColonyList.size());
     }

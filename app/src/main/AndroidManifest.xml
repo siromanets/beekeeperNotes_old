@@ -17,9 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.Beehive"></activity>
+        <activity android:name=".activities.BeehiveActivity"></activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".main.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

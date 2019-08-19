@@ -777,8 +777,8 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
                 .getCurrentUser().getUid()).child("apiary").child(apiary.getNameApiary())
                 .setValue(apiary);
         Notifaction notifaction = new Notifaction();
-        notifaction.setNameNotifaction("Created Beehive");
-        notifaction.setTextNotifaction("you did create new Beehive № " + mBeehive.getNumberBeehive() + "in Apiary  " + apiary.getNameApiary());
+        notifaction.setNameNotifaction("Created BeehiveActivity");
+        notifaction.setTextNotifaction("you did create new BeehiveActivity № " + mBeehive.getNumberBeehive() + "in Apiary  " + apiary.getNameApiary());
         notifaction.setuId(apiary.getuId());
         notifaction.setSchowTime(Calendar.getInstance().getTime().getTime());
         notifaction.setPathNotifaction(new Uri.Builder().appendPath(apiary.getNameApiary()).appendPath(String.valueOf(mBeehive.getNumberBeehive() - 1)).build().toString());
@@ -983,7 +983,7 @@ public class StartActivity extends AppCompatActivity implements GoogleApiClient.
     private void showDialogNewBeehive() {
 
        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("New Beehive");
+        builder.setTitle("New BeehiveActivity");
         LayoutInflater inflater = StartActivity.this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.fragment_new_beehive, null);
         builder.setView(dialogView);
