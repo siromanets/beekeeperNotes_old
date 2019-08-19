@@ -19,8 +19,8 @@ public class ToolsListFragment extends DialogFragment {
     String mInApiary;
     Communicator mCommunicator;
     boolean noMoreFlag = false;
-    Set<Beehive> mBeehiveSet = new ArraySet<>();
-    Beehive mBeehive;
+    Set<BeehiveActivity> mBeehiveSet = new ArraySet<>();
+    BeehiveActivity mBeehive;
     Set<View> mViewSet = new ArraySet<>();
     boolean moveChecker = false;
     boolean moveB = false;
@@ -188,7 +188,7 @@ public class ToolsListFragment extends DialogFragment {
         }
     }
 
-    public void setData(Beehive beehive, View view, String nameApiary) {
+    public void setData(BeehiveActivity beehive, View view, String nameApiary) {
         if (!noMoreFlag) {
             if (moveChecker) {
                 questionGroup.setVisibility(View.VISIBLE);
