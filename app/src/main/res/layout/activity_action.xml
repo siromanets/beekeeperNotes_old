@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.key.beekeepernote.activities.ActionActivity"
+    tools:context="com.carpathianapiary.niko.beekeepernotes.activities.ActionActivity"
     >
 
     <com.google.android.material.appbar.AppBarLayout

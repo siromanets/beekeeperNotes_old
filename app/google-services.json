@@ -8,18 +8,66 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:392699918608:android:c83c9fab9f78ce17",
+        "mobilesdk_app_id": "1:392699918608:android:5a6c7ffb549ea744",
         "android_client_info": {
-          "package_name": "com.example.key.beekeepernote"
+          "package_name": "com.carpathianapiary.niko.beekeepernotes"
         }
       },
       "oauth_client": [
         {
-          "client_id": "392699918608-rgi3noa0kk2733rmf0ttl4m122t8gs1u.apps.googleusercontent.com",
+          "client_id": "392699918608-ck5e3qtriha4dsj7sduverd0ovapsvp8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.key.beekeepernote",
+            "package_name": "com.carpathianapiary.niko.beekeepernotes",
+            "certificate_hash": "21b1fd256084ff254eac0a2701a1c3bc274e1b6d"
+          }
+        },
+        {
+          "client_id": "392699918608-r35b5ug5jqi7l9eq1v8v8nb2up4ssiem.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carpathianapiary.niko.beekeepernotes",
+            "certificate_hash": "fc6e77dcf18b5fbd352af99237269af53ccd9b91"
+          }
+        },
+        {
+          "client_id": "392699918608-ums0pnfctgrqs0bandone85c05rk70ea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carpathianapiary.niko.beekeepernotes",
             "certificate_hash": "3fc332252a4863290e5acdce3ee81cac2c50d632"
+          }
+        },
+        {
+          "client_id": "392699918608-2kkd882gm4mnbdul9gdri9fb1kqd5u6f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carpathianapiary.niko.beekeepernotes",
+            "certificate_hash": "ff9089210aa95bf1782ddd27815c75230f11daf3"
+          }
+        },
+        {
+          "client_id": "392699918608-duoed58b8gvpns8ld4gf4e29tjm4dg57.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carpathianapiary.niko.beekeepernotes",
+            "certificate_hash": "12da08d98f2d1009a82c67d03c148530334402b4"
+          }
+        },
+        {
+          "client_id": "392699918608-76a266558m4980l07k8frgvj61h42egd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carpathianapiary.niko.beekeepernotes",
+            "certificate_hash": "b69e0155ecc814afaafba3d1e1313a0f6c45be97"
+          }
+        },
+        {
+          "client_id": "392699918608-g41oqelolme9rumc13mcr84so037vv0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carpathianapiary.niko.beekeepernotes",
+            "certificate_hash": "dd0c8ed32fa93fa4ac8e942828060ccaeca09e32"
           }
         },
         {
@@ -33,20 +81,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "392699918608-vnql6qlhibvgomnir9alked68h8ncrra.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
