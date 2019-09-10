@@ -16,12 +16,13 @@ class RegistrationViewModel : ViewModel() {
         FirebaseInstanceId.getInstance().instanceId
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        firebaseUser?.let { loadUser(it.uid, task.result!!.token)}
+                        firebaseUser?.let {
+                            loadUser(it, task.result!!.token)}
                     }
                 }
     }
 
-    private fun loadUser(uid: String, token: String) {
-        userDataRepository.loadUser(uid, token)
+    private fun loadUser(user: FirebaseUser, token: String) {
+        userDataRepository.loadUser(user, token)
     }
 }

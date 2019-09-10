@@ -83,6 +83,10 @@ public class BeekeperApp extends Application {
         MultiDex.install(this);
     }
 
+    public AppDatabase getRoomDatabase() {
+        return roomDatabase;
+    }
+
     public UserDataRepository getUserDataRepository() {
         return userDataRepository;
     }
