@@ -14,11 +14,16 @@ private const val FB_KEY_USERS = "users"
 
 class UserDataRepository private constructor() : UserDataSource {
 
+
     private val userDataCache: MutableLiveData<UserData> = MutableLiveData()
 
     private val fireStore = FirebaseFirestore.getInstance()
 
     private val userDataDao = BeekeperApp.getInstance().roomDatabase.userDao()
+
+    init {
+        getCurrentUser(null)
+    }
 
     override fun loadUser(firebaseUser: FirebaseUser, token: String, loadUserDataCallback: UserDataSource.LoadUserDataCallback) {
         fireStore.collection(FB_KEY_USERS)
@@ -37,6 +42,16 @@ class UserDataRepository private constructor() : UserDataSource {
                     Log.e(TAG, "saveUserInfo onFailure: $e")
 
                 }
+    }
+
+    override fun getCurrentUser(loadUserDataCallback: UserDataSource.LoadUserDataCallback?) {
+        val user = userDataDao.getUser()
+        if (user != null) {
+            userDataCache.postValue(user)
+            loadUserDataCallback?.onUserLoaded(user)
+        } else {
+            loadUserDataCallback?.onUserLoadFailed(Throwable("User not exist yet"))
+        }
     }
 
     private fun createNewUser(firebaseUser: FirebaseUser, token: String): User {
@@ -77,7 +92,7 @@ class UserDataRepository private constructor() : UserDataSource {
         }
     }
 
-    override fun getUserData(userId: String): LiveData<UserData> {
+    override fun getUserData(): LiveData<UserData> {
         return userDataCache
     }
 
@@ -102,7 +117,7 @@ class UserDataRepository private constructor() : UserDataSource {
 
     override fun deleteUserDate(user: UserData) {
         GlobalScope.launch {
-            userDataDao.getUserById(user.uid)
+            userDataDao.deleteUser()
             userDataCache.postValue(null)
         }
     }

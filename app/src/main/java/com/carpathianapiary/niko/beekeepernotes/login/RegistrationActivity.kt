@@ -6,8 +6,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.carpathianapiary.niko.beekeepernotes.R
+import com.carpathianapiary.niko.beekeepernotes.database.userData.User
+import com.carpathianapiary.niko.beekeepernotes.database.userData.UserData
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 
@@ -28,7 +31,13 @@ class RegistrationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registration_activity)
-        showLogin(123)
+        viewModel.userData.observe(this, Observer { onUpdateUserData(it) })
+    }
+
+    private fun onUpdateUserData(it: UserData) {
+        if (it.type == User.TYPE_OFFLINE) {
+            showLogin(123)
+        }
     }
 
     private fun showLogin(requestCode: Int) {

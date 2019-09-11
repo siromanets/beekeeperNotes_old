@@ -7,9 +7,11 @@ interface UserDataSource {
 
     fun loadUser(firebaseUser: FirebaseUser, token: String, loadUserDataCallback: LoadUserDataCallback)
 
+    fun getCurrentUser(loadUserDataCallback: LoadUserDataCallback?)
+
     fun saveUserData(userData: UserData, loadUserDataCallback: LoadUserDataCallback)
 
-    fun getUserData(userId: String): LiveData<UserData>
+    fun getUserData(): LiveData<UserData>
 
     fun updateUserData(user: UserData, loadUserDataCallback: LoadUserDataCallback)
 
