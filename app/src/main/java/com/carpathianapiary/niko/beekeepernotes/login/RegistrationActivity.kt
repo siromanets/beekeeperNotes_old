@@ -52,7 +52,13 @@ class RegistrationActivity : AppCompatActivity(), UserTypeSelectorFragment.UserT
         when(userType) {
             User.TYPE_OFFLINE -> showLogin()
             User.TYPE_NOT_EXIST -> binding.container.visibility = View.VISIBLE
+            User.TYPE_ONLINE -> showUserAlreadyExist()
         }
+    }
+
+    private fun showUserAlreadyExist() {
+        finish()
+        Toast.makeText(this, R.string.user_is_already_exist, Toast.LENGTH_LONG).show()
     }
 
     private fun onUpdateUserData(resource: Resource<UserData>) {
