@@ -35,6 +35,7 @@ class UserDataRepository private constructor() : UserDataSource {
                     if (documentSnapshot.exists()) {
                         val user = documentSnapshot.toObject(User::class.java)
                         user!!.phoneToken = token
+                        user.type = User.TYPE_ONLINE
                         saveUserData(user.mapToUserData(firebaseUser.uid), loadUserDataCallback)
                     } else {
                         uploadUser(firebaseUser.uid, createNewUser(firebaseUser, token), loadUserDataCallback)
@@ -70,6 +71,7 @@ class UserDataRepository private constructor() : UserDataSource {
     }
 
     private fun uploadUser(userId: String, user: User, loadUserDataCallback: UserDataSource.LoadUserDataCallback) {
+
         fireStore.collection(FB_KEY_USERS)
                 .document(userId)
                 .set(user, SetOptions.merge())
@@ -90,6 +92,7 @@ class UserDataRepository private constructor() : UserDataSource {
 
     override fun saveUserData(userData: UserData, loadUserDataCallback: UserDataSource.LoadUserDataCallback) {
         GlobalScope.launch {
+            userDataDao.deleteUser()
             userDataDao.insertAll(userData)
             userDataCache.postValue(userData)
             withContext(Dispatchers.Main) {loadUserDataCallback.onUserLoaded(userData)}

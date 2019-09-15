@@ -7,7 +7,9 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="login.RegistrationActivity">
+        android:visibility="gone"
+        tools:context="login.RegistrationActivity"
+        tools:visibility="visible">
 
         <fragment
             android:id="@+id/type_selection"
