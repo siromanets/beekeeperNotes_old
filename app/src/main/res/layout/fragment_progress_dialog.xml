@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.fivepro.tips.fragments.CustomProgressDialog">
+
+    <data class="ProgressBinding" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/motionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/shadow_color">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/view2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="8dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/sun_image"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/ic_beehive_one"
+            android:elevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="36dp"
+            android:layout_height="35dp"
+            android:elevation="5dp"
+            android:src="@drawable/ic_acebook"
+            app:layout_constraintBottom_toBottomOf="@+id/view2"
+            app:layout_constraintEnd_toEndOf="@+id/view2"
+            app:layout_constraintStart_toStartOf="@+id/view2"
+            app:layout_constraintTop_toTopOf="@+id/view2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

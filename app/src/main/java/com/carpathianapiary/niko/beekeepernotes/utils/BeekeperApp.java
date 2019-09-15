@@ -41,13 +41,9 @@ public class BeekeperApp extends Application {
         Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
         intiFirestore();
         initRoomDatabase();
-        initRepositories();
         instance = this;
     }
 
-    private void initRepositories() {
-        userDataRepository = UserDataRepository.Companion.getInstance();
-    }
 
     private void intiFirestore() {
         FirebaseApp.initializeApp(this);
@@ -87,7 +83,4 @@ public class BeekeperApp extends Application {
         return roomDatabase;
     }
 
-    public UserDataRepository getUserDataRepository() {
-        return userDataRepository;
-    }
 }

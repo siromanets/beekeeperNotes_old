@@ -23,6 +23,7 @@ data class User(
 ) {
 
     companion object {
+        const val TYPE_NOT_EXIST = -1
         const val TYPE_ONLINE = 1
         const val TYPE_OFFLINE = 2
     }

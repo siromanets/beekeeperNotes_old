@@ -7,8 +7,10 @@ import com.carpathianapiary.niko.beekeepernotes.utils.BeekeperApp
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 private const val FB_KEY_USERS = "users"
 
@@ -45,12 +47,14 @@ class UserDataRepository private constructor() : UserDataSource {
     }
 
     override fun getCurrentUser(loadUserDataCallback: UserDataSource.LoadUserDataCallback?) {
-        val user = userDataDao.getUser()
-        if (user != null) {
-            userDataCache.postValue(user)
-            loadUserDataCallback?.onUserLoaded(user)
-        } else {
-            loadUserDataCallback?.onUserLoadFailed(Throwable("User not exist yet"))
+        GlobalScope.launch {
+            val user = userDataDao.getUser()
+            if (user != null) {
+                userDataCache.postValue(user)
+                withContext(Dispatchers.Main) { loadUserDataCallback?.onUserLoaded(user) }
+            } else {
+                withContext(Dispatchers.Main) {loadUserDataCallback?.onUserLoadFailed(Throwable("User not exist yet"))}
+            }
         }
     }
 
@@ -88,7 +92,7 @@ class UserDataRepository private constructor() : UserDataSource {
         GlobalScope.launch {
             userDataDao.insertAll(userData)
             userDataCache.postValue(userData)
-            loadUserDataCallback.onUserLoaded(userData)
+            withContext(Dispatchers.Main) {loadUserDataCallback.onUserLoaded(userData)}
         }
     }
 

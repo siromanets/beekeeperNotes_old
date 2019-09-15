@@ -7,20 +7,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import com.carpathianapiary.niko.beekeepernotes.BaseFragment
 
 import com.carpathianapiary.niko.beekeepernotes.R
 import com.carpathianapiary.niko.beekeepernotes.databinding.MainFragmentBinding
 import com.carpathianapiary.niko.beekeepernotes.login.RegistrationActivity
 
-class MainFragment : Fragment() {
-
+class MainFragment : BaseFragment<MainViewModel>() {
     companion object {
+
         fun newInstance() = MainFragment()
     }
-
     private lateinit var binding: MainFragmentBinding
 
-    private lateinit var viewModel: MainViewModel
+    override val viewModelClass: Class<MainViewModel>
+        get() = MainViewModel::class.java
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -30,7 +31,6 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         binding.floatingActionButton.setOnClickListener { addNewBeehave() }
     }
 
