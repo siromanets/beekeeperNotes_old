@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.carpathianapiary.niko.beekeepernotes">
+    package="com.carpathianapiary.beekeepernotes">
 
     <application
-        android:name="com.carpathianapiary.niko.beekeepernotes.utils.BeekeperApp"
+        android:name="com.carpathianapiary.beekeepernotes.utils.BeekeperApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.carpathianapiary.niko.beekeepernotes.login.RegistrationActivity"></activity>
-        <activity android:name="com.carpathianapiary.niko.beekeepernotes.activities.BeehiveActivity" />
+        <activity android:name="com.carpathianapiary.beekeepernotes.login.RegistrationActivity"></activity>
+        <activity android:name="com.carpathianapiary.beekeepernotes.activities.BeehiveActivity" />
         <activity
-            android:name="com.carpathianapiary.niko.beekeepernotes.main.MainActivity"
+            android:name="com.carpathianapiary.beekeepernotes.main.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,7 +48,7 @@
             android:value="3cd4e2115409f973dd60f7e2d226f5e282e78129" />
 
         <receiver
-            android:name="com.carpathianapiary.niko.beekeepernotes.utils.TimeNotification"
+            android:name="com.carpathianapiary.beekeepernotes.utils.TimeNotification"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -61,7 +61,7 @@
         </receiver>
 
         <service
-            android:name="com.carpathianapiary.niko.beekeepernotes.utils.AlarmService"
+            android:name="com.carpathianapiary.beekeepernotes.utils.AlarmService"
             android:enabled="true" />
     </application>
     <uses-permission android:name="android.permission.WAKE_LOCK" />

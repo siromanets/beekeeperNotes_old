@@ -13,7 +13,7 @@
 
         <fragment
             android:id="@+id/type_selection"
-            android:name="com.carpathianapiary.niko.beekeepernotes.login.UserTypeSelectorFragment"
+            android:name="com.carpathianapiary.beekeepernotes.login.UserTypeSelectorFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout="@layout/user_type_selector_fragment"/>
