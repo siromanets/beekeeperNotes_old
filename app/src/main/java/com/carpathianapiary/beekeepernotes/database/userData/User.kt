@@ -44,6 +44,7 @@ class User() {
              type: Int = TYPE_OFFLINE
     ) : this() {
         this.name = name
+        
         this.photoUrl = photoUrl
 
         this.email= email
