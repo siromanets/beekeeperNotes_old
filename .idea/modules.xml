@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/beekeeperNotes.iml" filepath="$PROJECT_DIR$/beekeeperNotes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/beekeeperNotes-app.iml" filepath="$PROJECT_DIR$/app/beekeeperNotes-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mac-beekeeperNotes.iml" filepath="$PROJECT_DIR$/mac-beekeeperNotes.iml" />
     </modules>
   </component>
 </project>

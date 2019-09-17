@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.key.beekeepernote">
-    <!-- To access Google+ APIs: -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    package="com.carpathianapiary.beekeepernotes">
 
     <application
-        android:name=".utils.BeekeperApp"
+        android:name="com.carpathianapiary.beekeepernotes.utils.BeekeperApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,9 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activities.BeehiveActivity"></activity>
+        <activity android:name="com.carpathianapiary.beekeepernotes.login.RegistrationActivity"></activity>
+        <activity android:name="com.carpathianapiary.beekeepernotes.activities.BeehiveActivity" />
         <activity
-            android:name=".main.MainActivity"
+            android:name="com.carpathianapiary.beekeepernotes.main.MainActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,11 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
         <activity
             android:name=".activities.StartActivity_"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -49,11 +40,15 @@
             android:parentActivityName=".activities.StartActivity_" />
 
         <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value" />
+        <meta-data
             android:name="io.fabric.ApiKey"
             android:value="3cd4e2115409f973dd60f7e2d226f5e282e78129" />
 
         <receiver
-            android:name=".utils.TimeNotification"
+            android:name="com.carpathianapiary.beekeepernotes.utils.TimeNotification"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
@@ -66,8 +61,13 @@
         </receiver>
 
         <service
-            android:name=".utils.AlarmService"
+            android:name="com.carpathianapiary.beekeepernotes.utils.AlarmService"
             android:enabled="true" />
     </application>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

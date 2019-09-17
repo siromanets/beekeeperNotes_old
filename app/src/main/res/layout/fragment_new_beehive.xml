@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context="com.example.key.beekeepernote.fragments.NewBeehiveFragment">
+    tools:context="com.carpathianapiary.beekeepernotes.fragments.NewBeehiveFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
