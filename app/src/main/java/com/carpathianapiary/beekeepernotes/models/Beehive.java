@@ -19,8 +19,6 @@ public class Beehive implements Serializable {
     public List<BeeColony>beeColonies;
 
 
-
-
     public Beehive() {
     }
     public Beehive(Beehive beehive){

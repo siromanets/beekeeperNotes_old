@@ -4,7 +4,7 @@ class Apiary() {
     
     var name: String = ""
     
-    var ovnerId: String = ""
+    var ownerId: String = ""
     
     var locationId: String = ""
     
@@ -26,7 +26,7 @@ class Apiary() {
         
         this.name = name
         
-        this.ovnerId = ovnerId
+        this.ownerId = ovnerId
         
         this.locationId = locationId
         

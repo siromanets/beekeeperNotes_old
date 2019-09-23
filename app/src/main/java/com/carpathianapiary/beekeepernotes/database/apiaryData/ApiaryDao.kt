@@ -9,19 +9,22 @@ import androidx.room.Query
 
 @Dao
 interface ApiaryDao {
-
+    
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg apiaryData: ApiaryData)
-
+    
     @Query("SELECT * from apiaries")
     fun getApiariesData(): LiveData<List<ApiaryData>>
-
+    
     @Query("SELECT * from apiaries")
     fun getApiaries(): List<ApiaryData>
-
+    
     @Query("DELETE FROM apiaries")
     fun deleteAll()
     
     @Delete
     fun delete(vararg apiaryData: ApiaryData)
+    
+    @Query("SELECT * from apiaries WHERE id =:id")
+    fun getApiaryById(id: String): LiveData<ApiaryData>
 }

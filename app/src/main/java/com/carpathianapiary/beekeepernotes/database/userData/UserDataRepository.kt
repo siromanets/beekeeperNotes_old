@@ -16,7 +16,6 @@ private const val FB_KEY_USERS = "users"
 
 class UserDataRepository private constructor() : UserDataSource {
 
-
     private val userDataCache: MutableLiveData<UserData> = MutableLiveData()
 
     private val fireStore = FirebaseFirestore.getInstance()
@@ -43,7 +42,6 @@ class UserDataRepository private constructor() : UserDataSource {
                 }
                 .addOnFailureListener { e ->
                     Log.e(TAG, "saveUserInfo onFailure: $e")
-
                 }
     }
 
