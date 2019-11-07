@@ -14,7 +14,7 @@ def AAVersion = '4.6.0'
 dependencies {
     annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
     implementation "org.androidannotations:androidannotations-api:$AAVersion"
-    compile "androidx.core:core-ktx:+"
+    implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
@@ -34,7 +34,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.key.beekeepernote"
-        minSdkVersion 19
+        minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -47,9 +47,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
+    def lifecycle_version = "2.0.0"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
@@ -75,6 +84,20 @@ dependencies {
     implementation('io.fabric.sdk.android:fabric:1.3.10@aar') {
         transitive = true
     }
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    // alternatively - just ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version" // For Kotlin use lifecycle-viewmodel-ktx
+    // alternatively - just LiveData
+    implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    // alternatively - Lifecycles only (no ViewModel or LiveData). Some UI
+    //     AndroidX libraries use this lightweight import for Lifecycle
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version" // For Kotlin use kapt instead of annotationProcessor
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.firebase:firebase-core:17.0.1'
     implementation 'com.google.firebase:firebase-storage:18.1.0'
@@ -94,6 +117,8 @@ dependencies {
     implementation 'com.shawnlin:number-picker:2.4.4'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     testCompile 'junit:junit:4.12'
+
+    implementation 'com.nshmura:recyclertablayout:1.5.0'
 }
 apply plugin: 'com.google.gms.google-services'
 crashlytics {
@@ -105,4 +130,5 @@ crashlytics {
 dependencies {
     implementation 'androidx.appcompat:appcompat:+'
     implementation 'androidx.constraintlayout:constraintlayout:+'
+    implementation 'androidx.fragment:fragment-ktx:1.1.0'
 }
